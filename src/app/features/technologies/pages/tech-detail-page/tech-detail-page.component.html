@@ -1,0 +1,150 @@
+@if (error()) {
+<div class="w-full min-h-[90vh] flex items-center justify-center">
+    <div class="w-full max-w-lg">
+        <div class="motion-preset-slide-down">
+            <app-card>
+                <app-card-header [icon]="icons.Info" iconSize="text-red-500"
+                    title="Error al cargar detalles de la tecnología" description="No se pudieron obtener los detalles. Esto puede deberse a un
+                    problema de conexión o a que el recurso no está disponible temporalmente."></app-card-header>
+                <app-card-body>
+                    <div class="flex flex-col gap-4">
+                        <pre
+                            class="bg-red-100 dark:bg-red-500/20 dark:text-red-400 rounded-md p-3 text-xs w-full text-left text-red-500 whitespace-pre-wrap break-all">GET /api/technologies/{{ route.snapshot.paramMap.get('name') }} - {{ error() }}</pre>
+                        <div class="flex flex-col gap-2 w-full">
+                            <app-button variant="success" [fullWidth]="true" [itemsCenter]="true" (click)="refresh()"
+                                [icon]="icons.RefreshCw" [appearance]="'soft'">Reintentar</app-button>
+                            <app-button variant="neutral" [appearance]="'soft'" [fullWidth]="true" [itemsCenter]="true"
+                                [icon]="icons.ArrowLeft" (click)="goBack()">Volver
+                                a tecnologías</app-button>
+                        </div>
+                    </div>
+                </app-card-body>
+            </app-card>
+        </div>
+    </div>
+    <!-- <div class="bg-white rounded-lg drop-shadow p-6 w-full max-w-lg my-12">
+        <div class="flex flex-col items-center text-center gap-4">
+            <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-600" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 9v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+            <h3 class="text-lg font-semibold">Error al cargar detalles de la tecnología</h3>
+            <p class="text-sm text-gray-600">No se pudieron obtener los detalles. Esto puede deberse a un
+                problema de conexión o a que el recurso no está disponible temporalmente.</p>
+            <pre
+                class="bg-gray-100 rounded-md p-3 text-xs w-full text-left">GET /api/technologies/{{ route.snapshot.paramMap.get('name') }} - {{ error() }}</pre>
+            <div class="flex flex-col gap-2 w-full">
+                <app-button variant="success" [fullWidth]="true" [itemsCenter]="true"
+                    (click)="refresh()">Reintentar</app-button>
+                <app-button variant="neutral" [fullWidth]="true" [itemsCenter]="true" (click)="goBack()">← Volver
+                    a tecnologías</app-button>
+            </div>
+        </div>
+    </div> -->
+</div>
+}@else {
+<app-page-body-layout>
+    <!-- phantom references to ensure standalone component imports are recognized by the compiler -->
+    <ng-container *ngIf="false">
+        <app-tech-detail-summary></app-tech-detail-summary>
+        <app-tech-version-table-section></app-tech-version-table-section>
+    </ng-container>
+    <div header class="flex flex-col gap-5">
+        <ng-container *ngIf="showSkeleton(); else headerContent">
+            <div class="animate-pulse flex flex-col gap-2">
+                <div class="h-7 w-48 bg-neutral-200 dark:bg-neutral-700 rounded-md"></div>
+                <div class="h-4 w-96 bg-neutral-200 dark:bg-neutral-700 rounded-md"></div>
+            </div>
+        </ng-container>
+
+        <ng-template #headerContent>
+            <ng-container *ngIf="techDetail() as detail">
+                <div>
+                    <app-page-header [title]="detail.label" [description]="detail.description">
+                        <div tags class="flex items-center gap-2">
+                            <app-badge rounded="md" appearance="soft"
+                                [variant]="categoryBadgeVariant[detail.category] || 'primary'"
+                                [icon]="categoryBadgeIcon[detail.category]">{{ detail.category ===
+                                'framework' ? 'Framework' : 'Lenguaje' }}</app-badge>
+                        </div>
+                        <div actions class="flex items-center gap-2">
+                            <app-button variant="black" (click)="goToEndOfLife()">Ver en End of Life</app-button>
+                        </div>
+                    </app-page-header>
+                </div>
+            </ng-container>
+        </ng-template>
+    </div>
+
+    <div body class="flex flex-col gap-5 motion-preset-slide-left">
+        <ng-container *ngIf="error(); else noError">
+            <div class="w-full min-h-[60vh] flex items-center justify-center">
+                <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-lg my-12">
+                    <div class="flex flex-col items-center text-center gap-4">
+                        <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-600" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 9v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold">Error al cargar detalles de la tecnología</h3>
+                        <p class="text-sm text-gray-600">No se pudieron obtener los detalles. Esto puede deberse a un
+                            problema de conexión o a que el recurso no está disponible temporalmente.</p>
+                        <pre
+                            class="bg-gray-100 rounded-md p-3 text-xs w-full overflow-auto text-left">GET /api/technologies/{{ route.snapshot.paramMap.get('name') }} - {{ error() }}</pre>
+                        <div class="flex flex-col gap-2 w-full">
+                            <button class="btn btn-success w-full" type="button" (click)="refresh()">Reintentar</button>
+                            <button class="btn btn-ghost w-full" (click)="goBack()">← Volver a tecnologías</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+
+        <ng-template #noError>
+            <ng-container *ngIf="showSkeleton(); else content">
+                <div class="flex flex-col gap-5 animate-pulse">
+                    <!-- Skeleton stat cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="h-24 bg-neutral-200 dark:bg-neutral-700 rounded-xl"></div>
+                        <div class="h-24 bg-neutral-200 dark:bg-neutral-700 rounded-xl"></div>
+                        <div class="h-24 bg-neutral-200 dark:bg-neutral-700 rounded-xl"></div>
+                    </div>
+                    <!-- Skeleton tabla -->
+                    <div class="rounded-xl overflow-hidden border border-neutral-200 dark:border-neutral-700">
+                        <div class="h-12 bg-neutral-100 dark:bg-neutral-800"></div>
+                        @for (i of [1,2,3,4,5,6]; track i) {
+                        <div
+                            class="h-12 border-t border-neutral-200 dark:border-neutral-700 bg-white dark:bg-neutral-900 flex items-center px-4 gap-4">
+                            <div class="h-4 w-16 bg-neutral-200 dark:bg-neutral-700 rounded"></div>
+                            <div class="h-4 w-20 bg-neutral-200 dark:bg-neutral-700 rounded"></div>
+                            <div class="h-4 w-24 bg-neutral-200 dark:bg-neutral-700 rounded"></div>
+                            <div class="h-4 w-24 bg-neutral-200 dark:bg-neutral-700 rounded"></div>
+                            <div class="h-4 w-24 bg-neutral-200 dark:bg-neutral-700 rounded"></div>
+                            <div class="h-5 w-16 bg-neutral-200 dark:bg-neutral-700 rounded-full"></div>
+                        </div>
+                        }
+                    </div>
+                </div>
+            </ng-container>
+        </ng-template>
+
+        <ng-template #content>
+            <ng-container *ngIf="techDetail() as detail">
+                <div class="flex flex-col gap-5 motion-preset-slide-left">
+                    <app-tech-detail-summary [total]="totalVersions()" [active]="activeVersions()"
+                        [latest]="latestVersion()"></app-tech-detail-summary>
+
+                    <app-tech-version-table-section [cycles]="cycles()" [getVersionStatus]="getVersionStatus"
+                        [formatDate]="formatDate">
+                    </app-tech-version-table-section>
+                </div>
+            </ng-container>
+        </ng-template>
+    </div>
+</app-page-body-layout>
+}

@@ -1,0 +1,6 @@
+<app-button (onClick)="toggleTheme()" size="medium" appearance="text">
+    <div class="flex items-center justify-center">
+        <lucide-icon [img]="isDarkMode() ? icons.Moon : icons.Sun" class="size-5" id="theme-icon">
+        </lucide-icon>
+    </div>
+</app-button>

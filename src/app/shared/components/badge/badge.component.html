@@ -1,0 +1,23 @@
+<span [class]="finalClass">
+    @if (dot && dotPosition === 'left') {
+    <span [class]="dotSize + ' rounded-full ' + getDotColor()"></span>
+    }
+
+    @if (icon && iconPosition === 'left' && !iconOnly) {
+    <lucide-icon [img]="icon" [class]="iconSize"></lucide-icon>
+    }
+
+    @if (iconOnly && icon) {
+    <lucide-icon [img]="icon" [class]="iconSize"></lucide-icon>
+    } @else {
+    <ng-content></ng-content>
+    }
+
+    @if (icon && iconPosition === 'right' && !iconOnly) {
+    <lucide-icon [img]="icon" [class]="iconSize"></lucide-icon>
+    }
+
+    @if (dot && dotPosition === 'right') {
+    <span [class]="dotSize + ' rounded-full ' + getDotColor()"></span>
+    }
+</span>

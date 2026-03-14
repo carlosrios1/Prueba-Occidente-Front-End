@@ -1,0 +1,22 @@
+<div class="toast-container fixed top-20 right-4 z-[99999] w-auto max-w-xs flex flex-col gap-3"
+  [@toastAnimation]="animationState">
+  <div
+    class="  p-4 transition-all duration-300 transform hover:scale-105 motion-preset-fade motion-preset-slide-left motion-ease-spring-smooth"
+    [ngClass]="getToastClass()">
+    <div class="flex items-center">
+      <div class="flex-shrink-0">
+        <lucide-icon [img]="icons.info" *ngIf="data.type === 'info'" [ngClass]="iconColorClass"
+          class="size-5"></lucide-icon>
+        <lucide-icon [img]="icons.success" *ngIf="data.type === 'success'" [ngClass]="iconColorClass"
+          class="size-5"></lucide-icon>
+        <lucide-icon [img]="icons.warning" *ngIf="data.type === 'warning'" [ngClass]="iconColorClass"
+          class="size-5"></lucide-icon>
+        <lucide-icon [img]="icons.error" *ngIf="data.type === 'error'" [ngClass]="iconColorClass"
+          class="size-5"></lucide-icon>
+      </div>
+      <div class="ml-3">
+        <p class="text-sm font-medium text-black whitespace-pre-wrap">{{ data.message }}</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+<div [class]="containerClass">
+    <!-- Prefijo: Icono o Texto -->
+    @if (prefixIcon) {
+    <div class="ml-3">
+        <lucide-icon [img]="prefixIcon" [class]="iconSize + ' text-neutral-500 dark:text-neutral-400'"></lucide-icon>
+    </div>
+    } @else if (prefixText) {
+    <div class="ml-3">
+        <span [class]="affixTextClass">{{ prefixText }}</span>
+    </div>
+    }
+
+    <!-- Input -->
+    <input [class]="inputClass" [type]="type" [name]="name" [id]="id" [placeholder]="placeholder" [disabled]="disabled"
+        [readonly]="readonly" [required]="required" [value]="value" [min]="min" [max]="max" [step]="step"
+        [pattern]="pattern" [autocomplete]="autocomplete" [attr.maxlength]="maxlength" [attr.minlength]="minlength"
+        (input)="handleInput($event)" (change)="handleChange($event)" (focus)="handleFocus($event)"
+        (blur)="handleBlur($event)" (keydown)="handleKeyDown($event)" (keyup)="handleKeyUp($event)"
+        (keypress)="handleKeyPress($event)" />
+
+    <!-- Sufijo: Icono o Texto -->
+    @if (suffixIcon) {
+    <div class="mr-3">
+        <lucide-icon [img]="suffixIcon" [class]="iconSize + ' text-neutral-500 dark:text-neutral-400'"></lucide-icon>
+    </div>
+    } @else if (suffixText) {
+    <div class="mr-3">
+        <span [class]="affixTextClass">{{ suffixText }}</span>
+    </div>
+    }
+</div>

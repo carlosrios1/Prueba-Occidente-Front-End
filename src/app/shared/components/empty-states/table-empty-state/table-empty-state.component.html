@@ -1,0 +1,22 @@
+<app-card>
+    <app-card-body>
+        <div class="py-16 text-center">
+            <div class="flex">
+                <div
+                    class="mx-auto p-3 bg-neutral-100 dark:bg-neutral-800 rounded-lg flex items-center justify-center mb-4">
+                    <lucide-icon [img]="icon" class="size-10"></lucide-icon>
+                </div>
+            </div>
+            <div class="flex flex-col items-center">
+                <h3 class="text-lg font-bold tracking-tight text-neutral-900 dark:text-neutral-100">{{title}}</h3>
+                <p class="text-sm tracking-tight text-neutral-500 dark:text-neutral-400 mt-2 max-w-md">{{description}}
+                </p>
+                @if (action) {
+                <app-button (onClick)="action.action()" [icon]="action.icon" class="mt-4" appearance="solid"
+                    variant="black-inverted">
+                    {{ action.label }}</app-button>
+                }
+            </div>
+        </div>
+    </app-card-body>
+</app-card>

@@ -1,0 +1,55 @@
+<!-- custom-select.component.html -->
+<div class="relative w-full">
+  <button type="button" (click)="toggleDropdown($event)" [disabled]="disabled" tabindex="0" [class]="containerClass"
+    role="combobox" [attr.aria-expanded]="getAriaExpanded()" [attr.aria-haspopup]="'listbox'"
+    [class.border-red-300]="invalid" [class.disabled:border]="invalid" [class.disabled:border-red-300]="invalid"
+    [attr.aria-activedescendant]="getAriaActivedescendant()"
+    [attr.aria-label]="'Select option, current selection is ' + getSelectedLabel()">
+
+    <!-- Contenido del botón - solo muestra el label -->
+    <span [class.text-gray-500]="!selectedOption"
+      class="text-black font-normal dark:text-gray-200 truncate pr-8 max-w-full">
+      {{ getSelectedLabel() }}
+    </span>
+
+    <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+      <lucide-angular [img]="arrow" class="text-gray-500 size-4"
+        [class.rotate-180]="isOpen && dropdownPosition === 'bottom'"
+        [class.rotate-0]="isOpen && dropdownPosition === 'top'" [class.transition-transform]="true"
+        [class.duration-200]="true"></lucide-angular>
+    </span>
+  </button>
+
+  <ul *ngIf="isOpen" #dropdownContainer [class]="getDropdownClasses()" [ngStyle]="getDropdownStyles()" role="listbox"
+    [attr.aria-label]="'Available options'">
+
+    <li *ngFor="let option of options; trackBy: trackByOption" (click)="selectOption(option)"
+      [attr.data-option-value]="option.value" [id]="getOptionId(option)"
+      class="px-4 py-2 text-sm m-1 text-gray-900 dark:text-gray-200 rounded-md transition-colors duration-150 motion-preset-fade"
+      role="option" [attr.aria-selected]="isOptionSelected(option)" [attr.aria-disabled]="isOptionDisabled(option)"
+      [class.cursor-pointer]="!isOptionDisabled(option)" [class.hover:bg-gray-100]="!isOptionDisabled(option)"
+      [class.focus:bg-gray-100]="!isOptionDisabled(option)" [class.focus:outline-none]="!isOptionDisabled(option)"
+      [class.bg-green-100]="isOptionSelected(option) && !isOptionDisabled(option)"
+      [ngClass]="{'dark:bg-green-500/10': isOptionSelected(option) && !isOptionDisabled(option), 'dark:hover:bg-neutral-700/30': !isOptionDisabled(option)}"
+      [class.bg-gray-200]="isOptionHighlighted(option) && !isOptionDisabled(option) && !isOptionSelected(option)"
+      [class.dark:bg-blue-900]="isOptionHighlighted(option) && !isOptionDisabled(option) && !isOptionSelected(option)"
+      [class.opacity-50]="isOptionDisabled(option)" [class.cursor-not-allowed]="isOptionDisabled(option)"
+      [class.pointer-events-none]="isOptionDisabled(option)">
+
+      <div class="flex items-center gap-2">
+        <lucide-angular [img]="check" class="text-gray-900 dark:text-green-500 size-4 flex-shrink-0"
+          [class.hidden]="!isOptionSelected(option)" aria-hidden="true"></lucide-angular>
+        <div class="size-4 flex-shrink-0" [class.hidden]="isOptionSelected(option)"></div>
+
+        <!-- Contenido de la opción con título y subtítulo -->
+        <div class="flex-1 min-w-0">
+          <div class="text-sm font-normal truncate">{{ option.label }}</div>
+          <div *ngIf="option.subtitle" class="text-xs text-gray-500 dark:text-gray-400 truncate font-medium"
+            [class.text-gray-400]="isOptionDisabled(option)">
+            {{ option.subtitle }}
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

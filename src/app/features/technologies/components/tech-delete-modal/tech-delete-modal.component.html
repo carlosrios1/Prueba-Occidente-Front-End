@@ -1,0 +1,5 @@
+<app-modal [isOpen]="isOpen()" [title]="titleDeleteModal" [subtitle]="subtitleDeleteModal" [showFooter]="true"
+    [disableClose]="isDeleting()" [isDeleteModal]="true" [loading]="isDeleting()" loadingText="Eliminando"
+    [showConfirmButton]="showConfirmButton" confirmText="Eliminar" [cancelText]="cancelText"
+    (onClose)="closeDeleteModal()" (onConfirm)="handleDelete()">
+</app-modal>

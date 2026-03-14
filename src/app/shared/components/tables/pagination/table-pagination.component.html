@@ -1,0 +1,61 @@
+<div class="flex justify-between items-center">
+    <!-- Información de paginación -->
+    @if (totalItems()>0) {
+    <div class="flex justify-between items-center text-sm text-neutral-500 dark:text-neutral-400">
+        <span class="font-normal text-sm">
+            Mostrando <span class="text-neutral-950 dark:text-neutral-100 font-medium">{{ startRange() }} - {{
+                endRange() }}</span>
+            de <span class="text-neutral-950 dark:text-neutral-100 font-medium">{{ totalItems() }}</span> {{
+            itemLabel() }}
+        </span>
+        @if (loading()) {
+        <span class="ml-3 loading-spinner loading size-5 bg-green-500"></span>
+        }
+    </div>
+    }
+
+
+    <!-- Controles de navegación -->
+    <div class="flex justify-end" *ngIf="totalPages() > 1">
+        <nav class="flex items-center gap-x-1">
+            <!-- Botón Anterior -->
+            <app-button variant="default" size="small" [disabled]="actualPage() === 1" (onClick)="onPreviousPage()">
+                <lucide-icon [img]="icons.ChevronLeft" class="size-4 sm:hidden"></lucide-icon>
+                <span class="hidden sm:inline">Anterior</span></app-button>
+            <div class="flex items-center gap-x-1">
+                @if (actualPage() > 3 && totalPages() > 5) {
+                <app-button variant="default" size="small" (onClick)="onPageChange(1)">
+                    1</app-button>
+                }
+
+                @if (actualPage() > 4 && totalPages() > 5) {
+                <app-button size="small" [square]="true" appearance="text">...</app-button>
+                }
+
+                @for (page of visiblePages() ; track $index) {
+                <app-button size="small" [square]="true"
+                    [variant]="page === actualPage() ? 'black-inverted' : 'default'" (onClick)="onPageChange(page)"
+                    [attr.aria-current]="page === actualPage() ? 'page' : null">{{ page
+                    }}</app-button>
+                }
+
+                @if (actualPage() < totalPages() - 3 && totalPages()> 5) {
+                    <app-button size="small" [square]="true" appearance="text">...</app-button>
+                    }
+
+                    @if (actualPage() < totalPages() - 2 && totalPages()> 5) {
+                        <app-button size="small" (onClick)="onPageChange(totalPages())" [square]="true">{{
+                            totalPages()}}</app-button>
+                        }
+            </div>
+
+            <!-- Botón Siguiente -->
+            <app-button variant="default" size="small" [disabled]="actualPage() === totalPages()"
+                (click)="onNextPage()">
+                <span class="hidden sm:inline">Siguiente</span>
+                <lucide-icon [img]="icons.ChevronRight" class="size-4 sm:hidden"></lucide-icon>
+            </app-button>
+
+        </nav>
+    </div>
+</div>

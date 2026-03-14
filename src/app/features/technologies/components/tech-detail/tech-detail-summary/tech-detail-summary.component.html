@@ -1,0 +1,8 @@
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <app-stat-card [badgeVariant]="'primary'" [title]="'Total Versiones'" [value]="total ?? 0"
+        [icon]="icons.GitBranch"></app-stat-card>
+    <app-stat-card badgeVariant="success" [title]="'Versiones Activas/LTS'" [value]="active ?? 0"
+        [icon]="icons.CircleCheck"></app-stat-card>
+    <app-stat-card badgeVariant="info" [title]="'Última Versión'" [value]="latest ?? '-'"
+        [icon]="icons.RefreshCcw"></app-stat-card>
+</div>

@@ -1,0 +1,124 @@
+<div class="w-full flex flex-col bg-white dark:bg-gray-900 h-full">
+
+    <!-- Contenido centrado -->
+    <div class="flex-1 flex flex-col items-center justify-center px-8 py-12 sm:px-12">
+        <div class="w-full max-w-sm">
+
+            <!-- Encabezado -->
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-greenBO dark:text-green-400 mb-2">Iniciar Sesión</h1>
+                <p class="text-gray-500 dark:text-gray-400 text-sm">
+                    Ingresa tus credenciales para acceder a tu cuenta
+                </p>
+            </div>
+
+            <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm, $event)" class="space-y-5" novalidate>
+
+                <!-- Campo usuario -->
+                <div>
+                    <label for="user" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5"
+                        [ngClass]="{'text-red-600': loginForm.submitted && usuario.invalid}">
+                        Usuario
+                    </label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-3 flex items-center pointer-events-none text-gray-400">
+                            <lucide-icon [img]="UserIcon" class="size-4"></lucide-icon>
+                        </span>
+                        <input id="user" name="user" type="text" #usuario="ngModel"
+                            class="input input-bancocci pl-10 w-full" placeholder="Ingrese su usuario" required
+                            [ngClass]="{'ring-red-500/70 focus:ring-red-500/70 border-red-500/70 hover:border-red-500/70': loginForm.submitted && usuario.invalid}"
+                            [(ngModel)]="username" />
+                    </div>
+                    @if (validacionUsuario() !== '' && usuario.invalid) {
+                    <p class="text-red-600 text-xs mt-1">{{ validacionUsuario() }}</p>
+                    }
+                </div>
+
+                <!-- Campo contraseña -->
+                <div>
+                    <label for="userPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5"
+                        [ngClass]="{'text-red-600': loginForm.submitted && contrasena.invalid}">
+                        Contraseña
+                    </label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-3 flex items-center pointer-events-none text-gray-400">
+                            <lucide-icon [img]="LockIcon" class="size-4"></lucide-icon>
+                        </span>
+                        <input id="userPassword" name="userPassword" [type]="showPassword ? 'text' : 'password'"
+                            #contrasena="ngModel" class="input input-bancocci pl-10 pr-10 w-full"
+                            placeholder="Ingrese su contraseña" required
+                            [ngClass]="{'ring-red-500/70 focus:ring-red-500/70 border-red-500/70 hover:border-red-500/70': loginForm.submitted && contrasena.invalid}"
+                            [(ngModel)]="password" />
+                        <button type="button"
+                            class="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                            (click)="showPassword = !showPassword">
+                            <lucide-icon [img]="showPassword ? EyeOffIcon : EyeIcon" class="size-4"></lucide-icon>
+                        </button>
+                    </div>
+                    @if (validacionContrasena() !== '' && contrasena.invalid) {
+                    <p class="text-red-600 text-xs mt-1">{{ validacionContrasena() }}</p>
+                    }
+                </div>
+
+                <!-- Recordar dispositivo + olvidé contraseña -->
+                <div class="flex items-center justify-between">
+                    <label
+                        class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 cursor-pointer select-none">
+                        <input type="checkbox" name="rememberDevice" [(ngModel)]="rememberDevice"
+                            class="w-4 h-4 rounded border-gray-300 accent-greenBO cursor-pointer" />
+                        Recordar dispositivo
+                    </label>
+                    <a href="#"
+                        class="text-sm text-orangeBO hover:underline font-medium transition-opacity hover:opacity-80">
+                        ¿Olvidaste tu contraseña?
+                    </a>
+                </div>
+
+                <!-- Botón iniciar sesión -->
+                <button type="submit"
+                    class="w-full py-3 bg-greenBO hover:bg-greenBOdark text-white text-sm font-semibold rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-60">
+                    @if (isLoading) {
+                    <span class="loading loading-spinner loading-xs"></span>
+                    }
+                    Iniciar Sesión
+                </button>
+
+                <!-- Mensaje de error -->
+                @if (mensajeError !== '') {
+                <div class="py-3 px-4 text-sm font-medium bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 rounded-lg flex items-center gap-2 border border-red-200 dark:border-red-800"
+                    role="alert">
+                    <lucide-icon [img]="TriangleAlert" class="size-4 shrink-0"></lucide-icon>
+                    {{ mensajeError }}
+                </div>
+                }
+
+                <!-- Divisor nuevo cliente -->
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-200 dark:border-gray-700"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="bg-white dark:bg-gray-900 px-4 text-gray-400">¿Nuevo cliente?</span>
+                    </div>
+                </div>
+
+                <!-- Botón crear cuenta -->
+                <button type="button"
+                    class="w-full py-3 bg-white dark:bg-transparent border-2 border-greenBO text-greenBO text-sm font-semibold rounded-lg hover:bg-green-50 dark:hover:bg-green-950/30 transition-colors">
+                    Crear una cuenta
+                </button>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="pb-8 flex items-center justify-center gap-3 text-sm text-gray-400">
+        <a href="#" class="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">Centro de ayuda</a>
+        <span>•</span>
+        <a href="#" class="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">Contáctanos</a>
+        <span>•</span>
+        <a href="#" class="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">Seguridad</a>
+    </div>
+
+</div>

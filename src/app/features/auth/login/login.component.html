@@ -1,0 +1,6 @@
+<div class="flex h-screen overflow-hidden">
+  <app-login-hero class="hidden lg:flex lg:w-1/2 h-full"></app-login-hero>
+  <app-login-form class="flex w-full lg:w-1/2 h-full overflow-y-auto" [isLoading]="isLoading()"
+    [mensajeError]="mensajeError" (submitLogin)="handleLogin($event)">
+  </app-login-form>
+</div>

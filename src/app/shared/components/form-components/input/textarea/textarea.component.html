@@ -1,0 +1,8 @@
+<div [class]="containerClass">
+    <textarea [class]="textareaClass" [name]="name" [id]="id" [placeholder]="placeholder" [disabled]="disabled"
+        [readonly]="readonly" [required]="required" [value]="value" [rows]="rows" [attr.cols]="cols"
+        [attr.maxlength]="maxlength" [attr.minlength]="minlength" (input)="handleInput($event)"
+        (change)="handleChange($event)" (focus)="handleFocus($event)" (blur)="handleBlur($event)"
+        (keydown)="handleKeyDown($event)" (keyup)="handleKeyUp($event)" (keypress)="handleKeyPress($event)">
+    </textarea>
+</div>

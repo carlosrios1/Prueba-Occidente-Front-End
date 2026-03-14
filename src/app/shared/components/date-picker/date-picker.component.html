@@ -1,0 +1,68 @@
+<div class="relative">
+    <!-- Input Field -->
+    <div class="relative">
+        <input #inputElement type="text" [value]="displayValue" [placeholder]="placeholder" [disabled]="disabled"
+            readonly [class]="inputClasses" (click)="toggleCalendar()" (focus)="onFocus()" (blur)="onInputBlur()" />
+        <button type="button" [disabled]="disabled"
+            class="absolute inset-y-0 right-0 flex items-center pr-3 hover:opacity-70 transition-opacity"
+            (click)="toggleCalendar()">
+            <lucide-icon [img]="icons.Calendar" class="size-4 text-gray-500"></lucide-icon>
+        </button>
+    </div>
+
+    <!-- Calendar Dropdown -->
+    <div *ngIf="isCalendarOpen || isCalendarClosing"
+        class="absolute top-full left-0 z-50 mt-1 w-[260px] rounded-md border bg-white p-0 text-popover-foreground shadow-lg"
+        [class.right-0]="shouldAlignRight" [class.left-0]="!shouldAlignRight"
+        [class.animate-in]="isCalendarOpen && !isCalendarClosing" [class.animate-out]="isCalendarClosing"
+        (click)="$event.stopPropagation()">
+        <!-- Calendar Header -->
+        <div class="flex items-center justify-between p-3 border-b w-full">
+            <button type="button"
+                class="inline-flex items-center justify-center rounded-lg size-7 bg-transparent p-0 hover:bg-whiteBO hover:text-accent-foreground transition-colors"
+                (click)="previousMonth()">
+                <lucide-icon [img]="icons.ChevronLeft" class="size-4"></lucide-icon>
+            </button>
+
+            <div class="flex items-center space-x-1">
+                <select [value]="currentDate.getMonth()" (change)="onMonthChange($event)"
+                    class="text-sm font-medium bg-transparent border-none outline-none cursor-pointer hover:bg-accent hover:text-accent-foreground rounded px-2 py-1">
+                    <option *ngFor="let month of months; let i = index" [value]="i">
+                        {{month}}
+                    </option>
+                </select>
+                <select [value]="currentDate.getFullYear()" (change)="onYearChange($event)"
+                    class="text-sm font-medium bg-transparent border-none outline-none cursor-pointer hover:bg-accent hover:text-accent-foreground rounded px-2 py-1">
+                    <option *ngFor="let year of years" [value]="year">
+                        {{year}}
+                    </option>
+                </select>
+            </div>
+
+            <button type="button"
+                class="inline-flex items-center justify-center rounded-lg size-7 bg-transparent p-0 hover:bg-whiteBO hover:text-accent-foreground transition-colors"
+                (click)="nextMonth()">
+                <lucide-icon [img]="icons.ChevronRight" class="size-4"></lucide-icon>
+            </button>
+        </div>
+
+        <!-- Calendar Grid -->
+        <div class="p-3">
+            <!-- Day Headers -->
+            <div class="grid grid-cols-7  mb-1">
+                <div *ngFor="let day of dayHeaders"
+                    class="flex h-7 w-full items-center justify-center p-0 text-xs font-normal text-muted-foreground motion-preset-fade">
+                    {{day}}
+                </div>
+            </div>
+
+            <!-- Calendar Days -->
+            <div class="grid grid-cols-7">
+                <button *ngFor="let day of calendarDays; trackBy: trackByDate" type="button"
+                    [class]="getDayClasses(day)" [disabled]="day.isDisabled" (click)="selectDate(day.date)">
+                    {{day.date.getDate()}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

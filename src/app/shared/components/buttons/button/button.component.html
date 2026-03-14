@@ -1,0 +1,22 @@
+<button [class]="finalClass" (click)="onClick.emit()" (keydown)="onKeyDown.emit()" (keyup)="onKeyUp.emit()"
+    (keypress)="onKeyPress.emit()" (blur)="onBlur.emit()" (focus)="onFocus.emit()" [disabled]="disabledState"
+    [type]="type" [title]="tooltip">
+
+    @if (icon && iconPosition === 'left') {
+    @if (loading) {
+    <span class="loading loading-spinner" [class]="iconSize"></span>
+    } @else {
+    <lucide-icon [img]="icon" [class]="iconSize"></lucide-icon>
+    }
+    }
+
+    @if (loading) {
+    <span>{{loadingText}}</span> <span class="loading loading-spinner" [class]="iconSize"></span>
+    } @else {
+    <ng-content></ng-content>
+    }
+
+    @if (icon && iconPosition === 'right' && !loading) {
+    <lucide-icon [img]="icon" [class]="iconSize"></lucide-icon>
+    }
+</button>

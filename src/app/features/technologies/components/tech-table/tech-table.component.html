@@ -1,0 +1,135 @@
+<div class="border-y border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
+    <table class="w-full">
+        <!-- Encabezado -->
+        <thead>
+            <tr class="border-b border-gray-200/60 dark:border-neutral-800">
+                @for (header of tableHeaders; track $index) {
+                <th class="py-3 px-2 text-left text-sm font-medium text-black dark:text-neutral-100 tracking-tight"
+                    [class.pl-4]="$index === 0">
+                    {{header}}
+                </th>
+                }
+            </tr>
+        </thead>
+
+        <!-- Cuerpo -->
+        <tbody class="divide-y divide-gray-200 dark:divide-neutral-800">
+            @for (tech of techState.techs(); track tech.id; let i = $index) {
+            <tr class="group cursor-pointer transition-all duration-300 hover:bg-gradient-to-r hover:from-green-50/30 hover:to-green-50/20 dark:hover:from-green-900/20 dark:hover:to-green-800/10 motion-preset-slide-down motion-duration-300"
+                (click)="handleViewDetails(tech)">
+
+                <!-- ID -->
+                <td appTableCell variant="first">
+                    {{ tech.id }}
+                </td>
+
+                <!-- Nombre -->
+                <td appTableCell variant="name">
+                    <span class="flex items-center gap-2">
+                        <app-badge rounded="md" [iconOnly]="true"
+                            [icon]="categoryIcons[mapCategoryToName(tech.category)]"></app-badge>
+                        {{ tech.label }}
+                    </span>
+                </td>
+
+                <!-- Descripción -->
+                <td appTableCell>
+                    <app-badge appearance="soft" size="small" rounded="full"
+                        [variant]="categoryColors[mapCategoryToName(tech.category)]">
+                        {{ mapCategoryToName(tech.category) }}
+                    </app-badge>
+                </td>
+
+
+                <!-- Aplicativos -->
+                <td appTableCell>
+                    <app-badge appearance="soft" size="small" rounded="full" variant="success">
+                        {{ tech.versions.activeQty }}
+                    </app-badge>
+                </td>
+
+                <!-- Versiones -->
+                <td appTableCell>
+                    <app-badge appearance="soft" size="small" rounded="full" variant="secondary">
+                        {{ tech.versions.totalQty }}
+                    </app-badge>
+                </td>
+
+                <td appTableCell>
+                    <app-badge [icon]="icons.AppWindow" appearance="soft" size="small" rounded="full"
+                        variant="secondary">
+                        {{ tech.appsQty }}
+                    </app-badge>
+                </td>
+
+
+                <td appTableCell>
+                    <app-badge [variant]="(tech.isActive | appStatus).variant" appearance="soft" size="small"
+                        rounded="full" [icon]="(tech.isActive | appStatus).icon">
+                        {{ (tech.isActive | appStatus).label }}
+                    </app-badge>
+                </td>
+
+                <td appTableCell>
+                    <lucide-icon [img]="icons.ChevronRight"
+                        class="size-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></lucide-icon>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Estado vacío -->
+    @if (techState.isEmpty()) {
+    <div class="py-16 text-center">
+        <div class="mx-auto w-16 h-16 bg-gray-100 dark:bg-base-100 rounded-full flex items-center justify-center mb-4">
+            <svg class="w-8 h-8 text-gray-400 dark:text-gray-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                </path>
+            </svg>
+        </div>
+        <h3 class="text-sm font-medium text-gray-900 mb-1">No hay tecnologías disponibles</h3>
+        <p class="text-sm text-gray-500">Comienza creando tu primera tecnología</p>
+    </div>
+    }
+
+    <!-- Estado de carga SOLO en carga inicial -->
+    @if (techState.isLoading() && !techState.isPaginating()) {
+    <div class="py-16 text-center">
+        <div
+            class="mx-auto w-16 h-16 bg-gray-100 dark:bg-base-100 rounded-full flex items-center justify-center mb-4 animate-pulse">
+            <svg class="w-8 h-8 text-gray-400 dark:text-gray-100 animate-spin" fill="none" stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                </path>
+            </svg>
+        </div>
+        <h3 class="text-sm font-medium text-gray-900 mb-1">Cargando tecnologías...</h3>
+    </div>
+    }
+
+    <!-- Estado de error -->
+    @if (techState.error()) {
+    <div class="py-16 text-center">
+        <div class="mx-auto w-16 h-16 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mb-4">
+            <svg class="w-8 h-8 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
+                </path>
+            </svg>
+        </div>
+        <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">Error al cargar datos</h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">{{ techState.error() }}</p>
+        <button (click)="techState.loadTechs('initial')"
+            class="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors">
+            Reintentar
+        </button>
+    </div>
+    }
+</div>
+
+<app-tech-delete-modal [tech]="selectedTechForDeletion()" [isOpen]="isDeleteModalOpen" [isDeleting]="isDeleting"
+    (onConfirm)="handleDelete()">
+</app-tech-delete-modal>

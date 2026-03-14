@@ -1,0 +1,101 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .label-bancocci {
+    @apply text-xs font-medium text-muted-foreground tracking-wide;
+  }
+}
+
+@layer components {
+  .input-bancocci {
+    @apply rounded-md dark:rounded-lg text-sm text-left placeholder:dark:text-neutral-400 !font-normal tracking-tight dark:border-neutral-800 border border-stroke bg-input dark:text-white ring-greenBO/70 dark:ring-greenBO/70 focus:border-greenBO/70 dark:hover:border-neutral-600 focus:shadow-greenBO/10 focus:ring-1 focus:ring-greenBO/70 text-black placeholder:text-muted-foreground;
+  }
+}
+
+:root {
+  --color-principal: #ffffff;
+}
+
+.dark {
+  --color-principal: #1c1c1c;
+}
+
+.no-transition * {
+  transition: none !important;
+}
+
+/* Animación para chevron dropdown */
+.chevron-rotate {
+  transition: transform 0.2s ease-in-out;
+  display: inline-block;
+}
+
+.chevron-rotate svg {
+  display: block;
+}
+
+.chevron-rotate.open {
+  transform: rotate(180deg);
+}
+
+.custom-dropdown-open .chevron-icon {
+  transform: rotate(180deg);
+}
+
+.custom-scrollbar {
+  scrollbar-gutter: stable;
+}
+
+/* Para navegadores webkit (Chrome, Safari, etc.) */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Para modo oscuro */
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+.notyf__toast {
+  border-radius: 0.375rem !important;
+  /* equivalente a rounded-md */
+}
+
+/* Si usas tipos específicos */
+.notyf__toast--primary {
+  border-radius: 0.375rem !important;
+}
+
+.notyf__icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.notyf__icon i {
+  font-size: 24px;
+  line-height: 1;
+}

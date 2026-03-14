@@ -1,0 +1,33 @@
+<app-dropdown>
+    <app-button slot="button" appearance="text" (onClick)="toggleDropdown()">
+        <app-avatar name="Hector Manuel Varela Valenzuela" size="xs"></app-avatar>
+        <span
+            class="hidden sm:inline text-sm lg:text-base truncate max-w-20 sm:max-w-24 lg:max-w-none dark:text-neutral-100">
+            Hector Manuel Varela Valenzuela
+        </span>
+        <lucide-icon [img]="icons.ChevronDown" [class.open]="isDropdownOpen" id="user-chevron"
+            class="size-3.5 sm:size-4.5 hidden sm:inline flex-shrink-0 chevron-rotate">
+        </lucide-icon>
+    </app-button>
+
+    <div slot="content">
+        <ul class="p-2 min-w-0">
+            <li class="dropdown-header dark:border-neutral-800 gap-3">
+                <div class="flex-shrink-0">
+                    <app-avatar name="Hector Manuel Varela Valenzuela" size="sm"></app-avatar>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <h6 class="text-base-content dark:text-neutral-100 text-sm tracking-tight">
+                        Hector Manuel Varela Valenzuela
+                    </h6>
+                </div>
+            </li>
+            <li>
+                <app-button appearance="text" type="button" tooltip="Cerrar Sesión" title="LogOut" [fullWidth]="true">
+                    <lucide-icon [img]="icons.LogOut" class="my-icon text-sm size-4 flex-shrink-0"></lucide-icon>
+                    <span class="flex text-sm transition-none whitespace-nowrap">Cerrar Sesión</span>
+                </app-button>
+            </li>
+        </ul>
+    </div>
+</app-dropdown>
