@@ -51,6 +51,13 @@ export class LogInComponent implements OnInit {
       this.router.navigate(['/lots']);
     } catch (err: any) {
       this.isLoading.set(false);
+      if (err?.status === 401 || err?.status === 400) {
+        this.mensajeError = 'Usuario o contraseña incorrectos.';
+      } else if (err?.status === 0) {
+        this.mensajeError = 'No se pudo conectar con el servidor.';
+      } else {
+        this.mensajeError = 'Ocurrió un error inesperado. Intenta de nuevo.';
+      }
     }
   }
 }

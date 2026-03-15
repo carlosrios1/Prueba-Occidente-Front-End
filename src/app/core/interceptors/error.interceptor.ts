@@ -10,20 +10,23 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
     return next(req).pipe(
         catchError((error: HttpErrorResponse) => {
-            let message: string;
+            const isLoginRequest = req.url.includes('/api/auth/login');
 
-            if (error.status === 0) {
-                // Error de red: CORS, servidor apagado, sin conexión
-                message = 'No se pudo conectar con el servidor. Verifica que la API esté activa.';
-            } else {
-                message = getDefaultMessage(error.status);
-            }
+            if (!isLoginRequest) {
+                let message: string;
 
-            toast.showToast({ type: 'error', message, duration: 5000 });
+                if (error.status === 0) {
+                    message = 'No se pudo conectar con el servidor. Verifica que la API esté activa.';
+                } else {
+                    message = getDefaultMessage(error.status);
+                }
 
-            if (error.status === 401) {
-                localStorage.removeItem('auth_token');
-                router.navigate(['/log-in'], { queryParams: { message: 'Sesión expirada. Inicia sesión nuevamente.' } });
+                toast.showToast({ type: 'error', message, duration: 5000 });
+
+                if (error.status === 401) {
+                    localStorage.removeItem('auth_token');
+                    router.navigate(['/log-in'], { queryParams: { message: 'Sesión expirada. Inicia sesión nuevamente.' } });
+                }
             }
 
             return throwError(() => error);
