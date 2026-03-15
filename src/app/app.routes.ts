@@ -9,6 +9,7 @@ import { LotsMainPageComponent } from '@features/lots/pages/lots-main-page/lots-
 import { AllLotsPageComponent } from '@features/lots/pages/all-lots-page/all-lots-page.component';
 import { AllTransactionsPageComponent } from '@features/lots/pages/all-transactions-page/all-transactions-page.component';
 import { UploadLotPageComponent } from '@features/lots/pages/upload-lot-page/upload-lot-page.component';
+import { authGuard } from './core/guards/auth.guard';
 
 // Rutas protegidas para el layout principal
 const protectedRoutes = [
@@ -35,6 +36,7 @@ export const routes: Routes = [
     {
         path: '',
         component: DefaultLayoutComponent,
+        canActivate: [authGuard],
         children: protectedRoutes
     },
     {
