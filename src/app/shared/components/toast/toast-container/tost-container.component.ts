@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="toast-container fixed top-20 right-4 z-[99999] w-auto max-w-xs flex flex-col gap-1">
+    <div class="toast-container fixed top-5 right-5 z-[99999] flex flex-col gap-2 items-end">
       <!-- Los toasts se insertarán aquí dinámicamente -->
     </div>
   `,

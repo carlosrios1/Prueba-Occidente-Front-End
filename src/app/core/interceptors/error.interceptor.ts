@@ -1,14 +1,29 @@
-import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
+import { HttpInterceptorFn, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { catchError, throwError } from 'rxjs';
+import { catchError, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { ToastService } from '@shared/components/toast/services/toast.service';
+
+const MUTATION_METHODS = ['POST', 'PUT', 'DELETE', 'PATCH'];
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     const toast = inject(ToastService);
     const router = inject(Router);
 
     return next(req).pipe(
+        tap(event => {
+            if (
+                event instanceof HttpResponse &&
+                event.status === 200 &&
+                MUTATION_METHODS.includes(req.method) &&
+                !req.url.includes('/api/auth/login')
+            ) {
+                const body = event.body as any;
+                if (body?.success && body?.message) {
+                    toast.showToast({ type: 'success', message: body.message, duration: 3000 });
+                }
+            }
+        }),
         catchError((error: HttpErrorResponse) => {
             const isLoginRequest = req.url.includes('/api/auth/login');
 

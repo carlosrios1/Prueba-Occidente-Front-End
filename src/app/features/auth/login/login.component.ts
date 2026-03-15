@@ -6,6 +6,7 @@ import { LoginHeroComponent } from './components/login-hero/login-hero.component
 import { LoginFormComponent, LoginCredentials } from './components/login-form/login-form.component';
 import { AuthHttpService } from '../services/auth-http.service';
 import { AuthStateService } from '../services/auth-state.service';
+import { ToastService } from '@shared/components/toast/services/toast.service';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +19,7 @@ export class LogInComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private authHttp = inject(AuthHttpService);
   private authState = inject(AuthStateService);
+  private toast = inject(ToastService);
 
   isLoading = signal(false);
   mensajeError = '';
@@ -48,6 +50,7 @@ export class LogInComponent implements OnInit {
     try {
       const response = await firstValueFrom(this.authHttp.login(credentials));
       this.authState.setSession(response);
+      this.toast.showToast({ type: 'success', message: '¡Bienvenido! Sesión iniciada correctamente.', duration: 3000 });
       this.router.navigate(['/lots']);
     } catch (err: any) {
       this.isLoading.set(false);
