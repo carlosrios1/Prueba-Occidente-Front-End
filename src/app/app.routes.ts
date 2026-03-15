@@ -5,6 +5,7 @@ import { LoginLayoutComponent } from './core/layout/login-layout/login-layout.co
 import { TechListPageComponent } from '@features/technologies/pages/tech-list-page/tech-list-page.component';
 import { TechDetailPageComponent } from '@features/technologies/pages/tech-detail-page/tech-detail-page.component';
 import { LogInComponent } from '@features/auth/login/login.component';
+import { RegisterComponent } from '@features/auth/register/register.component';
 import { LotsMainPageComponent } from '@features/lots/pages/lots-main-page/lots-main-page.component';
 import { AllLotsPageComponent } from '@features/lots/pages/all-lots-page/all-lots-page.component';
 import { AllTransactionsPageComponent } from '@features/lots/pages/all-transactions-page/all-transactions-page.component';
@@ -35,7 +36,8 @@ const protectedRoutes = [
 
 // Rutas de autenticación
 const authRoutes = [
-    { path: 'log-in', component: LogInComponent }
+    { path: 'log-in', component: LogInComponent },
+    { path: 'register', component: RegisterComponent }
 ];
 
 

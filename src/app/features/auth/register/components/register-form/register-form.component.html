@@ -1,0 +1,166 @@
+<div class="w-full flex flex-col bg-white dark:bg-gray-900 h-full">
+
+    <!-- Banner mobile: logo + branding (solo visible en < lg) -->
+    <div class="lg:hidden flex flex-col items-center justify-center gap-2 px-6 py-5 bg-gradient-to-r from-green-800 to-green-900">
+        <div class="flex-shrink-0 p-1.5 rounded-xl bg-white/10 ring-1 ring-white/20 shadow-inner">
+            <img src="assets/images/logos/bancocci_logo.png" alt="Banco de Occidente"
+                class="h-10 w-auto brightness-0 invert object-contain" />
+        </div>
+        <span class="text-white text-xl font-bold tracking-wide text-center">
+            Sistema de <span class="text-orangeBO">Sorteos</span>
+        </span>
+    </div>
+
+    <!-- Contenido centrado -->
+    <div class="flex-1 flex flex-col items-center justify-center px-6 py-8 sm:px-12">
+        <div class="w-full max-w-sm">
+
+            <!-- Encabezado -->
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold text-greenBO dark:text-green-400 mb-2">Crear cuenta</h1>
+                <p class="text-gray-500 dark:text-gray-400 text-sm">
+                    Completa los datos para registrarte en el sistema
+                </p>
+            </div>
+
+            <form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm, $event)" class="space-y-5" novalidate>
+
+                <!-- Campo usuario -->
+                <div>
+                    <label for="username"
+                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5"
+                        [ngClass]="{'text-red-600': registerForm.submitted && usuario.invalid}">
+                        Usuario
+                    </label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-3 flex items-center pointer-events-none text-gray-400">
+                            <lucide-icon [img]="UserIcon" class="size-4"></lucide-icon>
+                        </span>
+                        <input id="username" name="username" type="text" #usuario="ngModel"
+                            class="input input-bancocci pl-10 w-full"
+                            placeholder="Ingrese un nombre de usuario"
+                            required minlength="3"
+                            [ngClass]="{'ring-red-500/70 focus:ring-red-500/70 border-red-500/70 hover:border-red-500/70': (registerForm.submitted || usuario.touched) && usuario.invalid}"
+                            [(ngModel)]="username" />
+                    </div>
+                    @if ((registerForm.submitted || usuario.touched) && usuario.invalid) {
+                        @if (usuario.errors?.['required']) {
+                            <p class="text-red-600 text-xs mt-1">El usuario es obligatorio</p>
+                        } @else if (usuario.errors?.['minlength']) {
+                            <p class="text-red-600 text-xs mt-1">El usuario debe tener al menos 3 caracteres</p>
+                        }
+                    }
+                </div>
+
+                <!-- Campo contraseña -->
+                <div>
+                    <label for="password"
+                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5"
+                        [ngClass]="{'text-red-600': registerForm.submitted && contrasena.invalid}">
+                        Contraseña
+                    </label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-3 flex items-center pointer-events-none text-gray-400">
+                            <lucide-icon [img]="LockIcon" class="size-4"></lucide-icon>
+                        </span>
+                        <input id="password" name="password" [type]="showPassword ? 'text' : 'password'"
+                            #contrasena="ngModel"
+                            class="input input-bancocci pl-10 pr-10 w-full"
+                            placeholder="Mín. 8 caracteres con letra, número y símbolo"
+                            required
+                            [pattern]="passwordPattern.source"
+                            [ngClass]="{'ring-red-500/70 focus:ring-red-500/70 border-red-500/70 hover:border-red-500/70': (registerForm.submitted || contrasena.touched) && contrasena.invalid}"
+                            [(ngModel)]="password" />
+                        <button type="button"
+                            class="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                            (click)="showPassword = !showPassword">
+                            <lucide-icon [img]="showPassword ? EyeOffIcon : EyeIcon" class="size-4"></lucide-icon>
+                        </button>
+                    </div>
+                    @if ((registerForm.submitted || contrasena.touched) && contrasena.invalid) {
+                        @if (contrasena.errors?.['required']) {
+                            <p class="text-red-600 text-xs mt-1">La contraseña es obligatoria</p>
+                        } @else if (contrasena.errors?.['pattern']) {
+                            <p class="text-red-600 text-xs mt-1">Debe tener al menos 8 caracteres, una letra, un número y un carácter especial (ej. Admin123!)</p>
+                        }
+                    }
+                </div>
+
+                <!-- Confirmar contraseña -->
+                <div>
+                    <label for="confirmPassword"
+                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5"
+                        [ngClass]="{'text-red-600': registerForm.submitted && !passwordsMatch}">
+                        Confirmar contraseña
+                    </label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-3 flex items-center pointer-events-none text-gray-400">
+                            <lucide-icon [img]="LockIcon" class="size-4"></lucide-icon>
+                        </span>
+                        <input id="confirmPassword" name="confirmPassword"
+                            [type]="showConfirmPassword ? 'text' : 'password'"
+                            #confirmar="ngModel"
+                            class="input input-bancocci pl-10 pr-10 w-full"
+                            placeholder="Repite tu contraseña"
+                            required
+                            [ngClass]="{'ring-red-500/70 focus:ring-red-500/70 border-red-500/70 hover:border-red-500/70': (registerForm.submitted || confirmar.touched) && !passwordsMatch}"
+                            [(ngModel)]="confirmPassword" />
+                        <button type="button"
+                            class="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                            (click)="showConfirmPassword = !showConfirmPassword">
+                            <lucide-icon [img]="showConfirmPassword ? EyeOffIcon : EyeIcon" class="size-4"></lucide-icon>
+                        </button>
+                    </div>
+                    @if ((registerForm.submitted || confirmar.touched) && !passwordsMatch) {
+                        <p class="text-red-600 text-xs mt-1">Las contraseñas no coinciden</p>
+                    }
+                </div>
+
+                <!-- Botón registrarse -->
+                <button type="submit"
+                    class="w-full py-3 bg-greenBO hover:bg-greenBOdark text-white text-sm font-semibold rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-60">
+                    @if (isLoading) {
+                        <span class="loading loading-spinner loading-xs"></span>
+                    }
+                    Crear cuenta
+                </button>
+
+                <!-- Mensaje de error -->
+                @if (mensajeError !== '') {
+                    <div class="py-3 px-4 text-sm font-medium bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 rounded-lg flex items-center gap-2 border border-red-200 dark:border-red-800"
+                        role="alert">
+                        <lucide-icon [img]="TriangleAlert" class="size-4 shrink-0"></lucide-icon>
+                        {{ mensajeError }}
+                    </div>
+                }
+
+                <!-- Divisor -->
+                <div class="relative">
+                    <div class="absolute inset-0 flex items-center">
+                        <div class="w-full border-t border-gray-200 dark:border-gray-700"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm">
+                        <span class="bg-white dark:bg-gray-900 px-4 text-gray-400">¿Ya tienes cuenta?</span>
+                    </div>
+                </div>
+
+                <!-- Ir a login -->
+                <a routerLink="/auth/log-in"
+                    class="block w-full py-3 text-center bg-white dark:bg-transparent border-2 border-greenBO text-greenBO text-sm font-semibold rounded-lg hover:bg-green-50 dark:hover:bg-green-950/30 transition-colors">
+                    Iniciar sesión
+                </a>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <!-- <div class="pb-8 flex items-center justify-center gap-3 text-sm text-gray-400">
+        <a href="#" class="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">Centro de ayuda</a>
+        <span>•</span>
+        <a href="#" class="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">Contáctanos</a>
+        <span>•</span>
+        <a href="#" class="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">Seguridad</a>
+    </div> -->
+
+</div>

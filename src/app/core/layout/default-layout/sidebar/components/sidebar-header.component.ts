@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
          [class.h-24]="!collapsed && !compact"
          [class.h-16]="collapsed || compact">
       <!-- Logo siempre centrado, 20% más grande (h-8 → h-10) -->
-      <div class="flex-shrink-0 p-1.5 rounded-xl bg-white/10 ring-1 ring-white/20 shadow-inner">
+      <div class="flex-shrink-0 p-1.5 rounded-xl ">
         <img src="assets/images/logos/bancocci_logo.png"
              alt="Banco de Occidente"
              class="h-10 w-auto object-contain" />

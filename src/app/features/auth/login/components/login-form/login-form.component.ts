@@ -1,6 +1,7 @@
-import { Component, Input, Output, EventEmitter, signal } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { LucideAngularModule, User, Lock, Eye, EyeOff, TriangleAlert } from 'lucide-angular';
 
 export interface LoginCredentials {
@@ -11,7 +12,7 @@ export interface LoginCredentials {
 @Component({
     selector: 'app-login-form',
     standalone: true,
-    imports: [CommonModule, FormsModule, LucideAngularModule],
+    imports: [CommonModule, FormsModule, LucideAngularModule, RouterLink],
     templateUrl: './login-form.component.html'
 })
 export class LoginFormComponent {
@@ -31,8 +32,7 @@ export class LoginFormComponent {
     showPassword = false;
     rememberDevice = false;
 
-    validacionUsuario = signal('');
-    validacionContrasena = signal('');
+
 
     onSubmit(form: NgForm, event: Event): void {
         event.preventDefault();

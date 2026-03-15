@@ -4,7 +4,7 @@ import { map, Observable } from 'rxjs';
 
 import { environment } from '@env';
 import { Response } from '@core/models/api/response.model';
-import { LoginRequest, LoginResponse } from '../models/login-response.model';
+import { LoginRequest, LoginResponse, RegisterRequest, RegisterResponse } from '../models/login-response.model';
 
 @Injectable({ providedIn: 'root' })
 export class AuthHttpService {
@@ -14,6 +14,12 @@ export class AuthHttpService {
     login(credentials: LoginRequest): Observable<LoginResponse> {
         return this.http
             .post<Response<LoginResponse>>(`${this.baseUrl}/api/auth/login`, credentials)
+            .pipe(map(res => res.data));
+    }
+
+    register(data: RegisterRequest): Observable<RegisterResponse> {
+        return this.http
+            .post<Response<RegisterResponse>>(`${this.baseUrl}/api/auth/register`, data)
             .pipe(map(res => res.data));
     }
 }

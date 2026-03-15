@@ -1,13 +1,14 @@
 <div class="w-full flex flex-col bg-white dark:bg-gray-900 h-full">
 
     <!-- Banner mobile: logo + branding (solo visible en < lg) -->
-    <div class="lg:hidden flex items-center gap-4 px-6 py-5 bg-gradient-to-r from-green-800 to-green-900">
-        <img src="assets/images/logos/bancocci_logo.png" alt="Banco de Occidente"
-            class="h-10 w-auto brightness-0 invert flex-shrink-0" />
-        <div class="flex flex-col text-white">
-            <span class="text-base font-light leading-tight">Bienvenido a tu</span>
-            <span class="text-lg font-extrabold text-orangeBO leading-tight">Banca en Línea</span>
+    <div class="lg:hidden flex flex-col items-center justify-center gap-2 px-6 py-5 bg-gradient-to-r from-green-800 to-green-900">
+        <div class="flex-shrink-0 p-1.5">
+            <img src="assets/images/logos/bancocci_logo.png" alt="Banco de Occidente"
+                class="h-10 w-auto brightness-0 invert object-contain" />
         </div>
+        <span class="text-white text-xl font-bold tracking-wide text-center">
+            Sistema de <span class="text-orangeBO">Sorteos</span>
+        </span>
     </div>
 
     <!-- Contenido centrado -->
@@ -27,7 +28,7 @@
                 <!-- Campo usuario -->
                 <div>
                     <label for="user" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5"
-                        [ngClass]="{'text-red-600': loginForm.submitted && usuario.invalid}">
+                        [ngClass]="{'text-red-600': (loginForm.submitted || usuario.touched) && usuario.invalid}">
                         Usuario
                     </label>
                     <div class="relative">
@@ -36,18 +37,18 @@
                         </span>
                         <input id="user" name="user" type="text" #usuario="ngModel"
                             class="input input-bancocci pl-10 w-full" placeholder="Ingrese su usuario" required
-                            [ngClass]="{'ring-red-500/70 focus:ring-red-500/70 border-red-500/70 hover:border-red-500/70': loginForm.submitted && usuario.invalid}"
+                            [ngClass]="{'ring-red-500/70 focus:ring-red-500/70 border-red-500/70 hover:border-red-500/70': (loginForm.submitted || usuario.touched) && usuario.invalid}"
                             [(ngModel)]="username" />
                     </div>
-                    @if (validacionUsuario() !== '' && usuario.invalid) {
-                    <p class="text-red-600 text-xs mt-1">{{ validacionUsuario() }}</p>
+                    @if ((loginForm.submitted || usuario.touched) && usuario.invalid) {
+                    <p class="text-red-600 text-xs mt-1">El usuario es obligatorio</p>
                     }
                 </div>
 
                 <!-- Campo contraseña -->
                 <div>
                     <label for="userPassword" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5"
-                        [ngClass]="{'text-red-600': loginForm.submitted && contrasena.invalid}">
+                        [ngClass]="{'text-red-600': (loginForm.submitted || contrasena.touched) && contrasena.invalid}">
                         Contraseña
                     </label>
                     <div class="relative">
@@ -57,7 +58,7 @@
                         <input id="userPassword" name="userPassword" [type]="showPassword ? 'text' : 'password'"
                             #contrasena="ngModel" class="input input-bancocci pl-10 pr-10 w-full"
                             placeholder="Ingrese su contraseña" required
-                            [ngClass]="{'ring-red-500/70 focus:ring-red-500/70 border-red-500/70 hover:border-red-500/70': loginForm.submitted && contrasena.invalid}"
+                            [ngClass]="{'ring-red-500/70 focus:ring-red-500/70 border-red-500/70 hover:border-red-500/70': (loginForm.submitted || contrasena.touched) && contrasena.invalid}"
                             [(ngModel)]="password" />
                         <button type="button"
                             class="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
@@ -65,8 +66,8 @@
                             <lucide-icon [img]="showPassword ? EyeOffIcon : EyeIcon" class="size-4"></lucide-icon>
                         </button>
                     </div>
-                    @if (validacionContrasena() !== '' && contrasena.invalid) {
-                    <p class="text-red-600 text-xs mt-1">{{ validacionContrasena() }}</p>
+                    @if ((loginForm.submitted || contrasena.touched) && contrasena.invalid) {
+                    <p class="text-red-600 text-xs mt-1">La contraseña es obligatoria</p>
                     }
                 </div>
 
@@ -78,10 +79,10 @@
                             class="w-4 h-4 rounded border-gray-300 accent-greenBO cursor-pointer" />
                         Recordar dispositivo
                     </label>
-                    <a href="#"
-                        class="text-sm text-orangeBO hover:underline font-medium transition-opacity hover:opacity-80">
+                    <!-- <a href="#"
+                        class="text-sm text-orangeBO hover:underline font-medium transition-opacity hover:opacity-80 hidden">
                         ¿Olvidaste tu contraseña?
-                    </a>
+                    </a> -->
                 </div>
 
                 <!-- Botón iniciar sesión -->
@@ -108,27 +109,27 @@
                         <div class="w-full border-t border-gray-200 dark:border-gray-700"></div>
                     </div>
                     <div class="relative flex justify-center text-sm">
-                        <span class="bg-white dark:bg-gray-900 px-4 text-gray-400">¿Nuevo cliente?</span>
+                        <span class="bg-white dark:bg-gray-900 px-4 text-gray-400">¿Nuevo usuario?</span>
                     </div>
                 </div>
 
                 <!-- Botón crear cuenta -->
-                <button type="button"
-                    class="w-full py-3 bg-white dark:bg-transparent border-2 border-greenBO text-greenBO text-sm font-semibold rounded-lg hover:bg-green-50 dark:hover:bg-green-950/30 transition-colors">
-                    Crear una cuenta
-                </button>
+                <a routerLink="/auth/register"
+                    class="block w-full py-3 text-center bg-white dark:bg-transparent border-2 border-greenBO text-greenBO text-sm font-semibold rounded-lg hover:bg-green-50 dark:hover:bg-green-950/30 transition-colors">
+                    Registrarse
+                </a>
 
             </form>
         </div>
     </div>
 
     <!-- Footer -->
-    <div class="pb-8 flex items-center justify-center gap-3 text-sm text-gray-400">
+    <!-- <div class="pb-8 flex items-center justify-center gap-3 text-sm text-gray-400">
         <a href="#" class="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">Centro de ayuda</a>
         <span>•</span>
         <a href="#" class="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">Contáctanos</a>
         <span>•</span>
         <a href="#" class="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">Seguridad</a>
-    </div>
+    </div> -->
 
 </div>

@@ -1,24 +1,24 @@
-<div class="w-full flex flex-col bg-gradient-to-b from-green-800 to-green-900 px-12 py-10 h-full">
+<div class="w-full flex flex-col bg-gradient-to-b from-green-800 to-green-900 px-10 py-8 h-full">
 
     <!-- Logo -->
     <div>
         <img src="assets/images/logos/bancocci_logo.png" alt="Banco de Occidente"
-            class="h-16 w-auto brightness-0 invert">
+            class="h-14 w-auto brightness-0 invert">
     </div>
 
     <!-- Main content -->
-    <div class="flex-1 flex flex-col justify-center py-12">
-        <h1 class="text-4xl font-light text-white leading-tight mb-1">Bienvenido a tu</h1>
-        <h2 class="text-4xl font-extrabold text-orangeBO leading-tight mb-5">Banca en Línea</h2>
-        <p class="text-green-200 text-base leading-relaxed mb-10 max-w-xs">
-            Accede de forma segura a todos tus productos y servicios financieros desde cualquier lugar.
+    <div class="flex-1 flex flex-col justify-center py-8">
+        <h1 class="text-4xl font-light text-white leading-tight mb-1">Sistema de</h1>
+        <h2 class="text-4xl font-extrabold text-orangeBO leading-tight mb-4">Sorteos</h2>
+        <p class="text-green-200 text-sm leading-relaxed mb-8 max-w-xs">
+            Plataforma interna para la gestión de sorteos, premios y reportes de ganadores.
         </p>
 
         <!-- Feature items -->
-        <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-3">
             @for (feature of features; track feature.title) {
-            <div class="flex items-center gap-4 bg-white/10 rounded-xl px-5 py-4">
-                <div class="flex items-center justify-center w-11 h-11 rounded-lg bg-orangeBO shrink-0">
+            <div class="flex items-center gap-4 bg-white/10 rounded-xl px-5 py-3.5">
+                <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-orangeBO shrink-0">
                     <lucide-icon [img]="feature.icon" class="size-5 text-white [&>svg]:stroke-white"></lucide-icon>
                 </div>
                 <div>
