@@ -60,21 +60,26 @@
                         </table>
                         @if (state.lots().length === 0) {
                         <div class="py-16 text-center">
-                            <div class="mx-auto w-16 h-16 bg-gray-100 dark:bg-base-100 rounded-full flex items-center justify-center mb-4">
-                                <svg class="w-8 h-8 text-gray-400 dark:text-gray-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                            <div
+                                class="mx-auto w-16 h-16 bg-gray-100 dark:bg-base-100 rounded-full flex items-center justify-center mb-4">
+                                <svg class="w-8 h-8 text-gray-400 dark:text-gray-100" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                                    </path>
                                 </svg>
                             </div>
-                            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">No hay lotes disponibles</h3>
+                            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">No hay lotes
+                                disponibles</h3>
                             <p class="text-sm text-gray-500">Carga el primer archivo para comenzar</p>
                         </div>
                         }
                     </div>
 
                     <div class="p-5">
-                        <app-table-pagination [actualPage]="pagination.actualPage()" [cantidadPorPagina]="pagination.itemsPerPage()"
-                            [totalItems]="pagination.totalItems()" [loading]="state.isLoadingLots()" itemLabel="lotes"
-                            (pageChange)="onPageChange($event)" />
+                        <app-table-pagination [actualPage]="pagination.actualPage()"
+                            [cantidadPorPagina]="pagination.itemsPerPage()" [totalItems]="pagination.totalItems()"
+                            [loading]="state.isLoadingLots()" itemLabel="lotes" (pageChange)="onPageChange($event)" />
                     </div>
                     }
 

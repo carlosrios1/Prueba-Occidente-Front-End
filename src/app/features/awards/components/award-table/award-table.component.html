@@ -13,7 +13,8 @@
 
         <tbody class="divide-y divide-gray-200 dark:divide-neutral-800">
             @for (award of state.awards(); track award.id) {
-            <tr class="group transition-all duration-300 hover:bg-gradient-to-r hover:from-green-50/30 hover:to-green-50/20 dark:hover:from-green-900/20 dark:hover:to-green-800/10 motion-preset-slide-down motion-duration-300">
+            <tr
+                class="group transition-all duration-300 hover:bg-gradient-to-r hover:from-green-50/30 hover:to-green-50/20 dark:hover:from-green-900/20 dark:hover:to-green-800/10 motion-preset-slide-down motion-duration-300">
 
                 <td appTableCell variant="first">{{ award.id }}</td>
 
