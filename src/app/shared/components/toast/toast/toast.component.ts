@@ -113,10 +113,10 @@ export class ToastComponent implements OnInit, OnDestroy {
   getBgClass(): string {
     switch (this.data.type) {
       case 'success': return 'bg-greenBO';
-      case 'error':   return 'bg-red-500';
+      case 'error': return 'bg-red-500';
       case 'warning': return 'bg-amber-500';
       case 'info':
-      default:        return 'bg-sky-500';
+      default: return 'bg-sky-500';
     }
   }
 }
