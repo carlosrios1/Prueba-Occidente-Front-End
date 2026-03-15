@@ -3,6 +3,7 @@ import { inject } from '@angular/core';
 import { catchError, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { ToastService } from '@shared/components/toast/services/toast.service';
+import { AuthStateService } from '@features/auth/services/auth-state.service';
 import { SKIP_ERROR_TOAST } from './http-context-tokens';
 
 const MUTATION_METHODS = ['POST', 'PUT', 'DELETE', 'PATCH'];
@@ -10,6 +11,7 @@ const MUTATION_METHODS = ['POST', 'PUT', 'DELETE', 'PATCH'];
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     const toast = inject(ToastService);
     const router = inject(Router);
+    const authState = inject(AuthStateService);
     const skipToast = req.context.get(SKIP_ERROR_TOAST);
 
     return next(req).pipe(
@@ -41,7 +43,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
                 toast.showToast({ type: 'error', message, duration: 5000 });
 
                 if (error.status === 401) {
-                    localStorage.removeItem('auth_token');
+                    authState.clearSession();
                     router.navigate(['/log-in'], { queryParams: { message: 'Sesión expirada. Inicia sesión nuevamente.' } });
                 }
             }

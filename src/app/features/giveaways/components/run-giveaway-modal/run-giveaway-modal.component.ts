@@ -4,11 +4,16 @@ import { LucideAngularModule, Play, Trophy, Users, Star } from 'lucide-angular';
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { GiveawayDetailStateService } from '../../services/giveaway-detail-state.service';
 import { RunGiveawayResponse } from '../../models/giveaway-responses.model';
+import { GiveawaySuspenseComponent } from '../giveaway-suspense/giveaway-suspense.component';
+import { GiveawayConfettiComponent } from '../giveaway-confetti/giveaway-confetti.component';
+
+const MIN_SUSPENSE_MS = 3500;
+const CONFETTI_DURATION_MS = 5000;
 
 @Component({
     selector: 'app-run-giveaway-modal',
     standalone: true,
-    imports: [ModalComponent, LucideAngularModule],
+    imports: [ModalComponent, LucideAngularModule, GiveawaySuspenseComponent, GiveawayConfettiComponent],
     templateUrl: './run-giveaway-modal.component.html',
 })
 export class RunGiveawayModalComponent {
@@ -16,6 +21,9 @@ export class RunGiveawayModalComponent {
 
     @Input() isOpen = signal(false);
     @Input() result: RunGiveawayResponse | null = null;
+
+    isShowingSuspense = signal(false);
+    showConfetti = signal(false);
 
     readonly icons = { Play, Trophy, Users, Star };
 
@@ -25,12 +33,21 @@ export class RunGiveawayModalComponent {
 
     close(): void {
         this.isOpen.set(false);
+        this.showConfetti.set(false);
     }
 
     async run(): Promise<void> {
-        const res = await this.state.run();
-        if (res) {
-            this.result = res;
+        this.isShowingSuspense.set(true);
+        try {
+            const minDelay = new Promise<void>(resolve => setTimeout(resolve, MIN_SUSPENSE_MS));
+            const [res] = await Promise.all([this.state.run(), minDelay]);
+            if (res) {
+                this.result = res;
+                this.showConfetti.set(true);
+                setTimeout(() => this.showConfetti.set(false), CONFETTI_DURATION_MS);
+            }
+        } finally {
+            this.isShowingSuspense.set(false);
         }
     }
 }

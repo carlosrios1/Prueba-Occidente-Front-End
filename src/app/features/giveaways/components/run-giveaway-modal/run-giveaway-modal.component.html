@@ -1,19 +1,24 @@
+<!-- Confeti de ganadores (capa fija sobre toda la pantalla) -->
+@if (showConfetti()) {
+    <app-giveaway-confetti />
+}
+
 <app-modal
     [isOpen]="isOpen()"
-    [title]="hasResult ? '🎉 Sorteo Realizado' : 'Realizar Sorteo'"
-    [subtitle]="hasResult ? 'El sorteo se ejecutó correctamente. Aquí están los ganadores.' : '¿Estás seguro de que deseas ejecutar el sorteo ahora? Esta acción seleccionará ganadores de forma aleatoria.'"
+    [title]="hasResult ? '🎉 Sorteo Realizado' : (isShowingSuspense() ? '🎰 Realizando Sorteo' : 'Realizar Sorteo')"
+    [subtitle]="hasResult ? 'El sorteo se ejecutó correctamente. Aquí están los ganadores.' : (isShowingSuspense() ? '' : '¿Estás seguro de que deseas ejecutar el sorteo ahora? Esta acción seleccionará ganadores de forma aleatoria.')"
     [showFooter]="true"
-    [showConfirmButton]="!hasResult"
+    [showConfirmButton]="!hasResult && !isShowingSuspense()"
     confirmText="Ejecutar Sorteo"
     cancelText="Cerrar"
-    [loading]="state.isRunning()"
+    [loading]="isShowingSuspense()"
     loadingText="Ejecutando sorteo..."
-    [disableClose]="state.isRunning()"
+    [disableClose]="isShowingSuspense()"
     (onClose)="close()"
     (onConfirm)="run()">
 
     <!-- Estado inicial: confirmación -->
-    @if (!hasResult && !state.isRunning()) {
+    @if (!hasResult && !isShowingSuspense()) {
     <div class="flex flex-col items-center gap-4 py-4">
         <div class="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
             <lucide-icon [img]="icons.Play" class="size-8 text-green-600 dark:text-green-400"></lucide-icon>
@@ -25,12 +30,9 @@
     </div>
     }
 
-    <!-- Estado de espera -->
-    @if (state.isRunning()) {
-    <div class="flex flex-col items-center gap-4 py-8">
-        <span class="loading loading-spinner loading-lg text-green-500"></span>
-        <p class="text-sm text-gray-500">Seleccionando ganadores...</p>
-    </div>
+    <!-- Animación de suspenso -->
+    @if (isShowingSuspense()) {
+        <app-giveaway-suspense />
     }
 
     <!-- Resultados del sorteo -->
