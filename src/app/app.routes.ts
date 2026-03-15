@@ -56,7 +56,5 @@ export const routes: Routes = [
         component: LoginLayoutComponent,
         children: authRoutes
     },
-    // { path: 'proximamente', component: ComingSoonComponent },
-    // { path: 'error', component: ErrorPageComponent },
-    // { path: '**', component: NotFoundComponent },
+    { path: '**', redirectTo: 'auth/log-in' },
 ];
