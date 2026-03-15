@@ -14,13 +14,14 @@
                     Imprimir
                 </app-button>
                 <app-button
-                    appearance="outline" variant="secondary"
+                    appearance="outline" variant="success"
                     [icon]="icons.FileSpreadsheet"
                     [disabled]="!hasGenerated() || isDownloading()"
                     (onClick)="downloadExcel()">
                     Excel
                 </app-button>
                 <app-button
+                    appearance="outline" variant="danger" 
                     [icon]="icons.FileDown"
                     [disabled]="!hasGenerated() || isDownloading()"
                     (onClick)="downloadPdf()">
@@ -98,7 +99,7 @@
 
                     <!-- Botón generar -->
                     <app-button
-                        [icon]="icons.FileText"
+                        [variant]="'success'" [appearance]="'solid'"                        [icon]="icons.FileText"
                         [disabled]="!canGenerate || isLoading()"
                         (onClick)="generate()">
                         @if (isLoading()) { Generando... } @else { Generar Reporte }

@@ -1,103 +1,82 @@
-<!-- Mobile Sidebar Component -->
-<app-mobile-sidebar [isOpen]="isMobileSidebarOpen" [items]="principalItems.items"
-  [secondaryItems]="secondaryItems.items" (close)="closeMobileSidebar()" (overlayClick)="onOverlayClick()"
-  (navItemClick)="onMobileNavClick()">
-</app-mobile-sidebar>
+﻿<!-- Overlay: solo visible en mobile cuando el drawer está abierto -->
+<div class="fixed inset-0 bg-black/50 z-40 md:hidden transition-opacity duration-300"
+     [class.opacity-100]="isMobileSidebarOpen"
+     [class.opacity-0]="!isMobileSidebarOpen"
+     [class.pointer-events-none]="!isMobileSidebarOpen"
+     (click)="onOverlayClick()">
+</div>
 
-<!-- Sidebar Desktop y Tablet -->
-<aside class="flex-shrink-0 hidden md:block z-10 h-full fixed left-0 top-0 transition-all duration-[300ms] ease-in-out"
-  [ngClass]="{ 
-         'w-64': !isCollapsed, 
-         'w-20': isCollapsed
-       }">
+<!-- Sidebar unificado:
+     Mobile   drawer (translate animation, w-64 siempre)
+     Desktop  sidebar fijo (translate siempre 0, width cambia con isCollapsed) -->
+<aside class="fixed inset-y-0 left-0 z-50 md:z-10 flex flex-col w-64 bg-green-800 h-full
+              transition-[transform,width] duration-[300ms] ease-in-out"
+       [class.sidebar-mobile-hidden]="!isMobileSidebarOpen"
+       [class.sidebar-desktop-collapsed]="isCollapsed"
+       role="navigation"
+       aria-label="Menú principal">
 
-  <div id="desktop-sidebar"
-    class="bg-green-800 border-r border-stroke dark:border-neutral-800 flex flex-col h-full relative overflow-hidden w-full"
-    role="navigation">
+    <!-- Botón cerrar drawer (solo mobile) -->
+    <button class="absolute top-4 right-3 md:hidden z-10 p-1.5 rounded-lg text-white
+                   hover:bg-white/10 transition-colors focus:outline-none"
+            (click)="closeMobileSidebar()"
+            aria-label="Cerrar menú">
+        <lucide-icon [img]="icons.X" class="size-5"></lucide-icon>
+    </button>
 
-    <!-- Capa base con iconos siempre visible -->
-    <div class="absolute inset-0 flex flex-col h-full bg-green-800 z-10">
-      <!-- Header con logo reducido -->
-      <app-sidebar-header [collapsed]="true"></app-sidebar-header>
+    <!-- Logo / Header -->
+    <div class="flex-shrink-0">
+        <app-sidebar-header [collapsed]="isIconOnly"></app-sidebar-header>
+    </div>
 
-      <!-- Menu con solo iconos -->
-      <div class="flex flex-col gap-4 px-3 flex-grow dark overflow-y-auto">
-        <!-- Principal Section -->
+    <!-- Navegación -->
+    <div class="flex flex-col gap-4 px-2 flex-grow dark overflow-y-auto py-2">
+
+        <!-- Sección principal -->
         <div class="flex flex-col gap-1">
-          <div class="px-3 h-[34px] flex items-center justify-center">
-            <span class="text-xs font-semibold text-neutral-500 leading-none">...</span>
-          </div>
-          <ul class="flex flex-col gap-1">
-            @for (item of principalItems.items; track $index) {
-            <app-sidebar-nav-item [item]="item" [iconOnly]="true">
-            </app-sidebar-nav-item>
-            }
-          </ul>
+            <div class="px-3 h-[34px] flex items-center" [class.justify-center]="isIconOnly">
+                @if (!isIconOnly) {
+                    <span class="text-xs font-normal text-neutral-300 uppercase tracking-wider leading-none">
+                        {{ principalItems.label }}
+                    </span>
+                } @else {
+                    <span class="text-xs font-semibold text-neutral-500 leading-none"></span>
+                }
+            </div>
+            <ul class="flex flex-col gap-1">
+                @for (item of principalItems.items; track $index) {
+                    <app-sidebar-nav-item
+                        [item]="item"
+                        [iconOnly]="isIconOnly"
+                        (itemClick)="onMobileNavClick()">
+                    </app-sidebar-nav-item>
+                }
+            </ul>
         </div>
 
-        <!-- Secondary Section -->
+        <!-- Sección secundaria -->
         @if (secondaryItems && secondaryItems.items.length > 0) {
         <div class="flex flex-col gap-1">
-          <div class="px-3 h-[34px] flex items-center justify-center">
-            <span class="text-xs font-semibold text-neutral-500 leading-none">...</span>
-          </div>
-          <ul class="flex flex-col gap-1">
-            @for (item of secondaryItems.items; track $index) {
-            <app-sidebar-nav-item [item]="item" [iconOnly]="true">
-            </app-sidebar-nav-item>
-            }
-          </ul>
+            <div class="px-3 h-[34px] flex items-center" [class.justify-center]="isIconOnly">
+                @if (!isIconOnly) {
+                    <span class="text-xs font-normal text-neutral-300 uppercase tracking-wider leading-none">
+                        {{ secondaryItems.label }}
+                    </span>
+                } @else {
+                    <span class="text-xs font-semibold text-neutral-500 leading-none"></span>
+                }
+            </div>
+            <ul class="flex flex-col gap-1">
+                @for (item of secondaryItems.items; track $index) {
+                    <app-sidebar-nav-item
+                        [item]="item"
+                        [iconOnly]="isIconOnly"
+                        (itemClick)="onMobileNavClick()">
+                    </app-sidebar-nav-item>
+                }
+            </ul>
         </div>
         }
-      </div>
+
     </div>
-
-    <!-- Capa expandida que se desliza como tapa -->
-    <div
-      class="absolute inset-0 flex flex-col h-full bg-green-800 z-20 transition-transform duration-[300ms] ease-in-out"
-      [ngClass]="{
-           'translate-x-0': !isCollapsed,
-           'translate-x-full': isCollapsed
-         }">
-
-      <div class="drawer-body px-2 flex flex-col flex-grow overflow-hidden h-full">
-        <!-- Header expandido -->
-        <app-sidebar-header [collapsed]="false"></app-sidebar-header>
-
-        <!-- Menu expandido -->
-        <div class="flex flex-col gap-4 px-1 flex-grow overflow-y-auto">
-          <!-- Principal Section -->
-          <div class="flex flex-col gap-1">
-            <div class="px-3 h-[34px] flex items-center">
-              <span
-                class="text-xs font-normal text-neutral-300 uppercase tracking-wider leading-none">{{principalItems.label}}</span>
-            </div>
-            <ul class="flex flex-col gap-1">
-              @for (item of principalItems.items; track $index) {
-              <app-sidebar-nav-item [item]="item" [iconOnly]="false">
-              </app-sidebar-nav-item>
-              }
-            </ul>
-          </div>
-
-          <!-- Secondary Section -->
-          @if (secondaryItems && secondaryItems.items.length > 0) {
-          <div class="flex flex-col gap-1">
-            <div class="px-3 h-[34px] flex items-center">
-              <span
-                class="text-xs font-normal text-neutral-300 uppercase tracking-wider leading-none">{{secondaryItems.label}}</span>
-            </div>
-            <ul class="flex flex-col gap-1">
-              @for (item of secondaryItems.items; track $index) {
-              <app-sidebar-nav-item [item]="item" [iconOnly]="false">
-              </app-sidebar-nav-item>
-              }
-            </ul>
-          </div>
-          }
-        </div>
-      </div>
-    </div>
-
-  </div>
 </aside>
