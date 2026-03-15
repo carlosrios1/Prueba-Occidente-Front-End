@@ -79,4 +79,21 @@
         }
 
     </div>
+
+    <!-- Círculo flotante — solo desktop (md+), aparece al hacer hover sobre el sidebar -->
+    <button
+        class="hidden md:flex absolute top-1/2 -translate-y-1/2 -right-4
+               items-center justify-center
+               size-8 rounded-full
+               bg-green-800 text-white
+               shadow-[0_2px_12px_rgba(0,0,0,0.18)]
+               
+
+               hover:bg-green-500 hover:shadow-[0_4px_16px_rgba(0,0,0,0.22)]
+               transition-all duration-200 ease-out
+               focus:outline-none z-20"
+        (click)="toggleDesktop()"
+        [attr.aria-label]="isCollapsed ? 'Expandir sidebar' : 'Colapsar sidebar'">
+        <lucide-icon [img]="toggleIcon" class="size-4"></lucide-icon>
+    </button>
 </aside>

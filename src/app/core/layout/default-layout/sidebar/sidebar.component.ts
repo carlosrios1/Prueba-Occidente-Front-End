@@ -1,7 +1,7 @@
 import { Component, HostListener, inject } from '@angular/core';
 import { SidebarToggleService } from './sidebarToggle.service';
 import { CommonModule } from '@angular/common';
-import { LucideAngularModule, X } from 'lucide-angular';
+import { LucideAngularModule, X, ArrowLeft, ArrowRight } from 'lucide-angular';
 import { SidebarHeaderComponent } from './components/sidebar-header.component';
 import { SidebarNavItemComponent } from './components/sidebar-nav-item.component';
 import { SIDEBAR_CONFIG } from '../../../config/sidebar.config';
@@ -29,7 +29,15 @@ export class SidebarComponent {
   isMobileSidebarOpen = false;
 
   readonly sidebarToggleService = inject(SidebarToggleService);
-  readonly icons = { X };
+  readonly icons = { X, ArrowLeft, ArrowRight };
+
+  get toggleIcon() {
+    return this.isCollapsed ? this.icons.ArrowRight : this.icons.ArrowLeft;
+  }
+
+  toggleDesktop(): void {
+    this.sidebarToggleService.toggleSidebar();
+  }
 
   /** Solo aplica icon-only en desktop colapsado, nunca en el drawer mobile */
   get isIconOnly(): boolean {
