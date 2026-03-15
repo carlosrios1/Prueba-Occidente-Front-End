@@ -12,8 +12,8 @@ import { Lot } from '../../models/dtos/lot.dto';
   standalone: true,
   imports: [CommonModule, RouterLink, LucideAngularModule, BadgeComponent, ButtonComponent, TableCellDirective],
   template: `
-    <div class="flex flex-col gap-3">
-      <div class="flex items-center justify-between">
+      <div class="flex flex-col">
+      <div class="flex items-center justify-between p-5">
         <h2 class="text-base font-semibold text-gray-800 dark:text-white">Últimos lotes cargados</h2>
         <a routerLink="/lots/all">
           <app-button [variant]="'neutral'" [appearance]="'text'" [size]="'small'" [type]="'button'" [icon]="icons.ExternalLink" [iconPosition]="'right'">
@@ -22,7 +22,7 @@ import { Lot } from '../../models/dtos/lot.dto';
         </a>
       </div>
 
-      <div class="border-y border-gray-200 dark:border-neutral-800">
+      <div class="border-y border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
         <table class="w-full">
           <thead>
             <tr class="border-b border-gray-200/60 dark:border-neutral-800">
@@ -33,14 +33,14 @@ import { Lot } from '../../models/dtos/lot.dto';
           </thead>
           <tbody class="divide-y divide-gray-200 dark:divide-neutral-800">
             @for (lot of lots; track lot.id) {
-              <tr class="group cursor-pointer transition-all duration-300 hover:bg-gradient-to-r hover:from-green-50/30 hover:to-green-50/20 dark:hover:from-green-900/20 dark:hover:to-green-800/10"
+              <tr class="group cursor-pointer transition-all duration-300 hover:bg-gradient-to-r hover:from-green-50/30 hover:to-green-50/20 dark:hover:from-green-900/20 dark:hover:to-green-800/10 motion-preset-slide-down motion-duration-300"
                   (click)="rowClick.emit(lot)">
                 <td appTableCell variant="first">{{ lot.id }}</td>
                 <td appTableCell variant="name">{{ lot.fileName }}</td>
                 <td appTableCell>{{ lot.uploadDate | date:'dd/MM/yyyy HH:mm' }}</td>
                 <td appTableCell>{{ lot.totalRecords }}</td>
                 <td appTableCell>
-                  <app-badge [variant]="lot.status === 'COMPLETED' ? 'success' : 'secondary'" appearance="soft" size="small">
+                  <app-badge [variant]="lot.status === 'COMPLETED' ? 'success' : 'secondary'" appearance="soft" size="small" rounded="full">
                     {{ lot.status === 'COMPLETED' ? 'Completado' : 'Pendiente' }}
                   </app-badge>
                 </td>
@@ -53,7 +53,15 @@ import { Lot } from '../../models/dtos/lot.dto';
           </tbody>
         </table>
         @if (lots.length === 0) {
-          <div class="py-10 text-center text-sm text-gray-500">No hay lotes disponibles</div>
+          <div class="py-16 text-center">
+            <div class="mx-auto w-16 h-16 bg-gray-100 dark:bg-base-100 rounded-full flex items-center justify-center mb-4">
+              <svg class="w-8 h-8 text-gray-400 dark:text-gray-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+              </svg>
+            </div>
+            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">No hay lotes disponibles</h3>
+            <p class="text-sm text-gray-500">Carga el primer archivo para comenzar</p>
+          </div>
         }
       </div>
     </div>

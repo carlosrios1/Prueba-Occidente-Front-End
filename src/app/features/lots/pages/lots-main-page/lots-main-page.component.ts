@@ -2,6 +2,8 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { LucideAngularModule, Upload } from 'lucide-angular';
+import { CardComponent } from '@shared/components/cards/card/card.component';
+import { CardBodyComponent } from '@shared/components/cards/card/components/card-body.component';
 import { PageBodyLayoutComponent } from '@shared/components/page-body-layout/page-body-layout.component';
 import { PageHeaderComponent } from '@shared/components/header/app-page-header-component';
 import { ButtonComponent } from '@shared/components/buttons/button/button.component';
@@ -25,6 +27,8 @@ import { TransactionsSummaryTableComponent } from '../../components/transactions
         LotUploadComponent,
         LotsSummaryTableComponent,
         TransactionsSummaryTableComponent,
+        CardComponent,
+        CardBodyComponent,
     ],
     providers: [LotsHttpService, LotsStateService],
     templateUrl: './lots-main-page.component.html'

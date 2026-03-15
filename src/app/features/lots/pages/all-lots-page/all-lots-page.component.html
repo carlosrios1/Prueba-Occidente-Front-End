@@ -16,58 +16,71 @@
     </div>
 
     <div body class="flex flex-col gap-5 motion-preset-slide-left">
-        <div
-            class="bg-white dark:bg-base-100 rounded-xl shadow-sm border border-gray-100 dark:border-neutral-800 p-5 flex flex-col gap-4">
+        <app-card [padding]="0">
+            <app-card-body>
+                <div class="flex flex-col">
 
-            @if (state.isLoadingLots()) {
-            <div class="flex justify-center py-16">
-                <span class="loading loading-spinner loading-md text-primary"></span>
-            </div>
-            } @else {
-            <div class="border-y border-gray-200 dark:border-neutral-800">
-                <table class="w-full">
-                    <thead>
-                        <tr class="border-b border-gray-200/60 dark:border-neutral-800">
-                            @for (h of headers; track $index) {
-                            <th class="py-3 px-2 text-left text-sm font-medium text-black dark:text-neutral-100 tracking-tight"
-                                [class.pl-4]="$index === 0">{{ h }}</th>
-                            }
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200 dark:divide-neutral-800">
-                        @for (lot of state.lots(); track lot.id) {
-                        <tr
-                            class="group cursor-pointer transition-all duration-300 hover:bg-gradient-to-r hover:from-green-50/30 hover:to-green-50/20 dark:hover:from-green-900/20 dark:hover:to-green-800/10">
-                            <td appTableCell variant="first">{{ lot.id }}</td>
-                            <td appTableCell variant="name">{{ lot.fileName }}</td>
-                            <td appTableCell>{{ lot.uploadDate | date:'dd/MM/yyyy HH:mm' }}</td>
-                            <td appTableCell>{{ lot.totalRecords }}</td>
-                            <td appTableCell>
-                                <app-badge [variant]="lot.status === 'COMPLETED' ? 'success' : 'secondary'"
-                                    appearance="soft" size="small">
-                                    {{ lot.status === 'COMPLETED' ? 'Completado' : 'Pendiente' }}
-                                </app-badge>
-                            </td>
-                            <td appTableCell>{{ lot.uploadedBy }}</td>
-                            <td appTableCell>
-                                <lucide-icon [img]="icons.ChevronRight"
-                                    class="size-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></lucide-icon>
-                            </td>
-                        </tr>
+                    @if (state.isLoadingLots()) {
+                    <div class="flex justify-center py-16">
+                        <span class="loading loading-spinner loading-md text-primary"></span>
+                    </div>
+                    } @else {
+                    <div class="border-y border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b border-gray-200/60 dark:border-neutral-800">
+                                    @for (h of headers; track $index) {
+                                    <th class="py-3 px-2 text-left text-sm font-medium text-black dark:text-neutral-100 tracking-tight"
+                                        [class.pl-4]="$index === 0">{{ h }}</th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 dark:divide-neutral-800">
+                                @for (lot of state.lots(); track lot.id) {
+                                <tr
+                                    class="group cursor-pointer transition-all duration-300 hover:bg-gradient-to-r hover:from-green-50/30 hover:to-green-50/20 dark:hover:from-green-900/20 dark:hover:to-green-800/10 motion-preset-slide-down motion-duration-300">
+                                    <td appTableCell variant="first">{{ lot.id }}</td>
+                                    <td appTableCell variant="name">{{ lot.fileName }}</td>
+                                    <td appTableCell>{{ lot.uploadDate | date:'dd/MM/yyyy HH:mm' }}</td>
+                                    <td appTableCell>{{ lot.totalRecords }}</td>
+                                    <td appTableCell>
+                                        <app-badge [variant]="lot.status === 'COMPLETED' ? 'success' : 'secondary'"
+                                            appearance="soft" size="small" rounded="full">
+                                            {{ lot.status === 'COMPLETED' ? 'Completado' : 'Pendiente' }}
+                                        </app-badge>
+                                    </td>
+                                    <td appTableCell>{{ lot.uploadedBy }}</td>
+                                    <td appTableCell>
+                                        <lucide-icon [img]="icons.ChevronRight"
+                                            class="size-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></lucide-icon>
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                        @if (state.lots().length === 0) {
+                        <div class="py-16 text-center">
+                            <div class="mx-auto w-16 h-16 bg-gray-100 dark:bg-base-100 rounded-full flex items-center justify-center mb-4">
+                                <svg class="w-8 h-8 text-gray-400 dark:text-gray-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">No hay lotes disponibles</h3>
+                            <p class="text-sm text-gray-500">Carga el primer archivo para comenzar</p>
+                        </div>
                         }
-                    </tbody>
-                </table>
-                @if (state.lots().length === 0) {
-                <div class="py-10 text-center text-sm text-gray-500">No hay lotes disponibles</div>
-                }
-            </div>
+                    </div>
 
-            <app-table-pagination [actualPage]="pagination.actualPage()" [cantidadPorPagina]="pagination.itemsPerPage()"
-                [totalItems]="pagination.totalItems()" [loading]="state.isLoadingLots()" itemLabel="lotes"
-                (pageChange)="onPageChange($event)" />
-            }
+                    <div class="p-5">
+                        <app-table-pagination [actualPage]="pagination.actualPage()" [cantidadPorPagina]="pagination.itemsPerPage()"
+                            [totalItems]="pagination.totalItems()" [loading]="state.isLoadingLots()" itemLabel="lotes"
+                            (pageChange)="onPageChange($event)" />
+                    </div>
+                    }
 
-        </div>
+                </div>
+            </app-card-body>
+        </app-card>
     </div>
 
 </app-page-body-layout>

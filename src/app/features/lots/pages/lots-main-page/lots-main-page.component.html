@@ -24,26 +24,30 @@
     <div body class="flex flex-col gap-8 motion-preset-slide-left">
 
         <!-- Tabla lotes -->
-        <div class="bg-white dark:bg-base-100 rounded-xl shadow-sm border border-gray-100 dark:border-neutral-800 p-5">
-            @if (state.isLoadingLots()) {
-            <div class="flex justify-center py-10">
-                <span class="loading loading-spinner loading-md text-primary"></span>
-            </div>
-            } @else {
-            <app-lots-summary-table [lots]="state.lots()" />
-            }
-        </div>
+        <app-card [padding]="0">
+            <app-card-body>
+                @if (state.isLoadingLots()) {
+                <div class="flex justify-center py-10">
+                    <span class="loading loading-spinner loading-md text-primary"></span>
+                </div>
+                } @else {
+                <app-lots-summary-table [lots]="state.lots()" />
+                }
+            </app-card-body>
+        </app-card>
 
         <!-- Tabla transacciones -->
-        <div class="bg-white dark:bg-base-100 rounded-xl shadow-sm border border-gray-100 dark:border-neutral-800 p-5">
-            @if (state.isLoadingTransactions()) {
-            <div class="flex justify-center py-10">
-                <span class="loading loading-spinner loading-md text-primary"></span>
-            </div>
-            } @else {
-            <app-transactions-summary-table [transactions]="state.transactions()" />
-            }
-        </div>
+        <app-card [padding]="0">
+            <app-card-body>
+                @if (state.isLoadingTransactions()) {
+                <div class="flex justify-center py-10">
+                    <span class="loading loading-spinner loading-md text-primary"></span>
+                </div>
+                } @else {
+                <app-transactions-summary-table [transactions]="state.transactions()" />
+                }
+            </app-card-body>
+        </app-card>
 
     </div>
 

@@ -369,31 +369,122 @@ feature-name/
 
 ### Tablas de datos
 
-**Siempre** usar tablas HTML nativas siguiendo el patrón de `TechTableComponent` (`features/technologies/components/tech-table`). **Nunca** usar `GenericTableComponent`.
+**Siempre** usar tablas HTML nativas siguiendo el patrón de `TechTableComponent` + `TechListComponent` (`features/technologies/`). **Nunca** usar `GenericTableComponent`. **Nunca** usar `<div class="bg-white rounded-xl...p-5">` como contenedor de tablas.
 
-Estructura obligatoria:
-- `<table class="w-full">` dentro de un `<div class="border-y border-gray-200 dark:border-neutral-800">`
-- `<thead>` con cabeceras desde un array `readonly headers: string[]` en el componente
-- `<tbody>` con `@for` iterando los datos
-- Directiva `appTableCell` (de `@shared/directives/table-cell.directive`) en cada `<td>` con variante `variant="first"` | `"name"` | `"default"` etc.
-- Filas clickeables con clase `group cursor-pointer transition-all duration-300 hover:bg-gradient-to-r hover:from-green-50/30 ...`
-- `<lucide-icon [img]="icons.ChevronRight" class="size-4 opacity-0 group-hover:opacity-100 transition-opacity">` como última celda en tablas clickeables
-- Estado vacío con `@if (items.length === 0)` inline bajo la tabla
+#### Estructura completa obligatoria — contenedor de página
 
-```ts
-// ✅ Correcto — tabla nativa con appTableCell
-readonly headers = ['ID', 'Nombre', 'Estado', ''];
+La tabla **siempre** va dentro de `app-card [padding]="0"` → `app-card-body` → `flex flex-col`. La paginación va envuelta en `<div class="p-5">`. Referenciar `features/technologies/components/tech-list/tech-list.component.html`.
 
-// en el template:
-// <div class="border-y border-gray-200 dark:border-neutral-800">
-//   <table class="w-full">...
-//     <td appTableCell variant="first">{{ item.id }}</td>
+```html
+<!-- En la página (o componente lista) -->
+<app-card [padding]="0">
+  <app-card-body>
+    <div class="flex flex-col">
+
+      <!-- Opcional: header/filtros con su propio padding -->
+      <div class="flex items-center justify-between p-5">
+        <h2>Título</h2>
+        <app-button>Acción</app-button>
+      </div>
+
+      <!-- Tabla — edge-to-edge sin padding extra -->
+      <app-mi-tabla></app-mi-tabla>
+      <!-- o inline: <div class="border-y border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">...</div> -->
+
+      <!-- Paginación — siempre con p-5 -->
+      <div class="p-5">
+        <app-table-pagination ... />
+      </div>
+
+    </div>
+  </app-card-body>
+</app-card>
 ```
 
+**Imports necesarios en el componente que usa la card:**
 ```ts
-// ❌ Incorrecto — nunca usar GenericTableComponent
-// <app-generic-table [data]="items" [columnLabels]="{ ... }">
+import { CardComponent } from '@shared/components/cards/card/card.component';
+import { CardBodyComponent } from '@shared/components/cards/card/components/card-body.component';
 ```
+
+#### Estructura interna de la tabla (componente o inline)
+
+```html
+<!-- Wrapper — siempre con bg explícito, sin padding propio -->
+<div class="border-y border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
+  <table class="w-full">
+
+    <!-- Cabeceras desde array readonly headers -->
+    <thead>
+      <tr class="border-b border-gray-200/60 dark:border-neutral-800">
+        @for (h of headers; track $index) {
+          <th class="py-3 px-2 text-left text-sm font-medium text-black dark:text-neutral-100 tracking-tight"
+              [class.pl-4]="$index === 0">{{ h }}</th>
+        }
+      </tr>
+    </thead>
+
+    <!-- Filas — incluye motion + hover gradient + group -->
+    <tbody class="divide-y divide-gray-200 dark:divide-neutral-800">
+      @for (item of items; track item.id) {
+        <tr class="group cursor-pointer transition-all duration-300
+                   hover:bg-gradient-to-r hover:from-green-50/30 hover:to-green-50/20
+                   dark:hover:from-green-900/20 dark:hover:to-green-800/10
+                   motion-preset-slide-down motion-duration-300"
+            (click)="onRowClick(item)">
+          <td appTableCell variant="first">{{ item.id }}</td>
+          <td appTableCell variant="name">{{ item.name }}</td>
+          <td appTableCell>{{ item.someField }}</td>
+          <!-- última celda siempre: ChevronRight invisible que aparece al hover -->
+          <td appTableCell>
+            <lucide-icon [img]="icons.ChevronRight"
+              class="size-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            </lucide-icon>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  <!-- Estado vacío — siempre con icono, nunca solo texto -->
+  @if (items.length === 0) {
+    <div class="py-16 text-center">
+      <div class="mx-auto w-16 h-16 bg-gray-100 dark:bg-base-100 rounded-full flex items-center justify-center mb-4">
+        <svg class="w-8 h-8 text-gray-400 dark:text-gray-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+          </path>
+        </svg>
+      </div>
+      <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">No hay elementos disponibles</h3>
+      <p class="text-sm text-gray-500">Descripción de acción para comenzar</p>
+    </div>
+  }
+</div>
+```
+
+#### Reglas clave
+
+- **Contenedor:** `app-card [padding]="0"` + `app-card-body`. **Nunca** `<div class="bg-white...p-5">`.
+- **Paginación:** siempre envuelta en `<div class="p-5">` dentro del `flex flex-col`.
+- **Header/título con botón** (ej. "Últimos lotes cargados" + "Ver todos"): va en `<div class="flex items-center justify-between p-5">` antes de la tabla.
+- El wrapper `border-y` **siempre** incluye `bg-white dark:bg-neutral-900`.
+- Las `<tr>` de datos **siempre** llevan `motion-preset-slide-down motion-duration-300` además del hover gradient.
+- Si la fila es clickeable: agregar `group cursor-pointer` y la última `<td>` con `ChevronRight` semitransparente.
+- El headers array **siempre** incluye una columna vacía `''` al final para el ChevronRight.
+- El estado vacío **nunca** es solo texto — usar el bloque completo con círculo + SVG + `<h3>` + `<p>`.
+- Las variantes de `appTableCell`: `first` (primera columna), `name` (nombre/título), `default` (resto), `badge`, `actions`.
+
+```ts
+// ✅ Correcto — array con columna vacía para el icono
+readonly headers = ['ID', 'Nombre', 'Estado', 'Usuario', ''];
+
+// ❌ Incorrecto
+// <app-generic-table ...>
+// <div class="bg-white rounded-xl shadow-sm ... p-5">  ← nunca para tablas
+// <div class="py-10 text-center text-sm text-gray-500">No hay datos</div>
+```
+
 
 ### app-button — uso de iconos
 

@@ -1,7 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { LucideAngularModule, ArrowLeft } from 'lucide-angular';
+import { LucideAngularModule, ArrowLeft, ChevronRight } from 'lucide-angular';
+import { CardComponent } from '@shared/components/cards/card/card.component';
+import { CardBodyComponent } from '@shared/components/cards/card/components/card-body.component';
 import { PageBodyLayoutComponent } from '@shared/components/page-body-layout/page-body-layout.component';
 import { PageHeaderComponent } from '@shared/components/header/app-page-header-component';
 import { ButtonComponent } from '@shared/components/buttons/button/button.component';
@@ -22,6 +24,8 @@ import { LotsStateService } from '../../services/lots-state.service';
         ButtonComponent,
         TableCellDirective,
         TablePaginationComponent,
+        CardComponent,
+        CardBodyComponent,
     ],
     providers: [LotsHttpService, LotsStateService, PaginationService],
     templateUrl: './all-transactions-page.component.html'
@@ -31,8 +35,8 @@ export class AllTransactionsPageComponent implements OnInit {
     readonly state = inject(LotsStateService);
     readonly pagination = inject(PaginationService);
 
-    readonly icons = { ArrowLeft };
-    readonly headers = ['ID', 'Código', 'Cliente', 'Lote', 'Fecha', 'Monto', 'Moneda', 'Descripción', 'No. Auth'];
+    readonly icons = { ArrowLeft, ChevronRight };
+    readonly headers = ['ID', 'Código', 'Cliente', 'Lote', 'Fecha', 'Monto', 'Moneda', 'Descripción', 'No. Auth', ''];
 
     ngOnInit(): void {
         this.pagination.itemsPerPage.set(5);
