@@ -486,6 +486,45 @@ downloadFile(url: string, fileName: string): Observable<void> {
 
 ---
 
+## Convenciones de commits
+
+Todos los mensajes de commit deben seguir el estándar **Conventional Commits** y estar escritos **en español**.
+
+### Formato
+
+```
+<tipo>(<ámbito opcional>): <descripción en español>
+```
+
+### Tipos permitidos
+
+| Tipo | Uso |
+|---|---|
+| `feat` | Nueva funcionalidad |
+| `fix` | Corrección de errores |
+| `refactor` | Cambio de código que no agrega funcionalidad ni corrige bugs |
+| `style` | Cambios de formato/estilo (sin lógica) |
+| `chore` | Tareas de mantenimiento, dependencias, configuración |
+| `docs` | Cambios en documentación |
+| `test` | Adición o modificación de pruebas |
+| `perf` | Mejoras de rendimiento |
+| `ci` | Cambios en configuración de CI/CD |
+
+### Ejemplos
+
+```
+feat(awards): agregar página de listado de premios
+fix(auth): corregir redirección al hacer logout
+refactor(lots): extraer lógica de carga a servicio de estado
+chore: actualizar dependencias de Angular
+docs: añadir instrucciones de conventional commits
+```
+
+- La **descripción** debe ir en minúscula, en español y sin punto al final.
+- El **ámbito** es opcional pero recomendado; usar el nombre del feature o módulo (`auth`, `awards`, `lots`, `giveaways`, `reports`, `shared`, `core`).
+
+---
+
 ## Notas importantes del API
 
 - En **crear premio** el campo del body es `awardname` (todo minúscula).
