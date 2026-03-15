@@ -1,0 +1,74 @@
+<app-modal
+    [isOpen]="isOpen()"
+    [title]="hasResult ? '🎉 Sorteo Realizado' : 'Realizar Sorteo'"
+    [subtitle]="hasResult ? 'El sorteo se ejecutó correctamente. Aquí están los ganadores.' : '¿Estás seguro de que deseas ejecutar el sorteo ahora? Esta acción seleccionará ganadores de forma aleatoria.'"
+    [showFooter]="true"
+    [showConfirmButton]="!hasResult"
+    confirmText="Ejecutar Sorteo"
+    cancelText="Cerrar"
+    [loading]="state.isRunning()"
+    loadingText="Ejecutando sorteo..."
+    [disableClose]="state.isRunning()"
+    (onClose)="close()"
+    (onConfirm)="run()">
+
+    <!-- Estado inicial: confirmación -->
+    @if (!hasResult && !state.isRunning()) {
+    <div class="flex flex-col items-center gap-4 py-4">
+        <div class="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
+            <lucide-icon [img]="icons.Play" class="size-8 text-green-600 dark:text-green-400"></lucide-icon>
+        </div>
+        <p class="text-sm text-gray-600 dark:text-neutral-400 text-center">
+            Se seleccionarán clientes elegibles de forma aleatoria.<br>
+            Los clientes deben tener transacciones en el período configurado con monto mayor a 300.
+        </p>
+    </div>
+    }
+
+    <!-- Estado de espera -->
+    @if (state.isRunning()) {
+    <div class="flex flex-col items-center gap-4 py-8">
+        <span class="loading loading-spinner loading-lg text-green-500"></span>
+        <p class="text-sm text-gray-500">Seleccionando ganadores...</p>
+    </div>
+    }
+
+    <!-- Resultados del sorteo -->
+    @if (hasResult && result) {
+    <div class="flex flex-col gap-4 pt-2 max-h-96 overflow-y-auto">
+
+        <!-- Resumen -->
+        <div class="flex items-center gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+            <lucide-icon [img]="icons.Star" class="size-5 text-green-600 dark:text-green-400 flex-shrink-0"></lucide-icon>
+            <p class="text-sm text-green-800 dark:text-green-300">
+                <strong>{{ result.totalWinners }}</strong> ganadores seleccionados exitosamente.
+            </p>
+        </div>
+
+        <!-- Ganadores por premio -->
+        @for (group of result.winnersByAward; track group.awardId) {
+        <div class="flex flex-col gap-2">
+            <div class="flex items-center gap-2">
+                <lucide-icon [img]="icons.Trophy" class="size-4 text-yellow-500"></lucide-icon>
+                <span class="text-sm font-semibold text-gray-900 dark:text-neutral-100">{{ group.awardName }}</span>
+                <span class="text-xs text-gray-500">({{ group.winnersQuant }} {{ group.winnersQuant === 1 ? 'ganador' : 'ganadores' }})</span>
+            </div>
+            <div class="flex flex-col gap-1 pl-6">
+                @for (winner of group.winners; track winner.clientId) {
+                <div class="flex items-center gap-2 p-2 bg-gray-50 dark:bg-neutral-800 rounded-md">
+                    <div class="w-7 h-7 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+                        <lucide-icon [img]="icons.Users" class="size-3.5 text-green-600 dark:text-green-400"></lucide-icon>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-xs font-medium text-gray-900 dark:text-neutral-100">{{ winner.clientName }}</span>
+                        <span class="text-xs text-gray-500 dark:text-neutral-400">{{ winner.clientCode }}</span>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+        }
+    </div>
+    }
+
+</app-modal>

@@ -1,0 +1,10 @@
+<app-modal
+    [isOpen]="isOpen()"
+    title="Eliminar Sorteo"
+    [subtitle]="'¿Estás seguro de que deseas eliminar el sorteo <strong>' + (giveaway?.description ?? '') + '</strong>? Esta acción no se puede deshacer.'"
+    [showFooter]="true" [showConfirmButton]="true"
+    confirmText="Eliminar" cancelText="Cancelar"
+    [loading]="state.isDeleting()" loadingText="Eliminando"
+    [isDeleteModal]="true" [disableClose]="state.isDeleting()"
+    (onClose)="close()" (onConfirm)="handleDelete()">
+</app-modal>

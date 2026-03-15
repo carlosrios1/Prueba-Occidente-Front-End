@@ -1,0 +1,9 @@
+<app-modal
+    [isOpen]="isOpen()"
+    title="Quitar Premio"
+    [subtitle]="subtitle"
+    [showFooter]="true" [showConfirmButton]="true"
+    confirmText="Quitar" cancelText="Cancelar"
+    [isDeleteModal]="true"
+    (onClose)="close()" (onConfirm)="handleDelete()">
+</app-modal>

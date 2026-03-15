@@ -10,6 +10,8 @@ import { AllLotsPageComponent } from '@features/lots/pages/all-lots-page/all-lot
 import { AllTransactionsPageComponent } from '@features/lots/pages/all-transactions-page/all-transactions-page.component';
 import { UploadLotPageComponent } from '@features/lots/pages/upload-lot-page/upload-lot-page.component';
 import { AwardListPageComponent } from '@features/awards/pages/award-list-page/award-list-page.component';
+import { GiveawayListPageComponent } from '@features/giveaways/pages/giveaway-list-page/giveaway-list-page.component';
+import { GiveawayDetailPageComponent } from '@features/giveaways/pages/giveaway-detail-page/giveaway-detail-page.component';
 import { authGuard } from './core/guards/auth.guard';
 
 // Rutas protegidas para el layout principal
@@ -21,6 +23,8 @@ const protectedRoutes = [
     { path: 'lots/all', component: AllLotsPageComponent },
     { path: 'lots/transactions', component: AllTransactionsPageComponent },
     { path: 'lots/upload', component: UploadLotPageComponent },
+    { path: 'giveaways', component: GiveawayListPageComponent },
+    { path: 'giveaways/:id', component: GiveawayDetailPageComponent },
 ].map(route => ({ ...route }));
 
 // Rutas de autenticación

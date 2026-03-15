@@ -1,0 +1,13 @@
+<app-modal
+    [isOpen]="isOpen()"
+    title="Guardar cambios de premios"
+    subtitle="Para aplicar los cambios en los premios, el sistema eliminará el sorteo actual y creará uno nuevo con la configuración actualizada. El ID del sorteo cambiará. ¿Deseas continuar?"
+    [showFooter]="true" [showConfirmButton]="true"
+    confirmText="Confirmar y guardar"
+    cancelText="Cancelar"
+    [loading]="state.isReconfiguring()"
+    loadingText="Reconfigurando..."
+    [disableClose]="state.isReconfiguring()"
+    (onClose)="close()"
+    (onConfirm)="handleConfirm()">
+</app-modal>

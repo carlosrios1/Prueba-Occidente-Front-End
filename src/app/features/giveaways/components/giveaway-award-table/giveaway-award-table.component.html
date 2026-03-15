@@ -1,0 +1,59 @@
+<div class="border-y border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
+    <table class="w-full">
+        <thead>
+            <tr class="border-b border-gray-200/60 dark:border-neutral-800">
+                @for (header of headers; track $index) {
+                <th class="py-3 px-2 text-left text-sm font-medium text-black dark:text-neutral-100 tracking-tight"
+                    [class.pl-4]="$index === 0">
+                    {{ header }}
+                </th>
+                }
+            </tr>
+        </thead>
+
+        <tbody class="divide-y divide-gray-200 dark:divide-neutral-800">
+            @for (award of state.localAwards(); track award.awardId) {
+            <tr class="group transition-all duration-300
+                       hover:bg-gradient-to-r hover:from-green-50/30 hover:to-green-50/20
+                       dark:hover:from-green-900/20 dark:hover:to-green-800/10
+                       motion-preset-slide-down motion-duration-300">
+
+                <td appTableCell variant="name">
+                    <span class="flex items-center gap-2 pl-2">
+                        <lucide-icon [img]="icons.Trophy" class="size-4 text-yellow-500 flex-shrink-0"></lucide-icon>
+                        {{ award.awardName }}
+                    </span>
+                </td>
+
+                <td appTableCell>
+                    <span class="flex items-center gap-1.5 text-sm text-gray-700 dark:text-neutral-300">
+                        <lucide-icon [img]="icons.Users" class="size-4 text-green-500"></lucide-icon>
+                        {{ award.winnersQuant }} {{ award.winnersQuant === 1 ? 'ganador' : 'ganadores' }}
+                    </span>
+                </td>
+
+                <td appTableCell>
+                    <div class="flex items-center gap-1">
+                        <app-button appearance="text" size="small" [icon]="icons.Pencil" variant="secondary"
+                            tooltip="Editar ganadores" (onClick)="editAward.emit(award)">
+                        </app-button>
+                        <app-button appearance="text" size="small" [icon]="icons.Trash2" variant="danger"
+                            tooltip="Quitar premio" (onClick)="deleteAward.emit(award)">
+                        </app-button>
+                    </div>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (state.localAwards().length === 0) {
+    <div class="py-10 text-center">
+        <div class="mx-auto w-14 h-14 bg-gray-100 dark:bg-base-100 rounded-full flex items-center justify-center mb-3">
+            <lucide-icon [img]="icons.Trophy" class="w-7 h-7 text-gray-400 dark:text-gray-100"></lucide-icon>
+        </div>
+        <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">Sin premios configurados</h3>
+        <p class="text-sm text-gray-500">Agrega al menos un premio para poder ejecutar el sorteo</p>
+    </div>
+    }
+</div>

@@ -1,0 +1,54 @@
+<app-page-body-layout>
+
+    <!-- Header -->
+    <div header class="flex flex-col gap-5">
+        <app-page-header title="Sorteos"
+            description="Administra y ejecuta los sorteos de la entidad financiera">
+            <div actions>
+                <app-button [icon]="icons.Plus" (onClick)="openCreateModal()">
+                    Nuevo Sorteo
+                </app-button>
+            </div>
+        </app-page-header>
+    </div>
+
+    <!-- Body -->
+    <div body class="flex flex-col gap-5 motion-preset-slide-left">
+        <app-card [padding]="0">
+            <app-card-body>
+                <div class="flex flex-col">
+                    <!-- Tabla -->
+                    <app-giveaway-table
+                        (editGiveaway)="openEditModal($event)"
+                        (deleteGiveaway)="openDeleteModal($event)">
+                    </app-giveaway-table>
+
+                    <!-- Paginación -->
+                    <div class="p-5">
+                        <app-table-pagination
+                            [actualPage]="state.currentPage()"
+                            [cantidadPorPagina]="state.pageSize"
+                            [totalItems]="state.totalCount()"
+                            [loading]="state.isLoading()"
+                            itemLabel="Sorteos"
+                            (pageChange)="onPageChange($event)">
+                        </app-table-pagination>
+                    </div>
+                </div>
+            </app-card-body>
+        </app-card>
+    </div>
+
+</app-page-body-layout>
+
+<!-- Modal crear / editar -->
+<app-giveaway-form-modal
+    [isOpen]="isFormModalOpen"
+    [giveaway]="selectedGiveaway()">
+</app-giveaway-form-modal>
+
+<!-- Modal eliminar -->
+<app-giveaway-delete-modal
+    [isOpen]="isDeleteModalOpen"
+    [giveaway]="selectedGiveaway()">
+</app-giveaway-delete-modal>

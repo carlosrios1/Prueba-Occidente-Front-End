@@ -3,12 +3,14 @@ import { inject } from '@angular/core';
 import { catchError, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { ToastService } from '@shared/components/toast/services/toast.service';
+import { SKIP_ERROR_TOAST } from './http-context-tokens';
 
 const MUTATION_METHODS = ['POST', 'PUT', 'DELETE', 'PATCH'];
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     const toast = inject(ToastService);
     const router = inject(Router);
+    const skipToast = req.context.get(SKIP_ERROR_TOAST);
 
     return next(req).pipe(
         tap(event => {
@@ -27,7 +29,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         catchError((error: HttpErrorResponse) => {
             const isLoginRequest = req.url.includes('/api/auth/login');
 
-            if (!isLoginRequest) {
+            if (!isLoginRequest && !skipToast) {
                 let message: string;
 
                 if (error.status === 0) {
