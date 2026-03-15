@@ -1,14 +1,10 @@
 // src/app/core/config/sidebar.config.ts
 import {
-    LayoutDashboard,
-    AppWindow,
-    Server,
-    Monitor,
+    Trophy,
     Layers,
+    Shuffle,
+    FileText,
     Code,
-    User,
-    Users,
-    Image,
 } from 'lucide-angular';
 import { NavItem } from '../layout/default-layout/sidebar/components/sidebar-nav-item.component';
 
@@ -24,69 +20,48 @@ export const SIDEBAR_CONFIG: {
 } = {
     principal:
     {
-        label: 'Principal',
+        label: 'Sorteos',
         items: [
             {
-                name: 'home',
-                label: 'Dashboard',
-                link: '/home',
-                icon: LayoutDashboard,
-                aria: 'Ir a Dashboard',
+                name: 'lots',
+                label: 'Transacciones',
+                link: '/lots',
+                icon: Layers,
+                aria: 'Ir a Transacciones',
             },
             {
-                name: 'aplicativos',
-                label: 'Aplicativos',
-                link: '/apps',
-                icon: AppWindow,
-                aria: 'Ir a Aplicativos',
+                name: 'giveaways',
+                label: 'Sorteos',
+                link: '/giveaways',
+                icon: Shuffle,
+                aria: 'Ir a Sorteos',
             },
             {
-                name: 'servidores',
-                label: 'Servidores',
-                link: '/servers',
-                icon: Server,
-                aria: 'Ir a Servidores',
+                name: 'awards',
+                label: 'Premios',
+                link: '/awards',
+                icon: Trophy,
+                aria: 'Ir a Premios',
             },
             {
-                name: 'foro',
-                label: 'Foro',
-                link: '/foro',
-                icon: Image,
-                aria: 'Ir a Foro',
+                name: 'reports',
+                label: 'Reportes',
+                link: '/reports/transactions',
+                icon: FileText,
+                aria: 'Ir a Reportes',
             },
         ],
     },
     secondary:
     {
-        label: 'Configuración',
+        label: 'Otros',
         items: [
-            {
-                name: 'os',
-                label: 'SO', // versión corta de Sistemas Operativos
-                link: '/operating-systems',
-                icon: Monitor,
-                aria: 'Ir a Sistemas Operativos',
-            },
-            {
-                name: 'ambientes',
-                label: 'Ambientes',
-                link: '/environments',
-                icon: Layers,
-                aria: 'Ir a Ambientes',
-            },
             {
                 name: 'tecnologias',
                 label: 'Tecnologías',
                 link: '/technologies',
                 icon: Code,
                 aria: 'Ir a Tecnologías',
-            },
-            {
-                name: 'usuarios',
-                label: 'Usuarios',
-                link: '/users',
-                icon: Users,
-                aria: 'Ir a Usuarios',
             },
         ],
     },

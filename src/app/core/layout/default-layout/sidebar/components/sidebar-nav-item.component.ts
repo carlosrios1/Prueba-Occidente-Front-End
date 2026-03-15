@@ -24,7 +24,7 @@ export interface NavItem {
         [variant]="rla.isActive ? 'success' : 'black'"
         #rla="routerLinkActive" 
         [attr.aria-label]="item.aria" 
-        [appearance]="rla.isActive ? 'soft' : 'text'"
+        [appearance]="rla.isActive ? 'solid' : 'text'"
         [icon]="item.icon" 
         [fullWidth]="!iconOnly" 
         [title]="item.name" 

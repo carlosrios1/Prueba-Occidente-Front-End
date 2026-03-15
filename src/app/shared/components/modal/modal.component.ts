@@ -110,7 +110,7 @@ import { ButtonComponent } from "../buttons/button/button.component";
               } 
               <span>{{ confirmText }}</span>
             </button> -->
-            <app-button [variant]="getVariant()" type="button" (onClick)="confirm()" [loading]="loading" [loadingText]="loadingText" [disabled]="disableClose">{{ confirmText }}</app-button>
+            <app-button [variant]="getVariant()" type="button" (onClick)="confirm()" [loading]="loading" [loadingText]="loadingText" [disabled]="disableClose || disableConfirm">{{ confirmText }}</app-button>
             }
           </div>
           }
@@ -189,6 +189,7 @@ export class ModalComponent implements OnInit, OnDestroy, OnChanges {
   @Input() disableClose: boolean = false;
   @Input() loading: boolean = false;
   @Input() loadingText: string = 'Cargando';
+  @Input() disableConfirm: boolean = false;
 
   @Output() onClose = new EventEmitter<void>();
   @Output() onConfirm = new EventEmitter<void>();

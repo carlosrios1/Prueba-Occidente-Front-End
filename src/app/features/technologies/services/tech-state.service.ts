@@ -167,8 +167,8 @@ export class TechStateService {
 
             if (response.success) {
                 this.updateState({
-                    techs: response.data.elementos,
-                    totalElements: response.data.totalElementos,
+                    techs: response.data.items,
+                    totalElements: response.data.totalCount,
                     lastFetchTimestamp: Date.now(),
                     isLoading: false,
                     isPaginating: false,

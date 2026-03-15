@@ -28,6 +28,9 @@
       ],
       "@features/*": [
         "./src/app/features/*"
+      ],
+      "@env": [
+        "./src/environments/environment.ts"
       ]
     },
     "lib": [

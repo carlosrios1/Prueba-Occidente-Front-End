@@ -2,15 +2,22 @@ import { Routes } from '@angular/router';
 
 import { DefaultLayoutComponent } from './core/layout/default-layout/default-layout/default-layout.component';
 import { LoginLayoutComponent } from './core/layout/login-layout/login-layout.component';
-import { Component } from 'lucide-angular';
 import { TechListPageComponent } from '@features/technologies/pages/tech-list-page/tech-list-page.component';
 import { TechDetailPageComponent } from '@features/technologies/pages/tech-detail-page/tech-detail-page.component';
 import { LogInComponent } from '@features/auth/login/login.component';
+import { LotsMainPageComponent } from '@features/lots/pages/lots-main-page/lots-main-page.component';
+import { AllLotsPageComponent } from '@features/lots/pages/all-lots-page/all-lots-page.component';
+import { AllTransactionsPageComponent } from '@features/lots/pages/all-transactions-page/all-transactions-page.component';
+import { UploadLotPageComponent } from '@features/lots/pages/upload-lot-page/upload-lot-page.component';
 
 // Rutas protegidas para el layout principal
 const protectedRoutes = [
     { path: 'technologies', component: TechListPageComponent },
     { path: 'technologies/:name', component: TechDetailPageComponent },
+    { path: 'lots', component: LotsMainPageComponent },
+    { path: 'lots/all', component: AllLotsPageComponent },
+    { path: 'lots/transactions', component: AllTransactionsPageComponent },
+    { path: 'lots/upload', component: UploadLotPageComponent },
 ].map(route => ({ ...route }));
 
 // Rutas de autenticación
@@ -22,7 +29,7 @@ const authRoutes = [
 export const routes: Routes = [
     {
         path: '',
-        redirectTo: 'technologies',
+        redirectTo: 'lots',
         pathMatch: 'full'
     },
     {

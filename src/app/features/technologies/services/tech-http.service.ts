@@ -170,10 +170,10 @@ export class TechHttpService {
             success: true,
             status: 200,
             data: {
-                pagina: request.pagina,
-                totalElementos: totalElementos,
-                elementos: paginatedData,
-                itemsPagina: request.cantidadPagina
+                page: request.pagina,
+                totalCount: totalElementos,
+                items: paginatedData,
+                pageSize: request.cantidadPagina
             },
             message: 'Dev environments retrieved successfully'
         };

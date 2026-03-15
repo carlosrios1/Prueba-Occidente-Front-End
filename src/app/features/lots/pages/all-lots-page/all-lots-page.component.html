@@ -1,0 +1,80 @@
+<app-page-body-layout>
+
+    <div header class="flex flex-col gap-5">
+        <app-page-header title="Todos los lotes" description="Historial completo de archivos cargados al sistema">
+            <div actions class="flex gap-2">
+                <app-button [variant]="'neutral'" [appearance]="'outline'" [type]="'button'" [icon]="icons.ArrowLeft"
+                    (onClick)="goBack()">
+                    Volver
+                </app-button>
+                <app-button [variant]="'success'" [appearance]="'solid'" [type]="'button'" [icon]="icons.Upload"
+                    (onClick)="openModal('upload')">
+                    Cargar transacciones
+                </app-button>
+            </div>
+        </app-page-header>
+    </div>
+
+    <div body class="flex flex-col gap-5 motion-preset-slide-left">
+        <div
+            class="bg-white dark:bg-base-100 rounded-xl shadow-sm border border-gray-100 dark:border-neutral-800 p-5 flex flex-col gap-4">
+
+            @if (state.isLoadingLots()) {
+            <div class="flex justify-center py-16">
+                <span class="loading loading-spinner loading-md text-primary"></span>
+            </div>
+            } @else {
+            <div class="border-y border-gray-200 dark:border-neutral-800">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-gray-200/60 dark:border-neutral-800">
+                            @for (h of headers; track $index) {
+                            <th class="py-3 px-2 text-left text-sm font-medium text-black dark:text-neutral-100 tracking-tight"
+                                [class.pl-4]="$index === 0">{{ h }}</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 dark:divide-neutral-800">
+                        @for (lot of state.lots(); track lot.id) {
+                        <tr
+                            class="group cursor-pointer transition-all duration-300 hover:bg-gradient-to-r hover:from-green-50/30 hover:to-green-50/20 dark:hover:from-green-900/20 dark:hover:to-green-800/10">
+                            <td appTableCell variant="first">{{ lot.id }}</td>
+                            <td appTableCell variant="name">{{ lot.fileName }}</td>
+                            <td appTableCell>{{ lot.uploadDate | date:'dd/MM/yyyy HH:mm' }}</td>
+                            <td appTableCell>{{ lot.totalRecords }}</td>
+                            <td appTableCell>
+                                <app-badge [variant]="lot.status === 'COMPLETED' ? 'success' : 'secondary'"
+                                    appearance="soft" size="small">
+                                    {{ lot.status === 'COMPLETED' ? 'Completado' : 'Pendiente' }}
+                                </app-badge>
+                            </td>
+                            <td appTableCell>{{ lot.uploadedBy }}</td>
+                            <td appTableCell>
+                                <lucide-icon [img]="icons.ChevronRight"
+                                    class="size-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></lucide-icon>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+                @if (state.lots().length === 0) {
+                <div class="py-10 text-center text-sm text-gray-500">No hay lotes disponibles</div>
+                }
+            </div>
+
+            <app-table-pagination [actualPage]="pagination.actualPage()" [cantidadPorPagina]="pagination.itemsPerPage()"
+                [totalItems]="pagination.totalItems()" [loading]="state.isLoadingLots()" itemLabel="lotes"
+                (pageChange)="onPageChange($event)" />
+            }
+
+        </div>
+    </div>
+
+</app-page-body-layout>
+
+<app-modal [isOpen]="isModalOpen('upload')" title="Cargar archivo de transacciones" size="lg" [showFooter]="true"
+    [showConfirmButton]="true" confirmText="Cargar transacciones" cancelText="Cancelar" [loading]="state.isUploading()"
+    loadingText="Cargando..." [disableConfirm]="!selectedFile()" [disableClose]="state.isUploading()"
+    (onClose)="closeModal('upload')" (onConfirm)="onUploadConfirm()">
+    <app-lot-upload [uploadError]="state.uploadError()" (fileChange)="onFileChange($event)" />
+</app-modal>

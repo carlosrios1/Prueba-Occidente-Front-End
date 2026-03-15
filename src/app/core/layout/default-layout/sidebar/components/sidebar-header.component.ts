@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
          [ngClass]="collapsed ? 'justify-center' : 'justify-start'">
       <div class="flex items-center gap-3 overflow-hidden min-w-0">
         <div class="p-2 shadow-inner bg-gradient-to-r rounded-lg from-orange-500/30 to-green-600/30 flex-shrink-0">
-          <img src="assets/images/images/logos/bancocci_sm.png" 
+          <img src="assets/images/logos/bancocci_sm.png" 
                alt="BancoICI Logo"
                class="w-auto h-8 mx-auto object-fit-contain" />
         </div>

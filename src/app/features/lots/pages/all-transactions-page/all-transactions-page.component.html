@@ -1,0 +1,63 @@
+<app-page-body-layout>
+
+    <div header class="flex flex-col gap-5">
+        <app-page-header title="Todas las transacciones" description="Historial completo de transacciones del sistema">
+            <div actions>
+                <app-button [variant]="'neutral'" [appearance]="'outline'" [type]="'button'" [icon]="icons.ArrowLeft"
+                    (onClick)="goBack()">
+                    Volver
+                </app-button>
+            </div>
+        </app-page-header>
+    </div>
+
+    <div body class="flex flex-col gap-5 motion-preset-slide-left">
+        <div
+            class="bg-white dark:bg-base-100 rounded-xl shadow-sm border border-gray-100 dark:border-neutral-800 p-5 flex flex-col gap-4">
+
+            @if (state.isLoadingTransactions()) {
+            <div class="flex justify-center py-16">
+                <span class="loading loading-spinner loading-md text-primary"></span>
+            </div>
+            } @else {
+            <div class="border-y border-gray-200 dark:border-neutral-800">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-gray-200/60 dark:border-neutral-800">
+                            @for (h of headers; track $index) {
+                            <th class="py-3 px-2 text-left text-sm font-medium text-black dark:text-neutral-100 tracking-tight"
+                                [class.pl-4]="$index === 0">{{ h }}</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 dark:divide-neutral-800">
+                        @for (tr of state.transactions(); track tr.id) {
+                        <tr
+                            class="transition-all duration-300 hover:bg-gradient-to-r hover:from-green-50/30 hover:to-green-50/20 dark:hover:from-green-900/20 dark:hover:to-green-800/10">
+                            <td appTableCell variant="first">{{ tr.id }}</td>
+                            <td appTableCell>{{ tr.clientCode }}</td>
+                            <td appTableCell variant="name">{{ tr.clientName }}</td>
+                            <td appTableCell>{{ tr.loteId }}</td>
+                            <td appTableCell>{{ tr.transactionDate | date:'dd/MM/yyyy' }}</td>
+                            <td appTableCell><span class="font-semibold">{{ tr.amount | number:'1.2-2' }}</span></td>
+                            <td appTableCell>{{ tr.currency }}</td>
+                            <td appTableCell>{{ tr.description }}</td>
+                            <td appTableCell>{{ tr.authNumber }}</td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+                @if (state.transactions().length === 0) {
+                <div class="py-10 text-center text-sm text-gray-500">No hay transacciones disponibles</div>
+                }
+            </div>
+
+            <app-table-pagination [actualPage]="pagination.actualPage()" [cantidadPorPagina]="pagination.itemsPerPage()"
+                [totalItems]="pagination.totalItems()" [loading]="state.isLoadingTransactions()"
+                itemLabel="transacciones" (pageChange)="onPageChange($event)" />
+            }
+
+        </div>
+    </div>
+
+</app-page-body-layout>

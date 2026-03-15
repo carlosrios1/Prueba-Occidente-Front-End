@@ -1,0 +1,58 @@
+<app-page-body-layout>
+
+    <!-- HEADER -->
+    <div header class="flex flex-col gap-5">
+        <app-page-header title="Transacciones"
+            description="Gestiona los lotes de transacciones y consulta el historial completo">
+            <div actions class="flex gap-2">
+                <app-button [variant]="'neutral'" [appearance]="'outline'" [type]="'button'" (onClick)="goToAllLots()">
+                    Ver todos los lotes
+                </app-button>
+                <app-button [variant]="'neutral'" [appearance]="'outline'" [type]="'button'"
+                    (onClick)="goToAllTransactions()">
+                    Ver todas las transacciones
+                </app-button>
+                <app-button [variant]="'success'" [appearance]="'solid'" [type]="'button'" [icon]="icons.Upload"
+                    (onClick)="openUpload()">
+                    Cargar transacciones
+                </app-button>
+            </div>
+        </app-page-header>
+    </div>
+
+    <!-- BODY -->
+    <div body class="flex flex-col gap-8 motion-preset-slide-left">
+
+        <!-- Tabla lotes -->
+        <div class="bg-white dark:bg-base-100 rounded-xl shadow-sm border border-gray-100 dark:border-neutral-800 p-5">
+            @if (state.isLoadingLots()) {
+            <div class="flex justify-center py-10">
+                <span class="loading loading-spinner loading-md text-primary"></span>
+            </div>
+            } @else {
+            <app-lots-summary-table [lots]="state.lots()" />
+            }
+        </div>
+
+        <!-- Tabla transacciones -->
+        <div class="bg-white dark:bg-base-100 rounded-xl shadow-sm border border-gray-100 dark:border-neutral-800 p-5">
+            @if (state.isLoadingTransactions()) {
+            <div class="flex justify-center py-10">
+                <span class="loading loading-spinner loading-md text-primary"></span>
+            </div>
+            } @else {
+            <app-transactions-summary-table [transactions]="state.transactions()" />
+            }
+        </div>
+
+    </div>
+
+</app-page-body-layout>
+
+<!-- Modal upload -->
+<app-modal [isOpen]="isModalOpen('upload')" title="Cargar archivo de transacciones" size="lg" [showFooter]="true"
+    [showConfirmButton]="true" confirmText="Cargar transacciones" cancelText="Cancelar" [loading]="state.isUploading()"
+    loadingText="Cargando..." [disableConfirm]="!selectedFile()" [disableClose]="state.isUploading()"
+    (onClose)="closeModal('upload')" (onConfirm)="onUploadConfirm()">
+    <app-lot-upload [uploadError]="state.uploadError()" (fileChange)="onFileChange($event)" />
+</app-modal>

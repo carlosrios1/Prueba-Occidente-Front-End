@@ -1,0 +1,926 @@
+{
+  "info": {
+    "name": "Prueba Occidente API — Full",
+    "_postman_id": "prueba-occidente-api-full-v2",
+    "description": "Backend Prueba Occidente. .NET 8 - Clean Architecture - Dapper - SQL Server.\n\nFlujo: 1) Login -> token en {{token}}. 2) Resto usa ese token.\n\nRespuesta estandar: { success, status, message, data }\n\nErrores middleware:\n400 ArgumentException | 401 UnauthorizedAccessException | 404 KeyNotFoundException\n409 InvalidOperationException | 408 TimeoutException | 503 HttpRequestException | 500 resto",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5130",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "description": "Registro e inicio de sesion. No requieren token. El Login guarda el JWT en {{token}}.",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var j = pm.response.json();",
+                  "if (j.success && j.data && j.data.token) {",
+                  "    pm.collectionVariables.set('token', j.data.token);",
+                  "    console.log('Token guardado');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"Admin123!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Autentica y devuelve JWT. El test script guarda el token en {{token}} automaticamente.\n\nBody: { username, password }\nResponse data: { token, expiresAt, user: { id, username, isActive, lastLogin } }\n\nErrores: 400 campos vacios | 401 credenciales incorrectas o cuenta inactiva"
+          },
+          "response": [
+            {
+              "name": "200 Login exitoso",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"status\": 200,\n  \"message\": \"Login exitoso\",\n  \"data\": {\n    \"token\": \"eyJhbGci...\",\n    \"expiresAt\": \"2025-07-21T02:00:00Z\",\n    \"user\": {\n      \"id\": 1,\n      \"username\": \"admin\",\n      \"isActive\": true,\n      \"lastLogin\": null\n    }\n  }\n}"
+            },
+            {
+              "name": "401 Credenciales invalidas",
+              "status": "Unauthorized",
+              "code": 401,
+              "body": "{\n  \"success\": false,\n  \"status\": 401,\n  \"message\": \"Usuario o contrasena incorrectos\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "Registrar usuario",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"nuevoUsuario\",\n  \"password\": \"Password123!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            },
+            "description": "Crea un nuevo usuario.\n\nBody: { username, password }\nResponse data: { id, username, isActive, createdAt }\n\nErrores: 400 campos vacios | 409 username ya existe"
+          },
+          "response": [
+            {
+              "name": "200 Usuario registrado",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"status\": 200,\n  \"message\": \"Usuario creado correctamente\",\n  \"data\": {\n    \"id\": 3,\n    \"username\": \"nuevoUsuario\",\n    \"isActive\": true,\n    \"createdAt\": \"2025-07-20T10:00:00\"\n  }\n}"
+            },
+            {
+              "name": "409 Username duplicado",
+              "status": "Conflict",
+              "code": 409,
+              "body": "{\n  \"success\": false,\n  \"status\": 409,\n  \"message\": \"El usuario 'admin' ya existe\",\n  \"data\": null\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Awards (Premios)",
+      "description": "CRUD completo de premios. Requiere JWT.\n\nSeed:\nID 1 Premio Mayor - Viaje todo incluido para dos personas\nID 2 Segundo Premio - Televisor Smart TV 55 pulgadas\nID 3 Tercer Premio - Smartphone ultima generacion\nID 4 Mencion de Honor - Gift card L. 1,000",
+      "item": [
+        {
+          "name": "Listar premios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/awards?page=1&pageSize=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "awards"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Lista premios paginados.\n\nResponse data: { items: [{id, awardName, description}], totalCount, page, pageSize }"
+          },
+          "response": [
+            {
+              "name": "200 Lista de premios",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"status\": 200,\n  \"message\": \"Premios obtenidos correctamente.\",\n  \"data\": {\n    \"items\": [\n      {\n        \"id\": 1,\n        \"awardName\": \"Premio Mayor\",\n        \"description\": \"Viaje todo incluido para dos personas\"\n      },\n      {\n        \"id\": 2,\n        \"awardName\": \"Segundo Premio\",\n        \"description\": \"Televisor Smart TV 55 pulgadas\"\n      },\n      {\n        \"id\": 3,\n        \"awardName\": \"Tercer Premio\",\n        \"description\": \"Smartphone ultima generacion\"\n      },\n      {\n        \"id\": 4,\n        \"awardName\": \"Mencion de Honor\",\n        \"description\": \"Gift card por valor de L. 1,000\"\n      }\n    ],\n    \"totalCount\": 4,\n    \"page\": 1,\n    \"pageSize\": 10\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Obtener premio por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/awards/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "awards",
+                "1"
+              ]
+            },
+            "description": "Obtiene un premio por ID.\n\nErrores: 404 no encontrado"
+          },
+          "response": [
+            {
+              "name": "200 Premio encontrado",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"status\": 200,\n  \"message\": \"Premio obtenido correctamente.\",\n  \"data\": {\n    \"id\": 1,\n    \"awardName\": \"Premio Mayor\",\n    \"description\": \"Viaje todo incluido\"\n  }\n}"
+            },
+            {
+              "name": "404 No encontrado",
+              "status": "Not Found",
+              "code": 404,
+              "body": "{\n  \"success\": false,\n  \"status\": 404,\n  \"message\": \"Premio con ID 99 no encontrado\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "Crear premio",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"awardname\": \"Premio Especial\",\n  \"description\": \"Descripcion del premio\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/awards",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "awards"
+              ]
+            },
+            "description": "Crea un premio.\n\nATENCION: el campo es 'awardname' (minuscula) segun CreateAwardRequest.\nBody: { awardname, description }\n\nErrores: 400 campos vacios"
+          },
+          "response": [
+            {
+              "name": "200 Premio creado",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"status\": 200,\n  \"message\": \"Premio creado correctamente.\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "Actualizar premio",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"awardName\": \"Premio Mayor Actualizado\",\n  \"description\": \"Nueva descripcion\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/awards/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "awards",
+                "1"
+              ]
+            },
+            "description": "Actualiza nombre y descripcion.\n\nNOTA: aqui el campo es 'awardName' (N mayuscula) segun UpdateAwardRequest.\nBody: { awardName, description }\n\nErrores: 400 campos vacios | 404 no encontrado"
+          },
+          "response": [
+            {
+              "name": "200 Premio actualizado",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"status\": 200,\n  \"message\": \"Premio actualizado correctamente.\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "Eliminar premio",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/awards/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "awards",
+                "1"
+              ]
+            },
+            "description": "Elimina un premio.\n\nErrores: 404 no encontrado | 409 premio en uso por sorteo"
+          },
+          "response": [
+            {
+              "name": "200 Premio eliminado",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"status\": 200,\n  \"message\": \"Premio eliminado correctamente.\",\n  \"data\": null\n}"
+            },
+            {
+              "name": "409 Premio en uso",
+              "status": "Conflict",
+              "code": 409,
+              "body": "{\n  \"success\": false,\n  \"status\": 409,\n  \"message\": \"No se puede eliminar el premio porque esta asociado a un sorteo\",\n  \"data\": null\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Lots (Lotes)",
+      "description": "Carga y consulta de lotes. Requiere JWT.\n\nEl Excel debe tener encabezados en fila 1. El parser acepta aliases en espanol e ingles.\n\nColumnas requeridas:\nCodigo de Cliente | Nombre del Cliente | Fecha de Transaccion\nMonto | Moneda | Comercio/Descripcion | Numero de Autorizacion",
+      "item": [
+        {
+          "name": "Listar lotes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/lots?page=1&pageSize=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "lots"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Lista lotes paginados.\n\nResponse data.items[]: { id, fileName, uploadDate, totalRecords, status, userId }\nEstados: PENDING | COMPLETED"
+          },
+          "response": [
+            {
+              "name": "200 Lista de lotes",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"status\": 200,\n  \"message\": \"Lotes obtenidos correctamente.\",\n  \"data\": {\n    \"items\": [\n      {\n        \"id\": 1,\n        \"fileName\": \"Transacciones_Sorteo_Prueba.xlsx\",\n        \"uploadDate\": \"2025-07-20T10:00:00\",\n        \"totalRecords\": 31,\n        \"status\": \"COMPLETED\",\n        \"userId\": 2\n      }\n    ],\n    \"totalCount\": 1,\n    \"page\": 1,\n    \"pageSize\": 10\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Obtener lote por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/lots/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "lots",
+                "1"
+              ]
+            },
+            "description": "Detalle de un lote.\n\nErrores: 404 no encontrado"
+          },
+          "response": [
+            {
+              "name": "200 Lote encontrado",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"status\": 200,\n  \"message\": \"Lote obtenido correctamente.\",\n  \"data\": {\n    \"id\": 1,\n    \"fileName\": \"Transacciones_Sorteo_Prueba.xlsx\",\n    \"uploadDate\": \"2025-07-20T10:00:00\",\n    \"totalRecords\": 31,\n    \"status\": \"COMPLETED\",\n    \"userId\": 2\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Listar transacciones",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/lots/transactions?page=1&pageSize=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "lots",
+                "transactions"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "20"
+                }
+              ]
+            },
+            "description": "Lista todas las transacciones del sistema, paginadas.\n\nResponse data.items[]: { id, clientCode, clientName, loteId, transactionDate, amount, currency, description, authNumber }"
+          },
+          "response": [
+            {
+              "name": "200 Lista de transacciones",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"status\": 200,\n  \"message\": \"Transacciones obtenidas correctamente.\",\n  \"data\": {\n    \"items\": [\n      {\n        \"id\": 1,\n        \"clientCode\": \"C001\",\n        \"clientName\": \"Juan Carlos Mejia\",\n        \"loteId\": 1,\n        \"transactionDate\": \"2025-11-05T00:00:00\",\n        \"amount\": 1500.0,\n        \"currency\": \"HNL\",\n        \"description\": \"AMAZON\",\n        \"authNumber\": \"AUTH100001\"\n      }\n    ],\n    \"totalCount\": 31,\n    \"page\": 1,\n    \"pageSize\": 20\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Subir lote (Excel)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "",
+                  "description": "Archivo .xlsx — usar Transacciones_Sorteo_Prueba.xlsx"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/lots/upload",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "lots",
+                "upload"
+              ]
+            },
+            "description": "Sube un Excel con transacciones.\n\nComportamiento:\n1. Parsea el archivo detectando columnas por alias\n2. Valida codigos de cliente contra BD\n3. Omite duplicados por authNumber\n4. Registra lote como COMPLETED\n\nResponse data: { lotId, fileName, totalRecords, status, uploadDate }\n\nErrores: 400 archivo vacio o no enviado"
+          },
+          "response": [
+            {
+              "name": "200 Lote procesado",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"status\": 200,\n  \"message\": \"Lote procesado correctamente\",\n  \"data\": {\n    \"lotId\": 2,\n    \"fileName\": \"Transacciones_Sorteo_Prueba.xlsx\",\n    \"totalRecords\": 31,\n    \"status\": \"COMPLETED\",\n    \"uploadDate\": \"2025-07-20T10:00:00\"\n  }\n}"
+            },
+            {
+              "name": "400 Archivo vacio",
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"success\": false,\n  \"status\": 400,\n  \"message\": \"El archivo es requerido\",\n  \"data\": null\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Giveaways (Sorteos)",
+      "description": "CRUD de sorteos + ejecucion. Requiere JWT.\n\nFlujo: 1) Crear premios. 2) Crear sorteo. 3) Ejecutar sorteo en fecha configurada.\n\nElegibilidad de clientes:\n  transactionDate BETWEEN trStartDate AND trEndDate\n  AND amount > 300\nUn cliente no puede ganar dos veces en el mismo sorteo.",
+      "item": [
+        {
+          "name": "Listar sorteos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/giveaways?page=1&pageSize=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "giveaways"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": "Lista sorteos paginados.\n\nResponse data.items[]: { id, giveawayDate, trStartDate, trEndDate, description }"
+          },
+          "response": [
+            {
+              "name": "200 Lista de sorteos",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"status\": 200,\n  \"message\": \"Sorteos obtenidos correctamente.\",\n  \"data\": {\n    \"items\": [\n      {\n        \"id\": 1,\n        \"giveawayDate\": \"2025-12-31T18:00:00\",\n        \"trStartDate\": \"2025-11-01T00:00:00\",\n        \"trEndDate\": \"2025-12-31T23:59:59\",\n        \"description\": \"Sorteo Navideno Nov-Dic 2025\"\n      }\n    ],\n    \"totalCount\": 1,\n    \"page\": 1,\n    \"pageSize\": 10\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Obtener sorteo por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/giveaways/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "giveaways",
+                "1"
+              ]
+            },
+            "description": "Sorteo con premios configurados.\n\nResponse data: { id, giveawayDate, trStartDate, trEndDate, description,\n  awards: [{id, awardId, awardName, winnersQuant}] }\n\nErrores: 404 no encontrado"
+          },
+          "response": [
+            {
+              "name": "200 Sorteo con premios",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"status\": 200,\n  \"message\": \"Sorteo obtenido correctamente.\",\n  \"data\": {\n    \"id\": 1,\n    \"giveawayDate\": \"2025-12-31T18:00:00\",\n    \"trStartDate\": \"2025-11-01T00:00:00\",\n    \"trEndDate\": \"2025-12-31T23:59:59\",\n    \"description\": \"Sorteo Navideno Nov-Dic 2025\",\n    \"awards\": [\n      {\n        \"id\": 1,\n        \"awardId\": 1,\n        \"awardName\": \"Premio Mayor\",\n        \"winnersQuant\": 1\n      },\n      {\n        \"id\": 2,\n        \"awardId\": 2,\n        \"awardName\": \"Segundo Premio\",\n        \"winnersQuant\": 1\n      }\n    ]\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Crear sorteo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"giveAwayDate\": \"2025-12-31T18:00:00\",\n  \"trStartDate\": \"2025-11-01T00:00:00\",\n  \"trEndDate\": \"2025-12-31T23:59:59\",\n  \"description\": \"Sorteo Navideno Nov-Dic 2025\",\n  \"awards\": [\n    {\n      \"awardId\": 1,\n      \"winnersQuant\": 1\n    },\n    {\n      \"awardId\": 2,\n      \"winnersQuant\": 1\n    },\n    {\n      \"awardId\": 3,\n      \"winnersQuant\": 2\n    },\n    {\n      \"awardId\": 4,\n      \"winnersQuant\": 3\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/giveaways",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "giveaways"
+              ]
+            },
+            "description": "Crea un sorteo con premios. No lo ejecuta.\n\nCampos:\n  giveAwayDate  datetime  Fecha y hora del sorteo\n  trStartDate   datetime  Inicio del periodo de transacciones\n  trEndDate     datetime  Fin del periodo de transacciones\n  description   string    Nombre del sorteo\n  awards[].awardId      int  ID del premio\n  awards[].winnersQuant int  Cantidad de ganadores para ese premio\n\nResponse data: { giveawayId, giveAwayDate, trStartDate, trEndDate, totalAwards }\n\nErrores: 400 lista de premios vacia"
+          },
+          "response": [
+            {
+              "name": "200 Sorteo creado",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"status\": 200,\n  \"message\": \"Sorteo creado correctamente\",\n  \"data\": {\n    \"giveawayId\": 1,\n    \"giveAwayDate\": \"2025-12-31T18:00:00\",\n    \"trStartDate\": \"2025-11-01T00:00:00\",\n    \"trEndDate\": \"2025-12-31T23:59:59\",\n    \"totalAwards\": 4\n  }\n}"
+            },
+            {
+              "name": "400 Sin premios",
+              "status": "Bad Request",
+              "code": 400,
+              "body": "{\n  \"success\": false,\n  \"status\": 400,\n  \"message\": \"Debe especificar al menos un premio para el sorteo\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "Actualizar sorteo",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"giveawayDate\": \"2025-12-31T20:00:00\",\n  \"trStartDate\": \"2025-11-01T00:00:00\",\n  \"trEndDate\": \"2025-12-31T23:59:59\",\n  \"description\": \"Sorteo Navideno Nov-Dic 2025 (actualizado)\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/giveaways/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "giveaways",
+                "1"
+              ]
+            },
+            "description": "Actualiza fechas y descripcion. No modifica premios asociados.\n\nErrores: 400 descripcion vacia | 404 no encontrado"
+          },
+          "response": [
+            {
+              "name": "200 Sorteo actualizado",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"status\": 200,\n  \"message\": \"Sorteo actualizado correctamente.\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "Eliminar sorteo",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/giveaways/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "giveaways",
+                "1"
+              ]
+            },
+            "description": "Elimina un sorteo.\n\nErrores: 404 no encontrado"
+          },
+          "response": [
+            {
+              "name": "200 Sorteo eliminado",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"status\": 200,\n  \"message\": \"Sorteo eliminado correctamente.\",\n  \"data\": null\n}"
+            }
+          ]
+        },
+        {
+          "name": "Ejecutar sorteo",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/giveaways/1/run",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "giveaways",
+                "1",
+                "run"
+              ]
+            },
+            "description": "Ejecuta el sorteo seleccionando ganadores aleatoriamente y los persiste en BD.\n\nValidaciones aplicadas en orden:\n1. Sorteo debe existir\n2. DateTime.Today >= giveaway.GiveawayDate — no ejecutar antes de la fecha programada\n3. No haber sido ejecutado antes\n4. Tener premios configurados\n5. Haber clientes elegibles (amount > 300 en el periodo)\n6. Clientes elegibles >= total ganadores necesarios\n\nClientes elegibles con seed Nov-Dic 2025 (amount > 300):\nC001 C002 C004 C005 C006 C007 C008 C009 C011 C012 C013 C014 C015 (13 clientes)\nNo elegibles: C003 (solo 250 nov) | C010 (150 y 200)\n\nResponse data:\n{ giveawayId, giveAwayDate, totalWinners,\n  winnersByAward: [{awardId, awardName, winnersQuant,\n    winners: [{clientId, clientCode, clientName}]}] }\n\nErrores:\n  400  sorteo no encontrado\n  409  fecha futura\n  409  ya ejecutado\n  409  sin premios configurados\n  409  sin clientes elegibles\n  409  clientes insuficientes"
+          },
+          "response": [
+            {
+              "name": "200 Ganadores seleccionados",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"status\": 200,\n  \"message\": \"Sorteo realizado con exito.\",\n  \"data\": {\n    \"giveawayId\": 1,\n    \"giveAwayDate\": \"2025-12-31T18:00:00\",\n    \"totalWinners\": 7,\n    \"winnersByAward\": [\n      {\n        \"awardId\": 1,\n        \"awardName\": \"Premio Mayor\",\n        \"winnersQuant\": 1,\n        \"winners\": [\n          {\n            \"clientId\": 7,\n            \"clientCode\": \"C007\",\n            \"clientName\": \"Carlos Humberto Reyes\"\n          }\n        ]\n      },\n      {\n        \"awardId\": 2,\n        \"awardName\": \"Segundo Premio\",\n        \"winnersQuant\": 1,\n        \"winners\": [\n          {\n            \"clientId\": 1,\n            \"clientCode\": \"C001\",\n            \"clientName\": \"Juan Carlos Mejia\"\n          }\n        ]\n      },\n      {\n        \"awardId\": 3,\n        \"awardName\": \"Tercer Premio\",\n        \"winnersQuant\": 2,\n        \"winners\": [\n          {\n            \"clientId\": 13,\n            \"clientCode\": \"C013\",\n            \"clientName\": \"Edwin Josue Paz\"\n          },\n          {\n            \"clientId\": 4,\n            \"clientCode\": \"C004\",\n            \"clientName\": \"Ana Patricia Soto\"\n          }\n        ]\n      },\n      {\n        \"awardId\": 4,\n        \"awardName\": \"Mencion de Honor\",\n        \"winnersQuant\": 3,\n        \"winners\": [\n          {\n            \"clientId\": 15,\n            \"clientCode\": \"C015\",\n            \"clientName\": \"Francisco Javier Mendoza\"\n          },\n          {\n            \"clientId\": 9,\n            \"clientCode\": \"C009\",\n            \"clientName\": \"Mario Antonio Cruz\"\n          },\n          {\n            \"clientId\": 11,\n            \"clientCode\": \"C011\",\n            \"clientName\": \"Jorge Alberto Nunez\"\n          }\n        ]\n      }\n    ]\n  }\n}"
+            },
+            {
+              "name": "409 Fecha futura",
+              "status": "Conflict",
+              "code": 409,
+              "body": "{\n  \"success\": false,\n  \"status\": 409,\n  \"message\": \"El sorteo 'Sorteo Navideno' esta programado para el 31/12/2025. No se puede ejecutar antes de esa fecha.\",\n  \"data\": null\n}"
+            },
+            {
+              "name": "409 Ya ejecutado",
+              "status": "Conflict",
+              "code": 409,
+              "body": "{\n  \"success\": false,\n  \"status\": 409,\n  \"message\": \"El sorteo ya fue ejecutado anteriormente\",\n  \"data\": null\n}"
+            },
+            {
+              "name": "409 Clientes insuficientes",
+              "status": "Conflict",
+              "code": 409,
+              "body": "{\n  \"success\": false,\n  \"status\": 409,\n  \"message\": \"Clientes elegibles insuficientes: se necesitan 7 ganadores pero solo hay 5\",\n  \"data\": null\n}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Reports (Reportes)",
+      "description": "Reportes de transacciones y ganadores. Requiere JWT.\n\nCada reporte tiene 3 formatos de salida:\n  (sin sufijo)  application/json  — consumo frontend (transacciones: paginado)\n  /excel        .xlsx             — descarga completa sin paginacion\n  /pdf          .pdf              — descarga completa sin paginacion\n\nPara descargar desde Postman: Send -> Save Response -> Save to a file",
+      "item": [
+        {
+          "name": "Transacciones por fecha — JSON",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/transactions?startDate=2025-11-01&endDate=2025-12-31&page=1&pageSize=20",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reports",
+                "transactions"
+              ],
+              "query": [
+                {
+                  "key": "startDate",
+                  "value": "2025-11-01",
+                  "description": "Formato yyyy-MM-dd"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2025-12-31",
+                  "description": "Formato yyyy-MM-dd"
+                },
+                {
+                  "key": "page",
+                  "value": "1",
+                  "description": "Numero de pagina (default 1)"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "20",
+                  "description": "Registros por pagina (default 20)"
+                }
+              ]
+            },
+            "description": "Transacciones del periodo en JSON con paginacion.\n\nResponse data: {\n  items: [ { transactionDate, clientCode, clientName, amount, currency, description, authNumber } ],\n  totalCount: int,\n  page: int,\n  pageSize: int,\n  totalPages: int,\n  hasNextPage: bool,\n  hasPreviousPage: bool\n}\n\nNOTA: Los endpoints /excel y /pdf NO estan paginados, siempre retornan el dataset completo."
+          },
+          "response": [
+            {
+              "name": "200 Transacciones paginadas",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"status\": 200,\n  \"message\": \"Reporte de transacciones del 2025-11-01 al 2025-12-31\",\n  \"data\": {\n    \"items\": [\n      {\n        \"transactionDate\": \"2025-11-05T00:00:00\",\n        \"clientCode\": \"C001\",\n        \"clientName\": \"Juan Carlos Mejia\",\n        \"amount\": 1500.0,\n        \"currency\": \"HNL\",\n        \"description\": \"AMAZON\",\n        \"authNumber\": \"AUTH100001\"\n      },\n      {\n        \"transactionDate\": \"2025-11-10T00:00:00\",\n        \"clientCode\": \"C002\",\n        \"clientName\": \"Maria Fernanda Lopez\",\n        \"amount\": 450.0,\n        \"currency\": \"HNL\",\n        \"description\": \"RETIRO ATM\",\n        \"authNumber\": \"AUTH100004\"\n      }\n    ],\n    \"totalCount\": 31,\n    \"page\": 1,\n    \"pageSize\": 20,\n    \"totalPages\": 2,\n    \"hasNextPage\": true,\n    \"hasPreviousPage\": false\n  }\n}"
+            }
+          ]
+        },
+        {
+          "name": "Transacciones por fecha — Excel",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/transactions/excel?startDate=2025-11-01&endDate=2025-12-31",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reports",
+                "transactions",
+                "excel"
+              ],
+              "query": [
+                {
+                  "key": "startDate",
+                  "value": "2025-11-01"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2025-12-31"
+                }
+              ]
+            },
+            "description": "Descarga .xlsx del reporte de transacciones.\n\nColumnas: Fecha | Codigo Cliente | Nombre Cliente | Monto | Moneda | Descripcion | No. Autorizacion"
+          },
+          "response": []
+        },
+        {
+          "name": "Transacciones por fecha — PDF",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/transactions/pdf?startDate=2025-11-01&endDate=2025-12-31",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reports",
+                "transactions",
+                "pdf"
+              ],
+              "query": [
+                {
+                  "key": "startDate",
+                  "value": "2025-11-01"
+                },
+                {
+                  "key": "endDate",
+                  "value": "2025-12-31"
+                }
+              ]
+            },
+            "description": "Descarga .pdf del reporte de transacciones.\n\nDiseno: orientacion horizontal, encabezado azul, tabla con filas alternadas, pie de pagina numerado."
+          },
+          "response": []
+        },
+        {
+          "name": "Ganadores por sorteo — JSON",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/giveaway-winners?date=2025-12-31",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reports",
+                "giveaway-winners"
+              ],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2025-12-31",
+                  "description": "Fecha del sorteo (giveawayDate). Formato yyyy-MM-dd"
+                }
+              ]
+            },
+            "description": "Ganadores del sorteo de esa fecha en JSON.\n\nResponse data[]: { clientCode, clientName, awardName, giveawayDate }\n\nNOTA: filtra por giveawayDate del sorteo, no por fecha de ejecucion."
+          },
+          "response": [
+            {
+              "name": "200 Ganadores JSON",
+              "status": "OK",
+              "code": 200,
+              "body": "{\n  \"success\": true,\n  \"status\": 200,\n  \"message\": \"Reporte de ganadores del sorteo 2025-12-31\",\n  \"data\": [\n    {\n      \"clientCode\": \"C007\",\n      \"clientName\": \"Carlos Humberto Reyes\",\n      \"awardName\": \"Premio Mayor\",\n      \"giveawayDate\": \"2025-12-31T18:00:00\"\n    },\n    {\n      \"clientCode\": \"C001\",\n      \"clientName\": \"Juan Carlos Mejia\",\n      \"awardName\": \"Segundo Premio\",\n      \"giveawayDate\": \"2025-12-31T18:00:00\"\n    },\n    {\n      \"clientCode\": \"C013\",\n      \"clientName\": \"Edwin Josue Paz\",\n      \"awardName\": \"Tercer Premio\",\n      \"giveawayDate\": \"2025-12-31T18:00:00\"\n    },\n    {\n      \"clientCode\": \"C004\",\n      \"clientName\": \"Ana Patricia Soto\",\n      \"awardName\": \"Tercer Premio\",\n      \"giveawayDate\": \"2025-12-31T18:00:00\"\n    }\n  ]\n}"
+            }
+          ]
+        },
+        {
+          "name": "Ganadores por sorteo — Excel",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/giveaway-winners/excel?date=2025-12-31",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reports",
+                "giveaway-winners",
+                "excel"
+              ],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2025-12-31"
+                }
+              ]
+            },
+            "description": "Descarga .xlsx del reporte de ganadores.\n\nColumnas: Codigo Cliente | Nombre Cliente | Premio | Fecha de Sorteo"
+          },
+          "response": []
+        },
+        {
+          "name": "Ganadores por sorteo — PDF",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reports/giveaway-winners/pdf?date=2025-12-31",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reports",
+                "giveaway-winners",
+                "pdf"
+              ],
+              "query": [
+                {
+                  "key": "date",
+                  "value": "2025-12-31"
+                }
+              ]
+            },
+            "description": "Descarga .pdf del reporte de ganadores.\n\nDiseno: orientacion vertical, encabezado verde, tabla con filas alternadas, pie de pagina numerado."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
