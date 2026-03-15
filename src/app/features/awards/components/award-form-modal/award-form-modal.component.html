@@ -1,0 +1,45 @@
+<app-modal [isOpen]="isOpen()" [title]="isEditing ? 'Editar Premio' : 'Nuevo Premio'"
+    [subtitle]="isEditing ? 'Modifica los datos del premio.' : 'Completa los datos para registrar un nuevo premio.'"
+    [showFooter]="true" [showConfirmButton]="true"
+    [confirmText]="isEditing ? 'Guardar cambios' : 'Crear premio'"
+    cancelText="Cancelar" [loading]="state.isSaving()" loadingText="Guardando"
+    [disableClose]="state.isSaving()" (onClose)="close()" (onConfirm)="awardForm.ngSubmit.emit()">
+
+    <form #awardForm="ngForm" (ngSubmit)="handleSubmit(awardForm)" class="flex flex-col gap-4 pt-1">
+
+        <!-- Nombre del premio -->
+        <app-input-wrapper>
+            <app-label for="awardName" label="Nombre del premio" [required]="true"></app-label>
+            <app-input
+                id="awardName" name="awardName" type="text"
+                [(ngModel)]="awardName"
+                [state]="nameCtrl.invalid && nameCtrl.touched ? 'error' : 'default'"
+                placeholder="Ej. Premio Mayor"
+                [fullWidth]="true"
+                [required]="true" #nameCtrl="ngModel">
+            </app-input>
+            <app-input-error
+                error="El nombre es obligatorio (mínimo 2 caracteres)."
+                [show]="!!(nameCtrl.invalid && nameCtrl.touched)">
+            </app-input-error>
+        </app-input-wrapper>
+
+        <!-- Descripción -->
+        <app-input-wrapper>
+            <app-label for="description" label="Descripción" [required]="true"></app-label>
+            <app-textarea
+                id="description" name="description"
+                [(ngModel)]="description"
+                [state]="descCtrl.invalid && descCtrl.touched ? 'error' : 'default'"
+                placeholder="Ej. Viaje todo incluido para dos personas"
+                [fullWidth]="true"
+                [required]="true" #descCtrl="ngModel">
+            </app-textarea>
+            <app-input-error
+                error="La descripción es obligatoria (mínimo 2 caracteres)."
+                [show]="!!(descCtrl.invalid && descCtrl.touched)">
+            </app-input-error>
+        </app-input-wrapper>
+
+    </form>
+</app-modal>

@@ -9,12 +9,14 @@ import { LotsMainPageComponent } from '@features/lots/pages/lots-main-page/lots-
 import { AllLotsPageComponent } from '@features/lots/pages/all-lots-page/all-lots-page.component';
 import { AllTransactionsPageComponent } from '@features/lots/pages/all-transactions-page/all-transactions-page.component';
 import { UploadLotPageComponent } from '@features/lots/pages/upload-lot-page/upload-lot-page.component';
+import { AwardListPageComponent } from '@features/awards/pages/award-list-page/award-list-page.component';
 import { authGuard } from './core/guards/auth.guard';
 
 // Rutas protegidas para el layout principal
 const protectedRoutes = [
     { path: 'technologies', component: TechListPageComponent },
     { path: 'technologies/:name', component: TechDetailPageComponent },
+    { path: 'awards', component: AwardListPageComponent },
     { path: 'lots', component: LotsMainPageComponent },
     { path: 'lots/all', component: AllLotsPageComponent },
     { path: 'lots/transactions', component: AllTransactionsPageComponent },

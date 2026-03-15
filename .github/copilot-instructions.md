@@ -413,6 +413,70 @@ readonly headers = ['ID', 'Nombre', 'Estado', ''];
 
 `<lucide-icon>` se usa libremente fuera de `app-button` (en zonas de drop, tablas, formularios, etc.).
 
+---
+
+### Formularios — componentes de inputs
+
+**Siempre** usar los componentes de `@shared/components/form-components/input/` en lugar de elementos nativos `<input>`, `<textarea>` o `<label>`.
+
+| Componente | Selector | Uso |
+|---|---|---|
+| `InputWrapperComponent` | `<app-input-wrapper>` | Contenedor que agrupa label + input + error |
+| `LabelComponent` | `<app-label>` | Etiqueta del campo; soporta `[required]` |
+| `InputComponent` | `<app-input>` | Input de texto; implementa `ControlValueAccessor` |
+| `TextareaComponent` | `<app-textarea>` | Textarea; implementa `ControlValueAccessor` |
+| `InputErrorComponent` | `<app-input-error>` | Mensaje de error; se muestra con `[show]` |
+
+**Patrón estándar en plantillas:**
+
+```html
+<!-- ✅ Correcto — campos de formulario -->
+<app-input-wrapper>
+    <app-label for="fieldId" label="Nombre del campo" [required]="true"></app-label>
+    <app-input
+        id="fieldId" name="fieldName" type="text"
+        [(ngModel)]="value"
+        [state]="ctrl.invalid && ctrl.touched ? 'error' : 'default'"
+        placeholder="Placeholder…"
+        [fullWidth]="true"
+        required #ctrl="ngModel">
+    </app-input>
+    <app-input-error
+        error="Mensaje de error"
+        [show]="ctrl.invalid && ctrl.touched">
+    </app-input-error>
+</app-input-wrapper>
+
+<!-- Para textarea: igual pero con <app-textarea> -->
+
+<!-- ❌ Incorrecto — nunca usar elementos nativos en formularios -->
+<!-- <input class="input ..." />  -->
+<!-- <textarea class="input ..."></textarea> -->
+<!-- <label>Nombre</label> -->
+```
+
+**Imports necesarios en el componente:**
+
+```ts
+import { InputComponent } from '@shared/components/form-components/input/input/input.component';
+import { TextareaComponent } from '@shared/components/form-components/input/textarea/textarea.component';
+import { LabelComponent } from '@shared/components/form-components/input/label/label.component';
+import { InputErrorComponent } from '@shared/components/form-components/input/input-error/input-error.component';
+import { InputWrapperComponent } from '@shared/components/form-components/input/input-wrapper/input-wrapper.component';
+```
+
+### app-modal — uso correcto
+
+El `ModalComponent` tiene `showConfirmButton = false` por defecto. **Siempre** pasar `[showConfirmButton]="true"` cuando se necesite el botón de confirmación.
+
+```html
+<!-- ✅ Correcto -->
+<app-modal [showFooter]="true" [showConfirmButton]="true" confirmText="Guardar" ...>
+
+<!-- ❌ Incorrecto — el botón confirmar no aparece -->
+<app-modal [showFooter]="true" confirmText="Guardar" ...>
+```
+
 ### Interceptores HTTP
 
 Todos los errores HTTP son capturados por `error.interceptor.ts` y mostrados automáticamente como toast. El token JWT se inyecta automáticamente por `auth.interceptor.ts` desde `localStorage` (`auth_token`). **No es necesario manejar errores HTTP en los servicios** más allá de retornar `false`/`null` en operaciones CRUD.
