@@ -46,7 +46,7 @@ export const SIDEBAR_CONFIG: {
             {
                 name: 'reports',
                 label: 'Reportes',
-                link: '/reports/transactions',
+                link: '/reports',
                 icon: FileText,
                 aria: 'Ir a Reportes',
             },

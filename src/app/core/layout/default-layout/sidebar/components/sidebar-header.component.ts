@@ -10,13 +10,14 @@ import { CommonModule } from '@angular/common';
          [ngClass]="collapsed ? 'justify-center' : 'justify-start'">
       <div class="flex items-center gap-3 overflow-hidden min-w-0">
         <div class="p-2 shadow-inner bg-gradient-to-r rounded-lg from-orange-500/30 to-green-600/30 flex-shrink-0">
-          <img src="assets/images/logos/bancocci_sm.png" 
+          <img src="assets/images/logos/bancocci_logo.png" 
                alt="BancoICI Logo"
                class="w-auto h-8 mx-auto object-fit-contain" />
         </div>
         @if (!collapsed) {
-          <div class="flex-col justify-center text-white flex overflow-hidden">
-            <span class="font-extrabold text-3xl whitespace-nowrap tracking-tighter">SGA</span>
+          <div class="flex-col justify-center text-white flex min-w-0 overflow-hidden">
+            <span class="font-bold text-base leading-tight tracking-tight truncate">Sistema de</span>
+            <span class="font-extrabold text-lg leading-tight tracking-tight truncate">Sorteos</span>
           </div>
         }
       </div>

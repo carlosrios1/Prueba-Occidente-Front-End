@@ -1,0 +1,123 @@
+<app-page-body-layout>
+
+    <!-- Header -->
+    <div header class="flex flex-col gap-5">
+        <app-page-header
+            title="Reporte de Ganadores"
+            description="Consulta los ganadores de un sorteo por fecha y exporta el resultado">
+            <div actions class="flex items-center gap-2">
+                <app-button
+                    appearance="outline" variant="secondary"
+                    [icon]="icons.FileSpreadsheet"
+                    [disabled]="!hasSearched() || isDownloading()"
+                    (onClick)="downloadExcel()">
+                    Excel
+                </app-button>
+                <app-button
+                    appearance="outline" variant="secondary"
+                    [icon]="icons.FileDown"
+                    [disabled]="!hasSearched() || isDownloading()"
+                    (onClick)="downloadPdf()">
+                    PDF
+                </app-button>
+            </div>
+        </app-page-header>
+    </div>
+
+    <!-- Body -->
+    <div body class="flex flex-col gap-5 motion-preset-slide-left">
+
+        <!-- Filtros -->
+        <app-card [overflow]="'visible'">
+            <app-card-body>
+                <div class="flex flex-col sm:flex-row items-end gap-3">
+                    <div class="flex-1 max-w-xs">
+                        <app-input-wrapper>
+                            <app-label label="Fecha del sorteo" [required]="true"></app-label>
+                            <app-date-picker
+                                [(ngModel)]="giveawayDate"
+                                placeholder="Selecciona la fecha del sorteo">
+                            </app-date-picker>
+                        </app-input-wrapper>
+                    </div>
+                    <app-button
+                        [icon]="icons.Search"
+                        [disabled]="!giveawayDate || isLoading()"
+                        (onClick)="search()">
+                        @if (isLoading()) { Buscando... } @else { Buscar }
+                    </app-button>
+                </div>
+            </app-card-body>
+        </app-card>
+
+        <!-- Tabla de resultados -->
+        @if (hasSearched()) {
+        <app-card [padding]="0">
+            <app-card-body>
+                <div class="flex flex-col">
+
+                    @if (isLoading()) {
+                    <div class="flex justify-center py-16">
+                        <span class="loading loading-spinner loading-md text-primary"></span>
+                    </div>
+                    } @else {
+
+                    <div class="border-y border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b border-gray-200/60 dark:border-neutral-800">
+                                    @for (h of headers; track $index) {
+                                    <th class="py-3 px-2 text-left text-sm font-medium text-black dark:text-neutral-100 tracking-tight"
+                                        [class.pl-4]="$index === 0">{{ h }}</th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 dark:divide-neutral-800">
+                                @for (w of winners(); track w.clientCode + w.awardName) {
+                                <tr class="group transition-all duration-300
+                                    hover:bg-gradient-to-r hover:from-green-50/30 hover:to-green-50/20
+                                    dark:hover:from-green-900/20 dark:hover:to-green-800/10
+                                    motion-preset-slide-down motion-duration-300">
+                                    <td appTableCell variant="first">{{ w.clientCode }}</td>
+                                    <td appTableCell variant="name">{{ w.clientName }}</td>
+                                    <td appTableCell>
+                                        <app-badge variant="warning" appearance="soft" size="small">
+                                            {{ w.awardName }}
+                                        </app-badge>
+                                    </td>
+                                    <td appTableCell>{{ w.giveawayDate | date:'dd/MM/yyyy' }}</td>
+                                    <td appTableCell>
+                                        <lucide-icon [img]="icons.Trophy"
+                                            class="size-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-yellow-500">
+                                        </lucide-icon>
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                        @if (winners().length === 0) {
+                        <div class="py-16 text-center">
+                            <div class="mx-auto w-16 h-16 bg-gray-100 dark:bg-base-100 rounded-full flex items-center justify-center mb-4">
+                                <svg class="w-8 h-8 text-gray-400 dark:text-gray-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">Sin ganadores para esta fecha</h3>
+                            <p class="text-sm text-gray-500">El sorteo aún no ha sido ejecutado o no existe para esta fecha</p>
+                        </div>
+                        }
+                    </div>
+
+                    }
+
+                </div>
+            </app-card-body>
+        </app-card>
+        }
+
+    </div>
+
+</app-page-body-layout>

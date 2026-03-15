@@ -12,6 +12,9 @@ import { UploadLotPageComponent } from '@features/lots/pages/upload-lot-page/upl
 import { AwardListPageComponent } from '@features/awards/pages/award-list-page/award-list-page.component';
 import { GiveawayListPageComponent } from '@features/giveaways/pages/giveaway-list-page/giveaway-list-page.component';
 import { GiveawayDetailPageComponent } from '@features/giveaways/pages/giveaway-detail-page/giveaway-detail-page.component';
+import { ReportTransactionsPageComponent } from '@features/reports/pages/report-transactions-page/report-transactions-page.component';
+import { ReportWinnersPageComponent } from '@features/reports/pages/report-winners-page/report-winners-page.component';
+import { ReportMainPageComponent } from '@features/reports/pages/report-main-page/report-main-page.component';
 import { authGuard } from './core/guards/auth.guard';
 
 // Rutas protegidas para el layout principal
@@ -25,6 +28,9 @@ const protectedRoutes = [
     { path: 'lots/upload', component: UploadLotPageComponent },
     { path: 'giveaways', component: GiveawayListPageComponent },
     { path: 'giveaways/:id', component: GiveawayDetailPageComponent },
+    { path: 'reports', component: ReportMainPageComponent },
+    { path: 'reports/transactions', component: ReportTransactionsPageComponent },
+    { path: 'reports/winners', component: ReportWinnersPageComponent },
 ].map(route => ({ ...route }));
 
 // Rutas de autenticación

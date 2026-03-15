@@ -1,0 +1,268 @@
+<app-page-body-layout>
+
+    <!-- Header ───────────────────────────────────────────────────────────── -->
+    <div header class="flex flex-col gap-5">
+        <app-page-header
+            title="Reportes"
+            description="Genera y exporta reportes del sistema de sorteos">
+            <div actions class="flex items-center gap-2">
+                <app-button
+                    appearance="outline" variant="secondary"
+                    [icon]="icons.Printer"
+                    [disabled]="!hasGenerated() || isDownloading()"
+                    (onClick)="print()">
+                    Imprimir
+                </app-button>
+                <app-button
+                    appearance="outline" variant="secondary"
+                    [icon]="icons.FileSpreadsheet"
+                    [disabled]="!hasGenerated() || isDownloading()"
+                    (onClick)="downloadExcel()">
+                    Excel
+                </app-button>
+                <app-button
+                    [icon]="icons.FileDown"
+                    [disabled]="!hasGenerated() || isDownloading()"
+                    (onClick)="downloadPdf()">
+                    PDF
+                </app-button>
+            </div>
+        </app-page-header>
+    </div>
+
+    <!-- Body ─────────────────────────────────────────────────────────────── -->
+    <div body class="flex flex-col gap-5 motion-preset-slide-left">
+
+        <!-- Filtros -->
+        <app-card [overflow]="'visible'">
+            <app-card-body>
+
+                <!-- Título sección filtros -->
+                <div class="flex items-center gap-2 mb-5">
+                    <lucide-icon [img]="icons.Filter" class="size-4 text-gray-500 dark:text-neutral-400"></lucide-icon>
+                    <h3 class="text-sm font-semibold text-gray-700 dark:text-neutral-300">Filtros del Reporte</h3>
+                </div>
+
+                <!-- Controles -->
+                <div class="flex flex-wrap items-end gap-4">
+
+                    <!-- Tipo de Reporte -->
+                    <div class="w-56">
+                        <app-input-wrapper>
+                            <app-label label="Tipo de Reporte"></app-label>
+                            <app-custom-select
+                                name="reportType"
+                                [(ngModel)]="reportType"
+                                [options]="reportTypeOptions"
+                                (ngModelChange)="onReportTypeChange()">
+                            </app-custom-select>
+                        </app-input-wrapper>
+                    </div>
+
+                    <!-- Selector de sorteo (ganadores) -->
+                    @if (reportType === 'winners') {
+                    <div class="min-w-72 flex-1 max-w-sm">
+                        <app-input-wrapper>
+                            <app-label label="Sorteo"></app-label>
+                            <app-custom-select
+                                name="selectedGiveawayId"
+                                [(ngModel)]="selectedGiveawayId"
+                                [options]="giveawayOptions"
+                                placeholder="Seleccionar sorteo">
+                            </app-custom-select>
+                        </app-input-wrapper>
+                    </div>
+                    }
+
+                    <!-- Rango de fechas (transacciones) -->
+                    @if (reportType === 'transactions') {
+                    <div class="min-w-48 flex-1">
+                        <app-input-wrapper>
+                            <app-label label="Fecha inicio" [required]="true"></app-label>
+                            <app-date-picker
+                                [(ngModel)]="startDate"
+                                placeholder="Fecha de inicio">
+                            </app-date-picker>
+                        </app-input-wrapper>
+                    </div>
+                    <div class="min-w-48 flex-1">
+                        <app-input-wrapper>
+                            <app-label label="Fecha fin" [required]="true"></app-label>
+                            <app-date-picker
+                                [(ngModel)]="endDate"
+                                placeholder="Fecha de fin">
+                            </app-date-picker>
+                        </app-input-wrapper>
+                    </div>
+                    }
+
+                    <!-- Botón generar -->
+                    <app-button
+                        [icon]="icons.FileText"
+                        [disabled]="!canGenerate || isLoading()"
+                        (onClick)="generate()">
+                        @if (isLoading()) { Generando... } @else { Generar Reporte }
+                    </app-button>
+
+                </div>
+            </app-card-body>
+        </app-card>
+
+        <!-- Resultados ──────────────────────────────────────────────────── -->
+        @if (hasGenerated()) {
+        <app-card [padding]="0">
+            <app-card-body>
+                <div class="flex flex-col">
+
+                    <!-- Cabecera del reporte -->
+                    <div class="flex items-start justify-between px-5 py-4 border-b border-gray-200 dark:border-neutral-800">
+                        <div>
+                            <h2 class="text-base font-bold text-gray-900 dark:text-neutral-100">
+                                @if (reportType === 'winners') { Reporte de Ganadores }
+                                @else { Reporte de Transacciones }
+                            </h2>
+                            <p class="text-sm text-gray-500 dark:text-neutral-400 mt-0.5">
+                                @if (reportType === 'winners') {
+                                    {{ selectedGiveawaySubtitle }}
+                                } @else {
+                                    {{ transactionsSubtitle }}
+                                }
+                            </p>
+                        </div>
+                        <div class="text-right shrink-0 ml-4">
+                            <span class="block text-[10px] uppercase tracking-widest text-gray-400">Generado el</span>
+                            <span class="text-lg font-bold text-gray-800 dark:text-neutral-200">
+                                {{ today | date:'d/M/yyyy' }}
+                            </span>
+                        </div>
+                    </div>
+
+                    @if (isLoading()) {
+                    <div class="flex justify-center py-16">
+                        <span class="loading loading-spinner loading-md text-primary"></span>
+                    </div>
+                    } @else {
+
+                    <!-- Tabla de ganadores -->
+                    @if (reportType === 'winners') {
+                    <div class="border-b border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b border-gray-200/60 dark:border-neutral-800">
+                                    @for (h of winnersHeaders; track $index) {
+                                    <th class="py-3 px-2 text-left text-sm font-medium text-black dark:text-neutral-100 tracking-tight"
+                                        [class.pl-4]="$index === 0">{{ h }}</th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 dark:divide-neutral-800">
+                                @for (w of winners(); track w.clientCode + w.awardName) {
+                                <tr class="group transition-all duration-300
+                                    hover:bg-gradient-to-r hover:from-green-50/30 hover:to-green-50/20
+                                    dark:hover:from-green-900/20 dark:hover:to-green-800/10
+                                    motion-preset-slide-down motion-duration-300">
+                                    <td appTableCell variant="first">{{ w.clientCode }}</td>
+                                    <td appTableCell variant="name">
+                                        <div class="flex items-center gap-2">
+                                            <lucide-icon [img]="icons.Trophy" class="size-4 text-yellow-500 shrink-0"></lucide-icon>
+                                            {{ w.clientName }}
+                                        </div>
+                                    </td>
+                                    <td appTableCell>
+                                        <app-badge variant="success" appearance="soft" size="small">
+                                            {{ w.awardName }}
+                                        </app-badge>
+                                    </td>
+                                    <td appTableCell>{{ w.giveawayDate | date:'dd \'de\' MMMM \'de\' yyyy' }}</td>
+                                    <td appTableCell></td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                        @if (winners().length === 0) {
+                        <div class="py-16 text-center">
+                            <div class="mx-auto w-16 h-16 bg-gray-100 dark:bg-base-100 rounded-full flex items-center justify-center mb-4">
+                                <lucide-icon [img]="icons.Trophy" class="size-8 text-gray-400 dark:text-gray-500"></lucide-icon>
+                            </div>
+                            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">Sin ganadores registrados</h3>
+                            <p class="text-sm text-gray-500">Este sorteo aún no ha sido ejecutado</p>
+                        </div>
+                        }
+                    </div>
+                    }
+
+                    <!-- Tabla de transacciones -->
+                    @if (reportType === 'transactions') {
+                    <div class="border-b border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b border-gray-200/60 dark:border-neutral-800">
+                                    @for (h of transactionsHeaders; track $index) {
+                                    <th class="py-3 px-2 text-left text-sm font-medium text-black dark:text-neutral-100 tracking-tight"
+                                        [class.pl-4]="$index === 0">{{ h }}</th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200 dark:divide-neutral-800">
+                                @for (item of items(); track item.authNumber) {
+                                <tr class="group transition-all duration-300
+                                    hover:bg-gradient-to-r hover:from-green-50/30 hover:to-green-50/20
+                                    dark:hover:from-green-900/20 dark:hover:to-green-800/10
+                                    motion-preset-slide-down motion-duration-300">
+                                    <td appTableCell variant="first">{{ item.transactionDate | date:'dd/MM/yyyy' }}</td>
+                                    <td appTableCell>{{ item.clientCode }}</td>
+                                    <td appTableCell variant="name">{{ item.clientName }}</td>
+                                    <td appTableCell>
+                                        <span class="font-semibold">{{ item.amount | number:'1.2-2' }}</span>
+                                    </td>
+                                    <td appTableCell>{{ item.currency }}</td>
+                                    <td appTableCell>{{ item.description }}</td>
+                                    <td appTableCell>{{ item.authNumber }}</td>
+                                    <td appTableCell>
+                                        <lucide-icon [img]="icons.ChevronRight"
+                                            class="size-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                        </lucide-icon>
+                                    </td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+
+                        @if (items().length === 0) {
+                        <div class="py-16 text-center">
+                            <div class="mx-auto w-16 h-16 bg-gray-100 dark:bg-base-100 rounded-full flex items-center justify-center mb-4">
+                                <svg class="w-8 h-8 text-gray-400 dark:text-gray-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                                    </path>
+                                </svg>
+                            </div>
+                            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">Sin transacciones en el período</h3>
+                            <p class="text-sm text-gray-500">Ajusta el rango de fechas e intenta de nuevo</p>
+                        </div>
+                        }
+                    </div>
+
+                    <!-- Paginación transacciones -->
+                    <div class="p-5">
+                        <app-table-pagination
+                            [actualPage]="pagination.actualPage()"
+                            [cantidadPorPagina]="pagination.itemsPerPage()"
+                            [totalItems]="pagination.totalItems()"
+                            [loading]="isLoading()"
+                            itemLabel="transacciones"
+                            (pageChange)="onPageChange($event)">
+                        </app-table-pagination>
+                    </div>
+                    }
+
+                    } <!-- end @else isLoading -->
+
+                </div>
+            </app-card-body>
+        </app-card>
+        }
+
+    </div>
+</app-page-body-layout>

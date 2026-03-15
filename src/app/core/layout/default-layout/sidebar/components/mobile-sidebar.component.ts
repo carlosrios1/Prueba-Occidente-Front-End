@@ -31,12 +31,12 @@ import { NavItem, SidebarNavItemComponent } from './sidebar-nav-item.component';
         <div class="flex items-center justify-between h-16 px-4">
           <div class="flex items-center gap-3">
             <div class="p-2 shadow-inner bg-gradient-to-r rounded-lg from-orange-500/30 to-green-600/30">
-              <img src="assets/images/logos/bancocci_sm.png" 
+              <img src="assets/images/logos/bancocci_logo.png" 
                    alt="BancoICI Logo"
                    class="w-auto h-8 mx-auto object-fit-contain" />
             </div>
             <div class="flex flex-col justify-center text-white">
-              <span class="font-extrabold text-3xl whitespace-nowrap tracking-tighter">SGA</span>
+              <span class="font-extrabold text-3xl whitespace-nowrap tracking-tighter">Sistema</span>
             </div>
           </div>
           <button class="p-2 rounded-lg text-white hover:bg-white/10 transition-colors" 
@@ -52,7 +52,7 @@ import { NavItem, SidebarNavItemComponent } from './sidebar-nav-item.component';
             <!-- Principal Section -->
             <div class="flex flex-col gap-1">
               <div class="px-3 py-2">
-                <span class="text-xs font-semibold text-neutral-500 uppercase tracking-wider">Principal</span>
+                <span class="text-xs font-semibold text-neutral-500 uppercase tracking-wider">Sorteos</span>
               </div>
               <ul class="flex flex-col gap-1">
                 @for (item of items; track $index) {
@@ -69,7 +69,7 @@ import { NavItem, SidebarNavItemComponent } from './sidebar-nav-item.component';
             @if (secondaryItems && secondaryItems.length > 0) {
             <div class="flex flex-col gap-1">
               <div class="px-3 py-2">
-                <span class="text-xs font-semibold text-neutral-500 uppercase tracking-wider">Secondary</span>
+                <span class="text-xs font-semibold text-neutral-500 uppercase tracking-wider">Otros</span>
               </div>
               <ul class="flex flex-col gap-1">
                 @for (item of secondaryItems; track $index) {

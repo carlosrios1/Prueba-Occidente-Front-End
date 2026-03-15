@@ -13,6 +13,7 @@ import { InputErrorComponent } from '@shared/components/form-components/input/in
 import { InputWrapperComponent } from '@shared/components/form-components/input/input-wrapper/input-wrapper.component';
 import { ButtonComponent } from '@shared/components/buttons/button/button.component';
 import { DatePickerComponent } from '@shared/components/date-picker/date-picker.component';
+import { CustomSelectComponent, SelectOption } from '@shared/components/form-components/input/custom-select/custom-select.component';
 
 import { GiveawaysStateService } from '../../services/giveaways-state.service';
 import { AwardsHttpService } from '@features/awards/services/awards-http.service';
@@ -37,6 +38,7 @@ interface AwardEntry {
         InputWrapperComponent,
         ButtonComponent,
         DatePickerComponent,
+        CustomSelectComponent,
     ],
     templateUrl: './giveaway-form-modal.component.html',
 })
@@ -118,6 +120,10 @@ export class GiveawayFormModalComponent implements OnChanges, OnInit {
             .filter((_, i) => i !== index)
             .map(e => e.awardId);
         return this.availableAwards.filter(a => !usedIds.includes(a.id));
+    }
+
+    availableOptionsFor(index: number): SelectOption[] {
+        return this.availableAwardsFor(index).map(a => ({ value: a.id, label: a.awardName }));
     }
 
     close(): void {

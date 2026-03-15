@@ -95,16 +95,13 @@
                 <!-- Seleccionar premio -->
                 <div class="flex-1 flex flex-col gap-1">
                     <label class="text-xs font-medium text-gray-600 dark:text-neutral-400">Premio</label>
-                    <select
+                    <app-custom-select
                         [name]="'awardId_' + $index"
                         [(ngModel)]="entry.awardId"
-                        required
-                        class="select select-sm w-full border border-gray-200 dark:border-neutral-700 rounded-md bg-white dark:bg-neutral-900 text-sm text-gray-900 dark:text-neutral-100">
-                        <option [value]="0" disabled>Seleccionar premio...</option>
-                        @for (award of availableAwardsFor($index); track award.id) {
-                        <option [value]="award.id">{{ award.awardName }}</option>
-                        }
-                    </select>
+                        [options]="availableOptionsFor($index)"
+                        placeholder="Seleccionar premio..."
+                        size="small">
+                    </app-custom-select>
                 </div>
 
                 <!-- Cantidad de ganadores -->
