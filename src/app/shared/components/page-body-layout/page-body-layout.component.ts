@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   template: `
     <div class="w-full flex flex-col gap-5">
-      <div class="w-full flex flex-col border-b dark:border-b-neutral-800 p-6 bg-white dark:bg-blackBG motion-preset-slide-down motion-duration-300 motion-delay-100 z-9">
+      <div class="w-full flex flex-col border-b dark:border-b-neutral-800 p-6 bg-white dark:bg-blackBG motion-preset-fade motion-duration-500 motion-ease-spring-smooth z-9">
         <ng-content select="[header]"></ng-content>
       </div>
       <div class="w-full flex flex-col dark:bg-blackBG px-6 gap-6 pb-6">
