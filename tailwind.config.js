@@ -18,6 +18,7 @@ module.exports = {
       fontFamily: {
         satoshi: ["Satoshi", "sans-serif"],
         inter: ["Inter", "sans-serif"],
+        "nunito-sans": ['"Nunito Sans"', "sans-serif"],
       },
       colors: {
         current: "currentColor",
