@@ -208,7 +208,7 @@ export class ReportMainPageComponent implements OnInit {
             let type: 'transactions' | 'winners';
             if (this.reportType === 'winners' && this.selectedGiveaway) {
                 type = 'winners';
-                params = params.set('date', this.toDateStr(new Date(this.selectedGiveaway.giveawayDate)));
+                params = params.set('giveawayId', this.selectedGiveaway.id);
             } else if (this.reportType === 'transactions' && this.startDate && this.endDate) {
                 type = 'transactions';
                 params = params.set('startDate', this.toDateStr(this.startDate))
