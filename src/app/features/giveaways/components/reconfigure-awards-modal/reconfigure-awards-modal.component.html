@@ -8,6 +8,7 @@
     [loading]="state.isReconfiguring()"
     loadingText="Reconfigurando..."
     [disableClose]="state.isReconfiguring()"
+    [confirmVariant]="'orange'"
     (onClose)="close()"
     (onConfirm)="handleConfirm()">
 </app-modal>

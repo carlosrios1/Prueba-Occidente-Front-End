@@ -184,6 +184,7 @@ export class ModalComponent implements OnInit, OnDestroy, OnChanges {
   @Input() closeOnBackdrop: boolean = true;
   @Input() size: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full' = 'md';
   @Input() isDeleteModal: boolean = false;
+  @Input() confirmVariant: 'danger' | 'black-inverted' | 'orange' = 'black-inverted';
   @Input() success: boolean = false;
   @Input() error: boolean = false;
   @Input() disableClose: boolean = false;
@@ -270,12 +271,11 @@ export class ModalComponent implements OnInit, OnDestroy, OnChanges {
   //   }
   // }
 
-  getVariant(): 'danger' | 'black-inverted' {
+  getVariant(): 'danger' | 'black-inverted' | 'orange' {
     if (this.isDeleteModal) {
-      return 'danger'
-    } else {
-      return 'black-inverted'
+      return 'danger';
     }
+    return this.confirmVariant;
   }
 
   getCancelButtonVariant(): 'default' | 'black-inverted' {

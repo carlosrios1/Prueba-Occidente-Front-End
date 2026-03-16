@@ -12,7 +12,7 @@
                     (onClick)="goToAllTransactions()">
                     Ver todas las transacciones
                 </app-button>
-                <app-button [variant]="'success'" [appearance]="'solid'" [type]="'button'" [icon]="icons.Upload "
+                <app-button [variant]="'orange'" [appearance]="'solid'" [type]="'button'" [icon]="icons.Upload "
                     (onClick)="openUpload()">
                     Cargar transacciones
                 </app-button>
@@ -57,6 +57,7 @@
 <app-modal [isOpen]="isModalOpen('upload')" title="Cargar archivo de transacciones" size="lg" [showFooter]="true"
     [showConfirmButton]="true" confirmText="Cargar transacciones"cancelText="Cancelar" [loading]="state.isUploading()"
     loadingText="Cargando..." [disableConfirm]="!selectedFile()" [disableClose]="state.isUploading()"
+    [confirmVariant]="'orange'"
     (onClose)="closeModal('upload')" (onConfirm)="onUploadConfirm()">
     <app-lot-upload [uploadError]="state.uploadError()" (fileChange)="onFileChange($event)" />
 </app-modal>

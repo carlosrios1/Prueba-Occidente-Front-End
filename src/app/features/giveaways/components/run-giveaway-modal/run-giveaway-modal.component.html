@@ -8,7 +8,7 @@
     [subtitle]="hasResult ? 'El sorteo se ejecutó correctamente. Aquí están los ganadores.' : (isShowingSuspense() ? '' : '¿Estás seguro de que deseas ejecutar el sorteo ahora? Esta acción seleccionará ganadores de forma aleatoria.')"
     [showFooter]="true" [showConfirmButton]="!hasResult && !isShowingSuspense()" confirmText="Ejecutar Sorteo"
     cancelText="Cerrar" [loading]="isShowingSuspense()" loadingText="Ejecutando sorteo..."
-    [disableClose]="isShowingSuspense()" (onClose)="close()" (onConfirm)="run()">
+    [disableClose]="isShowingSuspense()" [confirmVariant]="'orange'" (onClose)="close()" (onConfirm)="run()">
 
     <!-- Estado inicial: confirmación -->
     @if (!hasResult && !isShowingSuspense()) {

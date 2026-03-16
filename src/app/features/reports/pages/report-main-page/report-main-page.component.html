@@ -99,7 +99,7 @@
 
                     <!-- Botón generar -->
                     <app-button
-                        [variant]="'success'" [appearance]="'solid'"                        [icon]="icons.FileText"
+                        [variant]="'orange'" [appearance]="'solid'"                        [icon]="icons.FileText"
                         [disabled]="!canGenerate || isLoading()"
                         (onClick)="generate()">
                         @if (isLoading()) { Generando... } @else { Generar Reporte }

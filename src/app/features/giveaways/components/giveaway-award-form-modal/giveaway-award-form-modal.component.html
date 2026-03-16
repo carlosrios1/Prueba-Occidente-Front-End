@@ -5,6 +5,7 @@
     [showFooter]="true" [showConfirmButton]="true"
     [confirmText]="isEditing ? 'Guardar cambios' : 'Agregar'"
     cancelText="Cancelar"
+    [confirmVariant]="'orange'"
     (onClose)="close()" (onConfirm)="awardForm.ngSubmit.emit()">
 
     <form #awardForm="ngForm" (ngSubmit)="handleSubmit(awardForm)" class="flex flex-col gap-4 pt-1">

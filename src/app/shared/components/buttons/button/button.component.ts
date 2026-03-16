@@ -25,7 +25,7 @@ export class ButtonComponent {
     @Input() disabled: boolean = false;
 
     /** Variante de color del botón */
-    @Input() variant: 'primary' | 'secondary' | 'neutral' | 'default' | 'danger' | 'success' | 'black' | 'black-inverted' = 'default';
+    @Input() variant: 'primary' | 'secondary' | 'neutral' | 'default' | 'danger' | 'success' | 'black' | 'black-inverted' | 'orange' = 'default';
 
     /** Estilo de apariencia del botón */
     @Input() appearance: 'solid' | 'soft' | 'outline' | 'text' = 'solid';
@@ -208,6 +208,8 @@ export class ButtonComponent {
                     return 'bg-neutral-950 text-neutral-100 hover:bg-neutral-800 dark:bg-neutral-700/15 dark:text-neutral-100 dark:border dark:border-neutral-800 dark:hover:bg-neutral-800';
                 case 'black-inverted':
                     return 'bg-neutral-900 text-neutral-100 border border-neutral-900 hover:bg-neutral-800 dark:bg-neutral-100 dark:text-neutral-900 dark:border dark:border-neutral-200 dark:hover:bg-neutral-200';
+                case 'orange':
+                    return 'bg-orangeBO text-white hover:bg-orangeBO/85 active:bg-orangeBO/75 dark:bg-orangeBO dark:hover:bg-orangeBO/85 focus-visible:ring-orangeBO/50';
                 default:
                     return 'bg-white text-neutral-900 border border-neutral-300 hover:bg-neutral-50 active:bg-neutral-100 dark:bg-neutral-800 dark:text-neutral-100 dark:border-neutral-600 dark:hover:bg-neutral-700 dark:active:bg-neutral-600';
             }
@@ -232,6 +234,8 @@ export class ButtonComponent {
                     return 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200 active:bg-neutral-300 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:active:bg-neutral-600';
                 case 'black':
                     return 'bg-neutral-950/10 text-neutral-500 hover:bg-neutral-950/20 dark:bg-neutral-700/15 dark:text-neutral-100 dark:border dark:border-neutral-800 dark:hover:bg-neutral-800';
+                case 'orange':
+                    return 'bg-orange-100 text-orangeBO hover:bg-orange-200 active:bg-orange-300 dark:bg-orangeBO/10 dark:text-orangeBO dark:hover:bg-orangeBO/25 focus-visible:ring-orangeBO/50';
                 default:
                     return 'bg-neutral-100 text-neutral-700 hover:bg-neutral-200 active:bg-neutral-300 dark:bg-neutral-800 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:active:bg-neutral-600';
             }
@@ -256,6 +260,8 @@ export class ButtonComponent {
                     return 'bg-transparent text-neutral-700 border border-neutral-300 hover:bg-neutral-50 active:bg-neutral-100 dark:text-neutral-300 dark:border-neutral-600 dark:hover:bg-neutral-800 dark:active:bg-neutral-700';
                 case 'black':
                     return 'bg-transparent text-neutral-800 border border-neutral-200 hover:bg-neutral-50 active:bg-neutral-100 dark:text-neutral-300 dark:border-neutral-800 dark:hover:bg-neutral-800 dark:active:bg-neutral-700';
+                case 'orange':
+                    return 'bg-transparent text-orangeBO border border-orangeBO hover:bg-orange-50 active:bg-orange-100 dark:text-orangeBO dark:border-orangeBO dark:hover:bg-orangeBO/10 dark:active:bg-orangeBO/20 focus-visible:ring-orangeBO/50';
                 default:
                     return 'bg-transparent text-neutral-700 border border-neutral-300 hover:bg-neutral-50 active:bg-neutral-100 dark:text-neutral-300 dark:border-neutral-600 dark:hover:bg-neutral-800 dark:active:bg-neutral-700';
             }
@@ -280,6 +286,8 @@ export class ButtonComponent {
                     return 'bg-transparent text-neutral-700 hover:bg-neutral-100 active:bg-neutral-200 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:active:bg-neutral-700';
                 case 'black':
                     return 'bg-transparent text-neutral-800 hover:bg-neutral-50 active:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:active:bg-neutral-700';
+                case 'orange':
+                    return 'bg-transparent text-orangeBO hover:bg-orange-50 active:bg-orange-100 dark:text-orangeBO/90 dark:hover:bg-orangeBO/10 dark:active:bg-orangeBO/20 focus-visible:ring-orangeBO/50';
                 default:
                     return 'bg-transparent text-neutral-700 hover:bg-neutral-100 active:bg-neutral-200 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:active:bg-neutral-700';
             }
