@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { LucideAngularModule, X, ArrowLeft, ArrowRight } from 'lucide-angular';
 import { SidebarHeaderComponent } from './components/sidebar-header.component';
 import { SidebarNavItemComponent } from './components/sidebar-nav-item.component';
+import { MobileSidebarComponent } from './components/mobile-sidebar.component';
 import { SIDEBAR_CONFIG } from '../../../config/sidebar.config';
 
 @Component({
@@ -14,15 +15,9 @@ import { SIDEBAR_CONFIG } from '../../../config/sidebar.config';
     LucideAngularModule,
     SidebarHeaderComponent,
     SidebarNavItemComponent,
+    MobileSidebarComponent,
   ],
   templateUrl: './sidebar.component.html',
-  styles: [`
-    .sidebar-mobile-hidden { transform: translateX(-100%); }
-    @media (min-width: 768px) {
-      .sidebar-mobile-hidden { transform: translateX(0); }
-      .sidebar-desktop-collapsed { width: 80px; }
-    }
-  `]
 })
 export class SidebarComponent {
   isCollapsed = false;

@@ -22,7 +22,7 @@ import { NavItem, SidebarNavItemComponent } from './sidebar-nav-item.component';
     </div>
 
     <!-- Sidebar Mobile -->
-    <aside class="fixed inset-y-0 left-0 z-[99999] w-64 bg-neutral-950 transform transition-transform duration-300 ease-in-out md:hidden"
+    <aside class="fixed inset-y-0 left-0 z-[99999] w-64 bg-green-800 transform transition-transform duration-300 ease-in-out md:hidden"
            [class.translate-x-0]="isOpen" 
            [class.-translate-x-full]="!isOpen">
 

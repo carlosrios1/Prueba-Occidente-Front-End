@@ -6,9 +6,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="flex flex-col items-center justify-center overflow-hidden border-b border-white/10 px-4 gap-2"
-         [class.h-24]="!collapsed && !compact"
-         [class.h-16]="collapsed || compact">
+    <div class="flex flex-col items-center justify-center overflow-hidden border-b border-white/10 px-4 gap-2 h-24">
       <!-- Logo siempre centrado, 20% más grande (h-8 → h-10) -->
       <div class="flex-shrink-0 p-1.5 rounded-xl ">
         <img src="assets/images/logos/bancocci_logo.png"
