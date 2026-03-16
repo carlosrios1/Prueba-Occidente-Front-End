@@ -1,15 +1,13 @@
-<app-modal
-    [isOpen]="isOpen()"
-    title="Eliminar Sorteo"
+<app-modal [isOpen]="isOpen()" title="Eliminar Sorteo"
     [subtitle]="'¿Estás seguro de que deseas eliminar el sorteo <strong>' + (giveaway?.description ?? '') + '</strong>? Esta acción no se puede deshacer.'"
-    [showFooter]="true" [showConfirmButton]="true"
-    confirmText="Eliminar" cancelText="Cancelar"
-    [loading]="state.isDeleting()" loadingText="Eliminando"
-    [isDeleteModal]="true" [disableClose]="state.isDeleting()"
+    [showFooter]="true" [showConfirmButton]="true" confirmText="Eliminar" cancelText="Cancelar"
+    [loading]="state.isDeleting()" loadingText="Eliminando" [isDeleteModal]="true" [disableClose]="state.isDeleting()"
     (onClose)="close()" (onConfirm)="handleDelete()">
     @if (errorMessage()) {
-    <div class="flex items-start gap-3 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
-        <lucide-icon [img]="icons.AlertCircle" class="size-4 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5"></lucide-icon>
+    <div
+        class="flex items-start gap-3 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
+        <lucide-icon [img]="icons.AlertCircle"
+            class="size-4 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5"></lucide-icon>
         <p class="text-sm text-red-800 dark:text-red-300">{{ errorMessage() }}</p>
     </div>
     }

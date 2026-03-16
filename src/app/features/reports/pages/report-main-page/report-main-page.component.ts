@@ -212,7 +212,7 @@ export class ReportMainPageComponent implements OnInit {
             } else if (this.reportType === 'transactions' && this.startDate && this.endDate) {
                 type = 'transactions';
                 params = params.set('startDate', this.toDateStr(this.startDate))
-                               .set('endDate', this.toDateStr(this.endDate));
+                    .set('endDate', this.toDateStr(this.endDate));
             } else {
                 return;
             }

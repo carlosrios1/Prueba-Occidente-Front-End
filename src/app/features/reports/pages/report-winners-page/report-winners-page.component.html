@@ -2,22 +2,15 @@
 
     <!-- Header -->
     <div header class="flex flex-col gap-5">
-        <app-page-header
-            title="Reporte de Ganadores"
+        <app-page-header title="Reporte de Ganadores"
             description="Consulta los ganadores de un sorteo por ID y exporta el resultado">
             <div actions class="flex items-center gap-2">
-                <app-button
-                    appearance="outline" variant="secondary"
-                    [icon]="icons.FileSpreadsheet"
-                    [disabled]="!hasSearched() || isDownloading()"
-                    (onClick)="downloadExcel()">
+                <app-button appearance="outline" variant="secondary" [icon]="icons.FileSpreadsheet"
+                    [disabled]="!hasSearched() || isDownloading()" (onClick)="downloadExcel()">
                     Excel
                 </app-button>
-                <app-button
-                    appearance="outline" variant="secondary"
-                    [icon]="icons.FileDown"
-                    [disabled]="!hasSearched() || isDownloading()"
-                    (onClick)="downloadPdf()">
+                <app-button appearance="outline" variant="secondary" [icon]="icons.FileDown"
+                    [disabled]="!hasSearched() || isDownloading()" (onClick)="downloadPdf()">
                     PDF
                 </app-button>
             </div>
@@ -34,20 +27,12 @@
                     <div class="flex-1 max-w-xs">
                         <app-input-wrapper>
                             <app-label label="ID del sorteo" [required]="true"></app-label>
-                            <app-input
-                                id="giveawayId"
-                                name="giveawayId"
-                                type="number"
-                                [(ngModel)]="giveawayId"
-                                placeholder="Ej. 1"
-                                [fullWidth]="true">
+                            <app-input id="giveawayId" name="giveawayId" type="number" [(ngModel)]="giveawayId"
+                                placeholder="Ej. 1" [fullWidth]="true">
                             </app-input>
                         </app-input-wrapper>
                     </div>
-                    <app-button
-                        [icon]="icons.Search"
-                        [disabled]="!giveawayId || isLoading()"
-                        (onClick)="search()">
+                    <app-button [icon]="icons.Search" [disabled]="!giveawayId || isLoading()" (onClick)="search()">
                         @if (isLoading()) { Buscando... } @else { Buscar }
                     </app-button>
                 </div>
@@ -102,14 +87,17 @@
 
                         @if (winners().length === 0) {
                         <div class="py-16 text-center">
-                            <div class="mx-auto w-16 h-16 bg-gray-100 dark:bg-base-100 rounded-full flex items-center justify-center mb-4">
-                                <svg class="w-8 h-8 text-gray-400 dark:text-gray-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div
+                                class="mx-auto w-16 h-16 bg-gray-100 dark:bg-base-100 rounded-full flex items-center justify-center mb-4">
+                                <svg class="w-8 h-8 text-gray-400 dark:text-gray-100" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
                                     </path>
                                 </svg>
                             </div>
-                            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">Sin ganadores para este sorteo</h3>
+                            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">Sin ganadores para
+                                este sorteo</h3>
                             <p class="text-sm text-gray-500">El sorteo aún no ha sido ejecutado o el ID no existe</p>
                         </div>
                         }

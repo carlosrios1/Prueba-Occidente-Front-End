@@ -1,25 +1,19 @@
 <app-modal [isOpen]="isOpen()" [title]="isEditing ? 'Editar Premio' : 'Nuevo Premio'"
     [subtitle]="isEditing ? 'Modifica los datos del premio.' : 'Completa los datos para registrar un nuevo premio.'"
-    [showFooter]="true" [showConfirmButton]="true"
-    [confirmText]="isEditing ? 'Guardar cambios' : 'Crear premio'"
-    cancelText="Cancelar" [loading]="state.isSaving()" loadingText="Guardando"
-    [disableClose]="state.isSaving()" (onClose)="close()" (onConfirm)="awardForm.ngSubmit.emit()">
+    [showFooter]="true" [showConfirmButton]="true" [confirmText]="isEditing ? 'Guardar cambios' : 'Crear premio'"
+    cancelText="Cancelar" [loading]="state.isSaving()" loadingText="Guardando" [disableClose]="state.isSaving()"
+    (onClose)="close()" (onConfirm)="awardForm.ngSubmit.emit()">
 
     <form #awardForm="ngForm" (ngSubmit)="handleSubmit(awardForm)" class="flex flex-col gap-4 pt-1">
 
         <!-- Nombre del premio -->
         <app-input-wrapper>
             <app-label for="awardName" label="Nombre del premio" [required]="true"></app-label>
-            <app-input
-                id="awardName" name="awardName" type="text"
-                [(ngModel)]="awardName"
-                [state]="nameCtrl.invalid && nameCtrl.touched ? 'error' : 'default'"
-                placeholder="Ej. Premio Mayor"
-                [fullWidth]="true"
-                [required]="true" #nameCtrl="ngModel">
+            <app-input id="awardName" name="awardName" type="text" [(ngModel)]="awardName"
+                [state]="nameCtrl.invalid && nameCtrl.touched ? 'error' : 'default'" placeholder="Ej. Premio Mayor"
+                [fullWidth]="true" [required]="true" #nameCtrl="ngModel">
             </app-input>
-            <app-input-error
-                error="El nombre es obligatorio (mínimo 2 caracteres)."
+            <app-input-error error="El nombre es obligatorio (mínimo 2 caracteres)."
                 [show]="!!(nameCtrl.invalid && nameCtrl.touched)">
             </app-input-error>
         </app-input-wrapper>
@@ -27,16 +21,12 @@
         <!-- Descripción -->
         <app-input-wrapper>
             <app-label for="description" label="Descripción" [required]="true"></app-label>
-            <app-textarea
-                id="description" name="description"
-                [(ngModel)]="description"
+            <app-textarea id="description" name="description" [(ngModel)]="description"
                 [state]="descCtrl.invalid && descCtrl.touched ? 'error' : 'default'"
-                placeholder="Ej. Viaje todo incluido para dos personas"
-                [fullWidth]="true"
-                [required]="true" #descCtrl="ngModel">
+                placeholder="Ej. Viaje todo incluido para dos personas" [fullWidth]="true" [required]="true"
+                #descCtrl="ngModel">
             </app-textarea>
-            <app-input-error
-                error="La descripción es obligatoria (mínimo 2 caracteres)."
+            <app-input-error error="La descripción es obligatoria (mínimo 2 caracteres)."
                 [show]="!!(descCtrl.invalid && descCtrl.touched)">
             </app-input-error>
         </app-input-wrapper>
@@ -44,8 +34,10 @@
     </form>
 
     @if (errorMessage()) {
-    <div class="flex items-start gap-3 p-3 mt-2 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
-        <lucide-icon [img]="icons.AlertCircle" class="size-4 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5"></lucide-icon>
+    <div
+        class="flex items-start gap-3 p-3 mt-2 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
+        <lucide-icon [img]="icons.AlertCircle"
+            class="size-4 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5"></lucide-icon>
         <p class="text-sm text-red-800 dark:text-red-300">{{ errorMessage() }}</p>
     </div>
     }

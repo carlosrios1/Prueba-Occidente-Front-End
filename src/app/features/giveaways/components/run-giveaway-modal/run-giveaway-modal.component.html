@@ -1,21 +1,14 @@
 <!-- Confeti de ganadores (capa fija sobre toda la pantalla) -->
 @if (showConfetti()) {
-    <app-giveaway-confetti />
+<app-giveaway-confetti />
 }
 
-<app-modal
-    [isOpen]="isOpen()"
+<app-modal [isOpen]="isOpen()"
     [title]="hasResult ? '🎉 Sorteo Realizado' : (isShowingSuspense() ? '🎰 Realizando Sorteo' : 'Realizar Sorteo')"
     [subtitle]="hasResult ? 'El sorteo se ejecutó correctamente. Aquí están los ganadores.' : (isShowingSuspense() ? '' : '¿Estás seguro de que deseas ejecutar el sorteo ahora? Esta acción seleccionará ganadores de forma aleatoria.')"
-    [showFooter]="true"
-    [showConfirmButton]="!hasResult && !isShowingSuspense()"
-    confirmText="Ejecutar Sorteo"
-    cancelText="Cerrar"
-    [loading]="isShowingSuspense()"
-    loadingText="Ejecutando sorteo..."
-    [disableClose]="isShowingSuspense()"
-    (onClose)="close()"
-    (onConfirm)="run()">
+    [showFooter]="true" [showConfirmButton]="!hasResult && !isShowingSuspense()" confirmText="Ejecutar Sorteo"
+    cancelText="Cerrar" [loading]="isShowingSuspense()" loadingText="Ejecutando sorteo..."
+    [disableClose]="isShowingSuspense()" (onClose)="close()" (onConfirm)="run()">
 
     <!-- Estado inicial: confirmación -->
     @if (!hasResult && !isShowingSuspense()) {
@@ -28,8 +21,10 @@
             Los clientes deben tener transacciones en el período configurado con monto mayor a 300.
         </p>
         @if (errorMessage()) {
-        <div class="flex items-start gap-3 p-3 w-full bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
-            <lucide-icon [img]="icons.AlertCircle" class="size-4 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5"></lucide-icon>
+        <div
+            class="flex items-start gap-3 p-3 w-full bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-800">
+            <lucide-icon [img]="icons.AlertCircle"
+                class="size-4 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5"></lucide-icon>
             <p class="text-sm text-red-800 dark:text-red-300">{{ errorMessage() }}</p>
         </div>
         }
@@ -38,7 +33,7 @@
 
     <!-- Animación de suspenso -->
     @if (isShowingSuspense()) {
-        <app-giveaway-suspense />
+    <app-giveaway-suspense />
     }
 
     <!-- Resultados del sorteo -->
@@ -46,8 +41,10 @@
     <div class="flex flex-col gap-4 pt-2 max-h-96 overflow-y-auto">
 
         <!-- Resumen -->
-        <div class="flex items-center gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
-            <lucide-icon [img]="icons.Star" class="size-5 text-green-600 dark:text-green-400 flex-shrink-0"></lucide-icon>
+        <div
+            class="flex items-center gap-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-800">
+            <lucide-icon [img]="icons.Star"
+                class="size-5 text-green-600 dark:text-green-400 flex-shrink-0"></lucide-icon>
             <p class="text-sm text-green-800 dark:text-green-300">
                 <strong>{{ result.totalWinners }}</strong> ganadores seleccionados exitosamente.
             </p>
@@ -59,16 +56,20 @@
             <div class="flex items-center gap-2">
                 <lucide-icon [img]="icons.Trophy" class="size-4 text-yellow-500"></lucide-icon>
                 <span class="text-sm font-semibold text-gray-900 dark:text-neutral-100">{{ group.awardName }}</span>
-                <span class="text-xs text-gray-500">({{ group.winnersQuant }} {{ group.winnersQuant === 1 ? 'ganador' : 'ganadores' }})</span>
+                <span class="text-xs text-gray-500">({{ group.winnersQuant }} {{ group.winnersQuant === 1 ? 'ganador' :
+                    'ganadores' }})</span>
             </div>
             <div class="flex flex-col gap-1 pl-6">
                 @for (winner of group.winners; track winner.clientId) {
                 <div class="flex items-center gap-2 p-2 bg-gray-50 dark:bg-neutral-800 rounded-md">
-                    <div class="w-7 h-7 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center flex-shrink-0">
-                        <lucide-icon [img]="icons.Users" class="size-3.5 text-green-600 dark:text-green-400"></lucide-icon>
+                    <div
+                        class="w-7 h-7 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+                        <lucide-icon [img]="icons.Users"
+                            class="size-3.5 text-green-600 dark:text-green-400"></lucide-icon>
                     </div>
                     <div class="flex flex-col">
-                        <span class="text-xs font-medium text-gray-900 dark:text-neutral-100">{{ winner.clientName }}</span>
+                        <span class="text-xs font-medium text-gray-900 dark:text-neutral-100">{{ winner.clientName
+                            }}</span>
                         <span class="text-xs text-gray-500 dark:text-neutral-400">{{ winner.clientCode }}</span>
                     </div>
                 </div>

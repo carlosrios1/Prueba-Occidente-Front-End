@@ -6,23 +6,18 @@
         <div class="h-16 bg-gray-100 dark:bg-neutral-800 rounded-xl animate-pulse"></div>
         }
         @if (detailState.giveaway(); as g) {
-        <app-page-header
-            [title]="g.description"
+        <app-page-header [title]="g.description"
             [description]="'Sorteo programado para el ' + (g.giveawayDate | date:'dd/MM/yyyy HH:mm')">
             <div actions class="flex items-center gap-2">
                 <app-button appearance="outline" [icon]="icons.Pencil" variant="secondary"
-                    [disabled]="detailState.hasWinners()"
-                    (onClick)="openEditGiveaway()">
+                    [disabled]="detailState.hasWinners()" (onClick)="openEditGiveaway()">
                     Editar
                 </app-button>
                 <app-button appearance="outline" [icon]="icons.Trash2" variant="danger"
-                    [disabled]="detailState.hasWinners()"
-                    (onClick)="openDeleteGiveaway()">
+                    [disabled]="detailState.hasWinners()" (onClick)="openDeleteGiveaway()">
                     Eliminar
                 </app-button>
-                <app-button [icon]="icons.Play"
-                    [disabled]="detailState.hasWinners()"
-                    (onClick)="openRunModal()">
+                <app-button [icon]="icons.Play" [disabled]="detailState.hasWinners()" (onClick)="openRunModal()">
                     Realizar Sorteo
                 </app-button>
             </div>
@@ -47,20 +42,27 @@
             <app-card-body>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div class="flex flex-col gap-1">
-                        <span class="text-xs font-medium text-gray-500 dark:text-neutral-400 uppercase tracking-wider">Fecha del Sorteo</span>
-                        <span class="text-sm font-semibold text-gray-900 dark:text-neutral-100 flex items-center gap-1.5">
+                        <span
+                            class="text-xs font-medium text-gray-500 dark:text-neutral-400 uppercase tracking-wider">Fecha
+                            del Sorteo</span>
+                        <span
+                            class="text-sm font-semibold text-gray-900 dark:text-neutral-100 flex items-center gap-1.5">
                             <lucide-icon [img]="icons.Calendar" class="size-4 text-green-500"></lucide-icon>
                             {{ g.giveawayDate | date:'dd/MM/yyyy HH:mm' }}
                         </span>
                     </div>
                     <div class="flex flex-col gap-1">
-                        <span class="text-xs font-medium text-gray-500 dark:text-neutral-400 uppercase tracking-wider">Inicio Período</span>
+                        <span
+                            class="text-xs font-medium text-gray-500 dark:text-neutral-400 uppercase tracking-wider">Inicio
+                            Período</span>
                         <span class="text-sm font-semibold text-gray-900 dark:text-neutral-100">
                             {{ g.trStartDate | date:'dd/MM/yyyy' }}
                         </span>
                     </div>
                     <div class="flex flex-col gap-1">
-                        <span class="text-xs font-medium text-gray-500 dark:text-neutral-400 uppercase tracking-wider">Fin Período</span>
+                        <span
+                            class="text-xs font-medium text-gray-500 dark:text-neutral-400 uppercase tracking-wider">Fin
+                            Período</span>
                         <span class="text-sm font-semibold text-gray-900 dark:text-neutral-100">
                             {{ g.trEndDate | date:'dd/MM/yyyy' }}
                         </span>
@@ -75,7 +77,8 @@
                 <div class="flex flex-col">
                     <div class="flex items-center justify-between p-5">
                         <div class="flex flex-col gap-1">
-                            <h2 class="text-base font-semibold text-gray-900 dark:text-neutral-100">Premios configurados</h2>
+                            <h2 class="text-base font-semibold text-gray-900 dark:text-neutral-100">Premios configurados
+                            </h2>
                             @if (detailState.hasAwardsChanged()) {
                             <span class="text-xs text-amber-600 dark:text-amber-400">
                                 Tienes cambios sin guardar
@@ -99,8 +102,7 @@
                         </div>
                     </div>
 
-                    <app-giveaway-award-table
-                        (editAward)="openEditAwardModal($event)"
+                    <app-giveaway-award-table (editAward)="openEditAwardModal($event)"
                         (deleteAward)="openDeleteAwardModal($event)">
                     </app-giveaway-award-table>
                 </div>
@@ -127,20 +129,26 @@
                             <div class="p-5">
                                 <div class="flex items-center gap-2 mb-3">
                                     <lucide-icon [img]="icons.Trophy" class="size-4 text-yellow-500"></lucide-icon>
-                                    <span class="text-sm font-semibold text-gray-900 dark:text-neutral-100">{{ entry[0] }}</span>
+                                    <span class="text-sm font-semibold text-gray-900 dark:text-neutral-100">{{ entry[0]
+                                        }}</span>
                                     <app-badge variant="success" appearance="soft" size="small">
                                         {{ entry[1].length }} {{ entry[1].length === 1 ? 'ganador' : 'ganadores' }}
                                     </app-badge>
                                 </div>
                                 <div class="flex flex-col gap-2 pl-6">
                                     @for (winner of entry[1]; track winner.clientCode) {
-                                    <div class="flex items-center gap-3 p-2.5 bg-gray-50 dark:bg-neutral-800 rounded-lg">
-                                        <div class="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center flex-shrink-0">
-                                            <lucide-icon [img]="icons.Users" class="size-4 text-green-600 dark:text-green-400"></lucide-icon>
+                                    <div
+                                        class="flex items-center gap-3 p-2.5 bg-gray-50 dark:bg-neutral-800 rounded-lg">
+                                        <div
+                                            class="w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+                                            <lucide-icon [img]="icons.Users"
+                                                class="size-4 text-green-600 dark:text-green-400"></lucide-icon>
                                         </div>
                                         <div class="flex flex-col">
-                                            <span class="text-sm font-medium text-gray-900 dark:text-neutral-100">{{ winner.clientName }}</span>
-                                            <span class="text-xs text-gray-500 dark:text-neutral-400">{{ winner.clientCode }}</span>
+                                            <span class="text-sm font-medium text-gray-900 dark:text-neutral-100">{{
+                                                winner.clientName }}</span>
+                                            <span class="text-xs text-gray-500 dark:text-neutral-400">{{
+                                                winner.clientCode }}</span>
                                         </div>
                                     </div>
                                     }
@@ -152,8 +160,10 @@
                     } @else {
                     <!-- Sin ganadores aún -->
                     <div class="py-16 text-center border-y border-gray-200 dark:border-neutral-800">
-                        <div class="mx-auto w-16 h-16 bg-gray-100 dark:bg-base-100 rounded-full flex items-center justify-center mb-4">
-                            <lucide-icon [img]="icons.Users" class="size-8 text-gray-400 dark:text-gray-100"></lucide-icon>
+                        <div
+                            class="mx-auto w-16 h-16 bg-gray-100 dark:bg-base-100 rounded-full flex items-center justify-center mb-4">
+                            <lucide-icon [img]="icons.Users"
+                                class="size-8 text-gray-400 dark:text-gray-100"></lucide-icon>
                         </div>
                         <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">Sorteo no ejecutado</h3>
                         <p class="text-sm text-gray-500 mb-4">Presiona "Realizar Sorteo" para seleccionar ganadores</p>
@@ -172,36 +182,25 @@
 </app-page-body-layout>
 
 <!-- Modal: Realizar Sorteo -->
-<app-run-giveaway-modal
-    [isOpen]="isRunModalOpen"
-    [result]="runResult()">
+<app-run-giveaway-modal [isOpen]="isRunModalOpen" [result]="runResult()">
 </app-run-giveaway-modal>
 
 <!-- Modal: Agregar / Editar Premio en sorteo -->
-<app-giveaway-award-form-modal
-    [isOpen]="isAwardFormModalOpen"
-    [award]="selectedAward()">
+<app-giveaway-award-form-modal [isOpen]="isAwardFormModalOpen" [award]="selectedAward()">
 </app-giveaway-award-form-modal>
 
 <!-- Modal: Quitar Premio de sorteo -->
-<app-giveaway-award-delete-modal
-    [isOpen]="isAwardDeleteModalOpen"
-    [award]="selectedAward()">
+<app-giveaway-award-delete-modal [isOpen]="isAwardDeleteModalOpen" [award]="selectedAward()">
 </app-giveaway-award-delete-modal>
 
 <!-- Modal: Confirmar reconfiguración de premios -->
-<app-reconfigure-awards-modal
-    [isOpen]="isReconfigureModalOpen">
+<app-reconfigure-awards-modal [isOpen]="isReconfigureModalOpen">
 </app-reconfigure-awards-modal>
 
 <!-- Modal: Editar Info del Sorteo -->
-<app-giveaway-form-modal
-    [isOpen]="isEditGiveawayModalOpen"
-    [giveaway]="giveawayAsSummary()">
+<app-giveaway-form-modal [isOpen]="isEditGiveawayModalOpen" [giveaway]="giveawayAsSummary()">
 </app-giveaway-form-modal>
 
 <!-- Modal: Eliminar Sorteo -->
-<app-giveaway-delete-modal
-    [isOpen]="isDeleteGiveawayModalOpen"
-    [giveaway]="giveawayAsSummary()">
+<app-giveaway-delete-modal [isOpen]="isDeleteGiveawayModalOpen" [giveaway]="giveawayAsSummary()">
 </app-giveaway-delete-modal>

@@ -31,8 +31,7 @@
                                 <app-input-wrapper>
                                     <app-label for="description" label="Descripción del sorteo"
                                         [required]="true"></app-label>
-                                    <app-input id="description" name="description" type="text"
-                                        [(ngModel)]="description"
+                                    <app-input id="description" name="description" type="text" [(ngModel)]="description"
                                         [state]="descCtrl.invalid && descCtrl.touched ? 'error' : 'default'"
                                         placeholder="Ej. Sorteo Navideño Nov-Dic 2025" [fullWidth]="true"
                                         [required]="true" #descCtrl="ngModel">
@@ -46,11 +45,9 @@
                                 <app-input-wrapper>
                                     <app-label for="giveawayDate" label="Fecha del sorteo"
                                         [required]="true"></app-label>
-                                    <app-date-picker id="giveawayDate" name="giveawayDate"
-                                        [(ngModel)]="giveawayDate" [required]="true"
-                                        [invalid]="!!(dateCtrl.invalid && dateCtrl.touched)"
-                                        placeholder="Selecciona la fecha de ejecución del sorteo"
-                                        #dateCtrl="ngModel">
+                                    <app-date-picker id="giveawayDate" name="giveawayDate" [(ngModel)]="giveawayDate"
+                                        [required]="true" [invalid]="!!(dateCtrl.invalid && dateCtrl.touched)"
+                                        placeholder="Selecciona la fecha de ejecución del sorteo" #dateCtrl="ngModel">
                                     </app-date-picker>
                                     <app-input-error error="La fecha del sorteo es obligatoria."
                                         [show]="!!(dateCtrl.invalid && dateCtrl.touched)">
@@ -70,11 +67,9 @@
                             <div class="flex flex-col gap-4">
 
                                 <app-input-wrapper>
-                                    <app-label for="trStartDate" label="Fecha de inicio"
-                                        [required]="true"></app-label>
-                                    <app-date-picker id="trStartDate" name="trStartDate"
-                                        [(ngModel)]="trStartDate" [required]="true"
-                                        [invalid]="!!(startCtrl.invalid && startCtrl.touched)"
+                                    <app-label for="trStartDate" label="Fecha de inicio" [required]="true"></app-label>
+                                    <app-date-picker id="trStartDate" name="trStartDate" [(ngModel)]="trStartDate"
+                                        [required]="true" [invalid]="!!(startCtrl.invalid && startCtrl.touched)"
                                         placeholder="Fecha de inicio" #startCtrl="ngModel">
                                     </app-date-picker>
                                     <app-input-error error="Fecha de inicio obligatoria."
@@ -83,11 +78,9 @@
                                 </app-input-wrapper>
 
                                 <app-input-wrapper>
-                                    <app-label for="trEndDate" label="Fecha de fin"
-                                        [required]="true"></app-label>
-                                    <app-date-picker id="trEndDate" name="trEndDate"
-                                        [(ngModel)]="trEndDate" [required]="true"
-                                        [invalid]="!!(endCtrl.invalid && endCtrl.touched)"
+                                    <app-label for="trEndDate" label="Fecha de fin" [required]="true"></app-label>
+                                    <app-date-picker id="trEndDate" name="trEndDate" [(ngModel)]="trEndDate"
+                                        [required]="true" [invalid]="!!(endCtrl.invalid && endCtrl.touched)"
                                         placeholder="Fecha de fin" #endCtrl="ngModel">
                                     </app-date-picker>
                                     <app-input-error error="Fecha de fin obligatoria."
@@ -111,8 +104,8 @@
 
                             <!-- Botón agregar -->
                             <div class="flex justify-end">
-                                <app-button type="button" size="small" appearance="outline"
-                                    [icon]="icons.Plus" (onClick)="addAwardEntry()">
+                                <app-button type="button" size="small" appearance="outline" [icon]="icons.Plus"
+                                    (onClick)="addAwardEntry()">
                                     Agregar premio
                                 </app-button>
                             </div>
@@ -136,10 +129,9 @@
                                     <div class="flex-1 flex flex-col gap-1 min-w-0">
                                         <label
                                             class="text-xs font-medium text-gray-600 dark:text-neutral-400">Premio</label>
-                                        <app-custom-select [name]="'awardId_' + $index"
-                                            [(ngModel)]="entry.awardId"
-                                            [options]="availableOptionsFor($index)"
-                                            placeholder="Seleccionar premio..." size="small">
+                                        <app-custom-select [name]="'awardId_' + $index" [(ngModel)]="entry.awardId"
+                                            [options]="availableOptionsFor($index)" placeholder="Seleccionar premio..."
+                                            size="small">
                                         </app-custom-select>
                                     </div>
 
@@ -148,15 +140,14 @@
                                         <label
                                             class="text-xs font-medium text-gray-600 dark:text-neutral-400">Ganadores</label>
                                         <app-input [name]="'winners_' + $index" type="number"
-                                            [(ngModel)]="entry.winnersQuant" [min]="1"
-                                            [fullWidth]="true" [required]="true">
+                                            [(ngModel)]="entry.winnersQuant" [min]="1" [fullWidth]="true"
+                                            [required]="true">
                                         </app-input>
                                     </div>
 
                                     <!-- Eliminar -->
-                                    <app-button type="button" appearance="text" size="small"
-                                        [icon]="icons.Trash2" variant="danger" tooltip="Quitar"
-                                        (onClick)="removeAwardEntry($index)"
+                                    <app-button type="button" appearance="text" size="small" [icon]="icons.Trash2"
+                                        variant="danger" tooltip="Quitar" (onClick)="removeAwardEntry($index)"
                                         [disabled]="awardEntries.length === 1">
                                     </app-button>
                                 </div>
@@ -172,8 +163,7 @@
                     <app-button type="button" appearance="outline" variant="neutral" (onClick)="goBack()">
                         Cancelar
                     </app-button>
-                    <app-button type="submit" variant="success" [loading]="state.isSaving()"
-                        loadingText="Guardando...">
+                    <app-button type="submit" variant="success" [loading]="state.isSaving()" loadingText="Guardando...">
                         Crear sorteo
                     </app-button>
                 </div>
