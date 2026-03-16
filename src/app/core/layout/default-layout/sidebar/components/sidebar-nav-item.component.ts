@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ButtonComponent } from '../../../../../shared/components/buttons/button/button.component';
 
@@ -14,7 +13,7 @@ export interface NavItem {
 @Component({
   selector: 'app-sidebar-nav-item',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive, ButtonComponent],
+  imports: [RouterLink, RouterLinkActive, ButtonComponent],
   template: `
     <li class="dark" [class.overflow-hidden]="!iconOnly" [class.flex]="iconOnly" [class.flex-col]="iconOnly" [class.items-center]="iconOnly">
       <app-button 

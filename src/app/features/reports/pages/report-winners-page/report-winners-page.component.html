@@ -75,7 +75,7 @@
                                             {{ w.awardName }}
                                         </app-badge>
                                     </td>
-                                    <td appTableCell>{{ w.giveawayDate | date:'dd/MM/yyyy' }}</td>
+                                    <td appTableCell>{{ w.giveawayDate | date:"d 'de' MMMM 'de' yyyy" }}</td>
                                     <td appTableCell>
                                         <lucide-icon [img]="icons.Trophy"
                                             class="size-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-yellow-500">

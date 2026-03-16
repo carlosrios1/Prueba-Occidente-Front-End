@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { LucideAngularModule, ExternalLink, ChevronRight } from 'lucide-angular';
@@ -32,8 +32,7 @@ import { Transaction } from '../../models/dtos/transaction.dto';
           </thead>
           <tbody class="divide-y divide-gray-200 dark:divide-neutral-800">
             @for (tr of transactions; track tr.id) {
-              <tr class="group cursor-pointer transition-all duration-300 hover:bg-gradient-to-r hover:from-green-50/30 hover:to-green-50/20 dark:hover:from-green-900/20 dark:hover:to-green-800/10 motion-preset-slide-down motion-duration-300"
-                  (click)="rowClick.emit(tr)">
+              <tr class="group transition-all duration-300 hover:bg-gradient-to-r hover:from-green-50/30 hover:to-green-50/20 dark:hover:from-green-900/20 dark:hover:to-green-800/10 motion-preset-slide-down motion-duration-300">
                 <td appTableCell variant="first">{{ tr.clientCode }}</td>
                 <td appTableCell variant="name">{{ tr.clientName }}</td>
                 <td appTableCell>{{ tr.transactionDate | date:'dd/MM/yyyy' }}</td>
@@ -65,7 +64,6 @@ import { Transaction } from '../../models/dtos/transaction.dto';
 })
 export class TransactionsSummaryTableComponent {
   @Input() transactions: Transaction[] = [];
-  @Output() rowClick = new EventEmitter<Transaction>();
   readonly icons = { ExternalLink, ChevronRight };
   readonly headers = ['Código', 'Cliente', 'Fecha', 'Monto', 'Moneda', 'Descripción', 'No. Auth'];
 }

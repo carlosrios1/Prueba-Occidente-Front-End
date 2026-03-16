@@ -1,5 +1,4 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { LucideAngularModule, X } from 'lucide-angular';
 import { NavItem, SidebarNavItemComponent } from './sidebar-nav-item.component';
 
@@ -7,7 +6,6 @@ import { NavItem, SidebarNavItemComponent } from './sidebar-nav-item.component';
   selector: 'app-mobile-sidebar',
   standalone: true,
   imports: [
-    CommonModule,
     LucideAngularModule,
     SidebarNavItemComponent
   ],
@@ -65,23 +63,7 @@ import { NavItem, SidebarNavItemComponent } from './sidebar-nav-item.component';
               </ul>
             </div>
 
-            <!-- Secondary Section -->
-            @if (secondaryItems && secondaryItems.length > 0) {
-            <div class="flex flex-col gap-1">
-              <div class="px-3 py-2">
-                <span class="text-xs font-semibold text-neutral-500 uppercase tracking-wider">Otros</span>
-              </div>
-              <ul class="flex flex-col gap-1">
-                @for (item of secondaryItems; track $index) {
-                  <app-sidebar-nav-item 
-                    [item]="item" 
-                    [iconOnly]="false"
-                    (itemClick)="navItemClick.emit()">
-                  </app-sidebar-nav-item>
-                }
-              </ul>
-            </div>
-            }
+
           </div>
         </div>
       </div>
@@ -91,7 +73,6 @@ import { NavItem, SidebarNavItemComponent } from './sidebar-nav-item.component';
 export class MobileSidebarComponent {
   @Input() isOpen = false;
   @Input() items: NavItem[] = [];
-  @Input() secondaryItems: NavItem[] = [];
   @Output() close = new EventEmitter<void>();
   @Output() overlayClick = new EventEmitter<void>();
   @Output() navItemClick = new EventEmitter<void>();

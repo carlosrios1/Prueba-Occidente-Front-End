@@ -1,5 +1,4 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { LucideAngularModule, Upload } from 'lucide-angular';
 import { CardComponent } from '@shared/components/cards/card/card.component';
@@ -18,7 +17,6 @@ import { TransactionsSummaryTableComponent } from '../../components/transactions
     selector: 'app-lots-main-page',
     standalone: true,
     imports: [
-        CommonModule,
         LucideAngularModule,
         PageBodyLayoutComponent,
         PageHeaderComponent,

@@ -8,12 +8,11 @@
  */
 
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-input-wrapper',
     standalone: true,
-    imports: [CommonModule],
+    imports: [],
     templateUrl: './input-wrapper.component.html'
 })
 export class InputWrapperComponent {

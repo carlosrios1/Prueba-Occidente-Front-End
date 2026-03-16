@@ -7,12 +7,11 @@
  */
 
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-input-error',
     standalone: true,
-    imports: [CommonModule],
+    imports: [],
     templateUrl: './input-error.component.html'
 })
 export class InputErrorComponent {

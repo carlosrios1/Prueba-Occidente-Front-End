@@ -9,13 +9,12 @@
 
 import { Component, EventEmitter, Input, Output, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 import { InputTheme } from '../shared/theme.config';
 
 @Component({
     selector: 'app-textarea',
     standalone: true,
-    imports: [CommonModule],
+    imports: [],
     templateUrl: './textarea.component.html',
     providers: [
         {

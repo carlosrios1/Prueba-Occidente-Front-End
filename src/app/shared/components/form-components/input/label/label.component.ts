@@ -7,13 +7,12 @@
  */
 
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { LabelTheme } from '../shared/theme.config';
 
 @Component({
     selector: 'app-label',
     standalone: true,
-    imports: [CommonModule],
+    imports: [],
     templateUrl: './label.component.html'
 })
 export class LabelComponent {

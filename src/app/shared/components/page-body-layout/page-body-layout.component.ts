@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-page-body-layout',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <div class="w-full flex flex-col gap-5">
       <div class="w-full flex flex-col border-b dark:border-b-neutral-800 p-6 bg-white dark:bg-blackBG motion-preset-fade motion-duration-500 motion-ease-spring-smooth z-9">

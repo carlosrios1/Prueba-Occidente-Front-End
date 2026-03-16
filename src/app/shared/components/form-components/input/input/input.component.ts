@@ -10,13 +10,12 @@
 import { Component, EventEmitter, Input, Output, forwardRef } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { LucideIconData, LucideAngularModule } from 'lucide-angular';
-import { CommonModule } from '@angular/common';
 import { InputTheme } from '../shared/theme.config';
 
 @Component({
     selector: 'app-input',
     standalone: true,
-    imports: [LucideAngularModule, CommonModule],
+    imports: [LucideAngularModule],
     templateUrl: './input.component.html',
     providers: [
         {

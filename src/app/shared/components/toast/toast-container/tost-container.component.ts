@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-toast-container',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <div class="toast-container fixed top-5 right-5 z-[99999] flex flex-col gap-2 items-end">
       <!-- Los toasts se insertarán aquí dinámicamente -->

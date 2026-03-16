@@ -4,7 +4,6 @@ import {
     Layers,
     Shuffle,
     FileText,
-    Code,
 } from 'lucide-angular';
 import { NavItem } from '../layout/default-layout/sidebar/components/sidebar-nav-item.component';
 
@@ -16,7 +15,6 @@ interface SidebarItemsConfig {
 
 export const SIDEBAR_CONFIG: {
     principal: SidebarItemsConfig;
-    secondary: SidebarItemsConfig;
 } = {
     principal:
     {
@@ -49,19 +47,6 @@ export const SIDEBAR_CONFIG: {
                 link: '/reports',
                 icon: FileText,
                 aria: 'Ir a Reportes',
-            },
-        ],
-    },
-    secondary:
-    {
-        label: 'Otros',
-        items: [
-            {
-                name: 'tecnologias',
-                label: 'Tecnologías',
-                link: '/technologies',
-                icon: Code,
-                aria: 'Ir a Tecnologías',
             },
         ],
     },

@@ -1,10 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-sidebar-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <div class="flex flex-col items-center justify-center overflow-hidden border-b border-white/10 px-4 gap-2 h-24">
       <!-- Logo siempre centrado, 20% más grande (h-8 → h-10) -->

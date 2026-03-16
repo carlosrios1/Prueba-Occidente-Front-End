@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { LucideAngularModule, ExternalLink, ChevronRight } from 'lucide-angular';
@@ -33,8 +33,7 @@ import { Lot } from '../../models/dtos/lot.dto';
           </thead>
           <tbody class="divide-y divide-gray-200 dark:divide-neutral-800">
             @for (lot of lots; track lot.id) {
-              <tr class="group cursor-pointer transition-all duration-300 hover:bg-gradient-to-r hover:from-green-50/30 hover:to-green-50/20 dark:hover:from-green-900/20 dark:hover:to-green-800/10 motion-preset-slide-down motion-duration-300"
-                  (click)="rowClick.emit(lot)">
+              <tr class="group transition-all duration-300 hover:bg-gradient-to-r hover:from-green-50/30 hover:to-green-50/20 dark:hover:from-green-900/20 dark:hover:to-green-800/10 motion-preset-slide-down motion-duration-300">
                 <td appTableCell variant="first">{{ lot.id }}</td>
                 <td appTableCell variant="name">{{ lot.fileName }}</td>
                 <td appTableCell>{{ lot.uploadDate | date:'dd/MM/yyyy HH:mm' }}</td>
@@ -69,7 +68,6 @@ import { Lot } from '../../models/dtos/lot.dto';
 })
 export class LotsSummaryTableComponent {
   @Input() lots: Lot[] = [];
-  @Output() rowClick = new EventEmitter<Lot>();
   readonly icons = { ExternalLink, ChevronRight };
   readonly headers = ['ID', 'Archivo', 'Fecha carga', 'Registros', 'Estado', 'Usuario', ''];
 }

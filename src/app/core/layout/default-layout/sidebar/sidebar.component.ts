@@ -40,7 +40,6 @@ export class SidebarComponent {
   }
 
   readonly principalItems = SIDEBAR_CONFIG.principal;
-  readonly secondaryItems = SIDEBAR_CONFIG.secondary;
 
   ngOnInit(): void {
     this.sidebarToggleService.isCollapsed$.subscribe(v => this.isCollapsed = v);

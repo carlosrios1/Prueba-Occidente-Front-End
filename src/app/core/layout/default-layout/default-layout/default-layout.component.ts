@@ -1,12 +1,10 @@
-import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { filter } from 'rxjs';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { HeaderComponent } from '../header/header.component';
-import { FooterComponent } from '../footer/footer.component';
-import { filter, firstValueFrom, interval, Subscription } from 'rxjs';
 import { SidebarToggleService } from '../sidebar/sidebarToggle.service';
 import { CommonModule } from '@angular/common';
-import { AlertCircle, LucideAngularModule, RefreshCcw } from 'lucide-angular';
 import { LoaderComponent } from '../../../../shared/components/loader/loader.component';
 
 
@@ -18,7 +16,6 @@ import { LoaderComponent } from '../../../../shared/components/loader/loader.com
     SidebarComponent,
     HeaderComponent,
     LoaderComponent,
-    LucideAngularModule,
     CommonModule,
   ],
   templateUrl: './default-layout.component.html',
@@ -26,13 +23,9 @@ import { LoaderComponent } from '../../../../shared/components/loader/loader.com
 export class DefaultLayoutComponent implements OnInit {
   @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLDivElement>;
   private router = inject(Router)
-  readonly Alert = AlertCircle;
-  readonly refresh = RefreshCcw;
-  showModal = false;
   isCollapsed = false;
   isMobileSidebarOpen = false;
   sidebarToggleService = inject(SidebarToggleService);
-  loadingSession = false;
 
   ngOnInit() {
     this.sidebarToggleService.isCollapsed$.subscribe((collapsed) => {

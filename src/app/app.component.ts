@@ -1,5 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
 import { NavigationEnd, Router, Event, RouterOutlet } from '@angular/router';
 import { IStaticMethods } from 'flyonui/flyonui';
 import { ToastContainerComponent } from "@shared/components/toast/toast-container/tost-container.component";
@@ -13,21 +12,18 @@ declare global {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, ToastContainerComponent],
+  imports: [RouterOutlet, ToastContainerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
 export class AppComponent {
   private router=inject(Router);
-  title = 'ProyectoPrueba';
-  isDarkMode = signal(false);
 
   ngOnInit() {
     if (typeof localStorage !== 'undefined') {
       // Verificar si ya hay un tema guardado
       const savedTheme = localStorage.getItem('theme');
       const isDark = savedTheme === 'dark';
-      this.isDarkMode.set(isDark);
       this.applyTheme(isDark);
     }
     this.router.events.subscribe((event: Event) => {

@@ -1,12 +1,11 @@
 import { Component, Output, EventEmitter, Input, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { LucideAngularModule, Upload, X, FileSpreadsheet } from 'lucide-angular';
 import { ButtonComponent } from '@shared/components/buttons/button/button.component';
 
 @Component({
   selector: 'app-lot-upload',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule, ButtonComponent],
+  imports: [LucideAngularModule, ButtonComponent],
   template: `
     <div class="flex flex-col gap-4">
       <!-- Zona de drop -->
