@@ -2,8 +2,7 @@
     [subtitle]="isEditing ? 'Modifica los datos del premio.' : 'Completa los datos para registrar un nuevo premio.'"
     [showFooter]="true" [showConfirmButton]="true" [confirmText]="isEditing ? 'Guardar cambios' : 'Crear premio'"
     cancelText="Cancelar" [loading]="state.isSaving()" loadingText="Guardando" [disableClose]="state.isSaving()"
-    [confirmVariant]="'orange'"
-    (onClose)="close()" (onConfirm)="awardForm.ngSubmit.emit()">
+    [confirmVariant]="'orange'" (onClose)="close()" (onConfirm)="awardForm.ngSubmit.emit()">
 
     <form #awardForm="ngForm" (ngSubmit)="handleSubmit(awardForm)" class="flex flex-col gap-4 pt-1">
 

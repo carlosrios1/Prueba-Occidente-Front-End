@@ -1,12 +1,7 @@
-<app-modal
-    [isOpen]="isOpen()"
-    [title]="isEditing ? 'Editar Premio' : 'Agregar Premio'"
+<app-modal [isOpen]="isOpen()" [title]="isEditing ? 'Editar Premio' : 'Agregar Premio'"
     [subtitle]="isEditing ? 'Modifica la cantidad de ganadores para este premio.' : 'Selecciona un premio y define cuántos ganadores tendrá.'"
-    [showFooter]="true" [showConfirmButton]="true"
-    [confirmText]="isEditing ? 'Guardar cambios' : 'Agregar'"
-    cancelText="Cancelar"
-    [confirmVariant]="'orange'"
-    (onClose)="close()" (onConfirm)="awardForm.ngSubmit.emit()">
+    [showFooter]="true" [showConfirmButton]="true" [confirmText]="isEditing ? 'Guardar cambios' : 'Agregar'"
+    cancelText="Cancelar" [confirmVariant]="'orange'" (onClose)="close()" (onConfirm)="awardForm.ngSubmit.emit()">
 
     <form #awardForm="ngForm" (ngSubmit)="handleSubmit(awardForm)" class="flex flex-col gap-4 pt-1">
 
@@ -14,10 +9,7 @@
         @if (!isEditing) {
         <app-input-wrapper>
             <app-label for="awardSelect" label="Premio" [required]="true"></app-label>
-            <select
-                id="awardSelect" name="selectedAwardId"
-                [(ngModel)]="selectedAwardId"
-                required
+            <select id="awardSelect" name="selectedAwardId" [(ngModel)]="selectedAwardId" required
                 class="select select-sm w-full border border-gray-200 dark:border-neutral-700 rounded-md bg-white dark:bg-neutral-900 text-sm text-gray-900 dark:text-neutral-100 py-2 px-3">
                 <option [value]="0" disabled>Seleccionar premio...</option>
                 @for (a of filteredAvailableAwards; track a.id) {
@@ -35,17 +27,11 @@
         <!-- Cantidad de ganadores -->
         <app-input-wrapper>
             <app-label for="winnersQuant" label="Cantidad de ganadores" [required]="true"></app-label>
-            <app-input
-                id="winnersQuant" name="winnersQuant" type="number"
-                [(ngModel)]="winnersQuant"
-                [state]="qtyCtrl.invalid && qtyCtrl.touched ? 'error' : 'default'"
-                [min]="1"
-                [fullWidth]="true"
+            <app-input id="winnersQuant" name="winnersQuant" type="number" [(ngModel)]="winnersQuant"
+                [state]="qtyCtrl.invalid && qtyCtrl.touched ? 'error' : 'default'" [min]="1" [fullWidth]="true"
                 [required]="true" #qtyCtrl="ngModel">
             </app-input>
-            <app-input-error
-                error="Debe haber al menos 1 ganador."
-                [show]="!!(qtyCtrl.invalid && qtyCtrl.touched)">
+            <app-input-error error="Debe haber al menos 1 ganador." [show]="!!(qtyCtrl.invalid && qtyCtrl.touched)">
             </app-input-error>
         </app-input-wrapper>
 

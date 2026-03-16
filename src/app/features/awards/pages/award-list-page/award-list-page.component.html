@@ -2,8 +2,7 @@
 
     <!-- Header -->
     <div header class="flex flex-col gap-5">
-        <app-page-header title="Premios"
-            description="Administra los premios disponibles para los sorteos">
+        <app-page-header title="Premios" description="Administra los premios disponibles para los sorteos">
             <div actions>
                 <app-button [icon]="icons.Plus" (onClick)="openCreateModal()" variant="orange" appearance="solid">
                     Nuevo Premio
@@ -18,19 +17,13 @@
             <app-card-body>
                 <div class="flex flex-col">
                     <!-- Tabla -->
-                    <app-award-table
-                        (editAward)="openEditModal($event)"
-                        (deleteAward)="openDeleteModal($event)">
+                    <app-award-table (editAward)="openEditModal($event)" (deleteAward)="openDeleteModal($event)">
                     </app-award-table>
 
                     <!-- Paginación -->
                     <div class="p-5">
-                        <app-table-pagination
-                            [actualPage]="state.currentPage()"
-                            [cantidadPorPagina]="state.pageSize"
-                            [totalItems]="state.totalCount()"
-                            [loading]="state.isLoading()"
-                            itemLabel="Premios"
+                        <app-table-pagination [actualPage]="state.currentPage()" [cantidadPorPagina]="state.pageSize"
+                            [totalItems]="state.totalCount()" [loading]="state.isLoading()" itemLabel="Premios"
                             (pageChange)="onPageChange($event)">
                         </app-table-pagination>
                     </div>
@@ -42,13 +35,9 @@
 </app-page-body-layout>
 
 <!-- Modal crear / editar -->
-<app-award-form-modal
-    [isOpen]="isFormModalOpen"
-    [award]="selectedAward()">
+<app-award-form-modal [isOpen]="isFormModalOpen" [award]="selectedAward()">
 </app-award-form-modal>
 
 <!-- Modal eliminar -->
-<app-award-delete-modal
-    [isOpen]="isDeleteModalOpen"
-    [award]="selectedAward()">
+<app-award-delete-modal [isOpen]="isDeleteModalOpen" [award]="selectedAward()">
 </app-award-delete-modal>

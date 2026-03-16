@@ -2,29 +2,18 @@
 
     <!-- Header ───────────────────────────────────────────────────────────── -->
     <div header class="flex flex-col gap-5">
-        <app-page-header
-            title="Reportes"
-            description="Genera y exporta reportes del sistema de sorteos">
+        <app-page-header title="Reportes" description="Genera y exporta reportes del sistema de sorteos">
             <div actions class="flex items-center gap-2">
-                <app-button
-                    appearance="outline" variant="secondary"
-                    [icon]="icons.Printer"
-                    [disabled]="!hasGenerated() || isDownloading()"
-                    (onClick)="print()">
+                <app-button appearance="outline" variant="secondary" [icon]="icons.Printer"
+                    [disabled]="!hasGenerated() || isDownloading()" (onClick)="print()">
                     Imprimir
                 </app-button>
-                <app-button
-                    appearance="outline" variant="success"
-                    [icon]="icons.FileSpreadsheet"
-                    [disabled]="!hasGenerated() || isDownloading()"
-                    (onClick)="downloadExcel()">
+                <app-button appearance="outline" variant="success" [icon]="icons.FileSpreadsheet"
+                    [disabled]="!hasGenerated() || isDownloading()" (onClick)="downloadExcel()">
                     Excel
                 </app-button>
-                <app-button
-                    appearance="outline" variant="danger" 
-                    [icon]="icons.FileDown"
-                    [disabled]="!hasGenerated() || isDownloading()"
-                    (onClick)="downloadPdf()">
+                <app-button appearance="outline" variant="danger" [icon]="icons.FileDown"
+                    [disabled]="!hasGenerated() || isDownloading()" (onClick)="downloadPdf()">
                     PDF
                 </app-button>
             </div>
@@ -51,10 +40,7 @@
                     <div class="w-56">
                         <app-input-wrapper>
                             <app-label label="Tipo de Reporte"></app-label>
-                            <app-custom-select
-                                name="reportType"
-                                [(ngModel)]="reportType"
-                                [options]="reportTypeOptions"
+                            <app-custom-select name="reportType" [(ngModel)]="reportType" [options]="reportTypeOptions"
                                 (ngModelChange)="onReportTypeChange()">
                             </app-custom-select>
                         </app-input-wrapper>
@@ -65,11 +51,8 @@
                     <div class="min-w-72 flex-1 max-w-sm">
                         <app-input-wrapper>
                             <app-label label="Sorteo"></app-label>
-                            <app-custom-select
-                                name="selectedGiveawayId"
-                                [(ngModel)]="selectedGiveawayId"
-                                [options]="giveawayOptions"
-                                placeholder="Seleccionar sorteo">
+                            <app-custom-select name="selectedGiveawayId" [(ngModel)]="selectedGiveawayId"
+                                [options]="giveawayOptions" placeholder="Seleccionar sorteo">
                             </app-custom-select>
                         </app-input-wrapper>
                     </div>
@@ -80,28 +63,22 @@
                     <div class="min-w-48 flex-1">
                         <app-input-wrapper>
                             <app-label label="Fecha inicio" [required]="true"></app-label>
-                            <app-date-picker
-                                [(ngModel)]="startDate"
-                                placeholder="Fecha de inicio">
+                            <app-date-picker [(ngModel)]="startDate" placeholder="Fecha de inicio">
                             </app-date-picker>
                         </app-input-wrapper>
                     </div>
                     <div class="min-w-48 flex-1">
                         <app-input-wrapper>
                             <app-label label="Fecha fin" [required]="true"></app-label>
-                            <app-date-picker
-                                [(ngModel)]="endDate"
-                                placeholder="Fecha de fin">
+                            <app-date-picker [(ngModel)]="endDate" placeholder="Fecha de fin">
                             </app-date-picker>
                         </app-input-wrapper>
                     </div>
                     }
 
                     <!-- Botón generar -->
-                    <app-button
-                        [variant]="'orange'" [appearance]="'solid'"                        [icon]="icons.FileText"
-                        [disabled]="!canGenerate || isLoading()"
-                        (onClick)="generate()">
+                    <app-button [variant]="'orange'" [appearance]="'solid'" [icon]="icons.FileText"
+                        [disabled]="!canGenerate || isLoading()" (onClick)="generate()">
                         @if (isLoading()) { Generando... } @else { Generar Reporte }
                     </app-button>
 
@@ -116,7 +93,8 @@
                 <div class="flex flex-col">
 
                     <!-- Cabecera del reporte -->
-                    <div class="flex items-start justify-between px-5 py-4 border-b border-gray-200 dark:border-neutral-800">
+                    <div
+                        class="flex items-start justify-between px-5 py-4 border-b border-gray-200 dark:border-neutral-800">
                         <div>
                             <h2 class="text-base font-bold text-gray-900 dark:text-neutral-100">
                                 @if (reportType === 'winners') { Reporte de Ganadores }
@@ -124,9 +102,9 @@
                             </h2>
                             <p class="text-sm text-gray-500 dark:text-neutral-400 mt-0.5">
                                 @if (reportType === 'winners') {
-                                    {{ selectedGiveawaySubtitle }}
+                                {{ selectedGiveawaySubtitle }}
                                 } @else {
-                                    {{ transactionsSubtitle }}
+                                {{ transactionsSubtitle }}
                                 }
                             </p>
                         </div>
@@ -165,7 +143,8 @@
                                     <td appTableCell variant="first">{{ w.clientCode }}</td>
                                     <td appTableCell variant="name">
                                         <div class="flex items-center gap-2">
-                                            <lucide-icon [img]="icons.Trophy" class="size-4 text-yellow-500 shrink-0"></lucide-icon>
+                                            <lucide-icon [img]="icons.Trophy"
+                                                class="size-4 text-yellow-500 shrink-0"></lucide-icon>
                                             {{ w.clientName }}
                                         </div>
                                     </td>
@@ -183,10 +162,13 @@
 
                         @if (winners().length === 0) {
                         <div class="py-16 text-center">
-                            <div class="mx-auto w-16 h-16 bg-gray-100 dark:bg-base-100 rounded-full flex items-center justify-center mb-4">
-                                <lucide-icon [img]="icons.Trophy" class="size-8 text-gray-400 dark:text-gray-500"></lucide-icon>
+                            <div
+                                class="mx-auto w-16 h-16 bg-gray-100 dark:bg-base-100 rounded-full flex items-center justify-center mb-4">
+                                <lucide-icon [img]="icons.Trophy"
+                                    class="size-8 text-gray-400 dark:text-gray-500"></lucide-icon>
                             </div>
-                            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">Sin ganadores registrados</h3>
+                            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">Sin ganadores
+                                registrados</h3>
                             <p class="text-sm text-gray-500">Este sorteo aún no ha sido ejecutado</p>
                         </div>
                         }
@@ -232,14 +214,17 @@
 
                         @if (items().length === 0) {
                         <div class="py-16 text-center">
-                            <div class="mx-auto w-16 h-16 bg-gray-100 dark:bg-base-100 rounded-full flex items-center justify-center mb-4">
-                                <svg class="w-8 h-8 text-gray-400 dark:text-gray-100" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div
+                                class="mx-auto w-16 h-16 bg-gray-100 dark:bg-base-100 rounded-full flex items-center justify-center mb-4">
+                                <svg class="w-8 h-8 text-gray-400 dark:text-gray-100" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
                                     </path>
                                 </svg>
                             </div>
-                            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">Sin transacciones en el período</h3>
+                            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">Sin transacciones en
+                                el período</h3>
                             <p class="text-sm text-gray-500">Ajusta el rango de fechas e intenta de nuevo</p>
                         </div>
                         }
@@ -247,13 +232,9 @@
 
                     <!-- Paginación transacciones -->
                     <div class="p-5">
-                        <app-table-pagination
-                            [actualPage]="pagination.actualPage()"
-                            [cantidadPorPagina]="pagination.itemsPerPage()"
-                            [totalItems]="pagination.totalItems()"
-                            [loading]="isLoading()"
-                            itemLabel="transacciones"
-                            (pageChange)="onPageChange($event)">
+                        <app-table-pagination [actualPage]="pagination.actualPage()"
+                            [cantidadPorPagina]="pagination.itemsPerPage()" [totalItems]="pagination.totalItems()"
+                            [loading]="isLoading()" itemLabel="transacciones" (pageChange)="onPageChange($event)">
                         </app-table-pagination>
                     </div>
                     }

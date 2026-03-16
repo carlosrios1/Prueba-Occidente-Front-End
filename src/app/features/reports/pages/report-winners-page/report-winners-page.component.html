@@ -32,7 +32,8 @@
                             </app-input>
                         </app-input-wrapper>
                     </div>
-                    <app-button variant="orange" [icon]="icons.Search" [disabled]="!giveawayId || isLoading()" (onClick)="search()">
+                    <app-button variant="orange" [icon]="icons.Search" [disabled]="!giveawayId || isLoading()"
+                        (onClick)="search()">
                         @if (isLoading()) { Buscando... } @else { Buscar }
                     </app-button>
                 </div>
