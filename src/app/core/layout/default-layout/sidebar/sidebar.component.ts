@@ -61,5 +61,5 @@ export class SidebarComponent {
 
   /** Fuerza re-evaluación de isIconOnly al redimensionar la ventana */
   @HostListener('window:resize')
-  onResize(): void {}
+  onResize(): void { }
 }
