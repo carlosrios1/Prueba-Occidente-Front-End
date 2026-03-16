@@ -17,6 +17,7 @@ export class GiveawaysStateService {
     private _isDeleting = signal(false);
     private _currentPage = signal(1);
     private _totalCount = signal(0);
+    private _lastErrorMessage = signal<string | null>(null);
 
     readonly giveaways = this._giveaways.asReadonly();
     readonly isLoading = this._isLoading.asReadonly();
@@ -24,6 +25,7 @@ export class GiveawaysStateService {
     readonly isDeleting = this._isDeleting.asReadonly();
     readonly currentPage = this._currentPage.asReadonly();
     readonly totalCount = this._totalCount.asReadonly();
+    readonly lastErrorMessage = this._lastErrorMessage.asReadonly();
     readonly pageSize = PAGE_SIZE;
 
     readonly totalPages = computed(() =>
@@ -43,12 +45,14 @@ export class GiveawaysStateService {
     }
 
     async create(request: CreateGiveawayRequest): Promise<boolean> {
+        this._lastErrorMessage.set(null);
         this._isSaving.set(true);
         try {
             await firstValueFrom(this.http.create(request));
             await this.loadPage(this._currentPage());
             return true;
-        } catch {
+        } catch (e: any) {
+            this._lastErrorMessage.set(e?.error?.Message ?? e?.error?.message ?? null);
             return false;
         } finally {
             this._isSaving.set(false);
@@ -56,12 +60,14 @@ export class GiveawaysStateService {
     }
 
     async update(id: number, request: UpdateGiveawayRequest): Promise<boolean> {
+        this._lastErrorMessage.set(null);
         this._isSaving.set(true);
         try {
             await firstValueFrom(this.http.update(id, request));
             await this.loadPage(this._currentPage());
             return true;
-        } catch {
+        } catch (e: any) {
+            this._lastErrorMessage.set(e?.error?.Message ?? e?.error?.message ?? null);
             return false;
         } finally {
             this._isSaving.set(false);
@@ -69,6 +75,7 @@ export class GiveawaysStateService {
     }
 
     async delete(id: number): Promise<boolean> {
+        this._lastErrorMessage.set(null);
         this._isDeleting.set(true);
         try {
             await firstValueFrom(this.http.delete(id));
@@ -77,7 +84,8 @@ export class GiveawaysStateService {
             const safePage = Math.min(this._currentPage(), maxPage);
             await this.loadPage(safePage);
             return true;
-        } catch {
+        } catch (e: any) {
+            this._lastErrorMessage.set(e?.error?.Message ?? e?.error?.message ?? null);
             return false;
         } finally {
             this._isDeleting.set(false);

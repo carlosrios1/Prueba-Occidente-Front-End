@@ -1,4 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { LucideAngularModule, Plus } from 'lucide-angular';
 
 import { PageBodyLayoutComponent } from '@shared/components/page-body-layout/page-body-layout.component';
@@ -33,6 +34,7 @@ import { GiveawaySummary } from '../../models/giveaway.model';
 })
 export class GiveawayListPageComponent implements OnInit {
     protected state = inject(GiveawaysStateService);
+    private router = inject(Router);
 
     readonly icons = { Plus };
 
@@ -44,9 +46,8 @@ export class GiveawayListPageComponent implements OnInit {
         this.state.loadPage(1);
     }
 
-    openCreateModal(): void {
-        this.selectedGiveaway.set(null);
-        this.isFormModalOpen.set(true);
+    goToCreate(): void {
+        this.router.navigate(['/giveaways/new']);
     }
 
     openEditModal(giveaway: GiveawaySummary): void {

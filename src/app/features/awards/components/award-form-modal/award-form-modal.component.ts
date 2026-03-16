@@ -1,6 +1,6 @@
 import { Component, inject, Input, OnChanges, signal, SimpleChanges } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { LucideAngularModule, Trophy } from 'lucide-angular';
+import { LucideAngularModule, Trophy, AlertCircle } from 'lucide-angular';
 
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { InputComponent } from '@shared/components/form-components/input/input/input.component';
@@ -33,10 +33,11 @@ export class AwardFormModalComponent implements OnChanges {
     /** Si se pasa un award, el modal opera en modo edición; si null, modo creación. */
     @Input() award: Award | null = null;
 
-    readonly icons = { Trophy };
+    readonly icons = { Trophy, AlertCircle };
 
     awardName = '';
     description = '';
+    errorMessage = signal<string | null>(null);
 
     get isEditing(): boolean {
         return this.award !== null;
@@ -55,11 +56,13 @@ export class AwardFormModalComponent implements OnChanges {
     }
 
     close(): void {
+        this.errorMessage.set(null);
         this.isOpen.set(false);
     }
 
     async handleSubmit(form: NgForm): Promise<void> {
         if (form.invalid) return;
+        this.errorMessage.set(null);
 
         let success: boolean;
 
@@ -78,6 +81,8 @@ export class AwardFormModalComponent implements OnChanges {
         if (success) {
             form.resetForm();
             this.close();
+        } else {
+            this.errorMessage.set(this.state.lastErrorMessage() ?? 'Ocurrió un error al guardar el premio.');
         }
     }
 }

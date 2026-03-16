@@ -4,7 +4,7 @@
  * Componente de insignia reutilizable con múltiples variantes, apariencias y tamaños.
  * Incluye soporte para iconos, modo solo-icono, y accesibilidad completa.
  * 
- * @author Hector Varela
+ * 
  */
 
 import { Component, Input } from '@angular/core';

@@ -61,8 +61,8 @@ export class ReportsHttpService {
 
     // ── Ganadores ────────────────────────────────────────────────────────────
 
-    getWinners(giveawayDate: string): Observable<WinnerReport[]> {
-        const params = new HttpParams().set('date', giveawayDate);
+    getWinners(giveawayId: number): Observable<WinnerReport[]> {
+        const params = new HttpParams().set('giveawayId', giveawayId);
         return this.http
             .get<Response<WinnerReport[]>>(`${this.base}/giveaway-winners`, {
                 params,
@@ -74,22 +74,22 @@ export class ReportsHttpService {
             );
     }
 
-    downloadWinnersExcel(giveawayDate: string): Observable<void> {
-        const params = new HttpParams().set('date', giveawayDate);
+    downloadWinnersExcel(giveawayId: number): Observable<void> {
+        const params = new HttpParams().set('giveawayId', giveawayId);
         return this.http
             .get(`${this.base}/giveaway-winners/excel`, { params, responseType: 'blob' })
             .pipe(
-                tap(blob => this.triggerDownload(blob, `ganadores_${giveawayDate}.xlsx`)),
+                tap(blob => this.triggerDownload(blob, `ganadores_sorteo_${giveawayId}.xlsx`)),
                 map(() => void 0),
             );
     }
 
-    downloadWinnersPdf(giveawayDate: string): Observable<void> {
-        const params = new HttpParams().set('date', giveawayDate);
+    downloadWinnersPdf(giveawayId: number): Observable<void> {
+        const params = new HttpParams().set('giveawayId', giveawayId);
         return this.http
             .get(`${this.base}/giveaway-winners/pdf`, { params, responseType: 'blob' })
             .pipe(
-                tap(blob => this.triggerDownload(blob, `ganadores_${giveawayDate}.pdf`)),
+                tap(blob => this.triggerDownload(blob, `ganadores_sorteo_${giveawayId}.pdf`)),
                 map(() => void 0),
             );
     }

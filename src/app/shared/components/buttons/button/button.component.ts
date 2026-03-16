@@ -4,7 +4,7 @@
  * Componente de botón reutilizable con múltiples variantes, apariencias y tamaños.
  * Incluye soporte para iconos, estados de carga, y accesibilidad completa.
  * 
- * @author Hector Varela
+ * 
  */
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';

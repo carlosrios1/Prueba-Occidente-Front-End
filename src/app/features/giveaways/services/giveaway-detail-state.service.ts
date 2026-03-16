@@ -23,11 +23,13 @@ export class GiveawayDetailStateService {
     private _isRunning = signal(false);
     private _isLoadingWinners = signal(false);
     private _isReconfiguring = signal(false);
+    private _lastErrorMessage = signal<string | null>(null);
 
     readonly giveaway = this._giveaway.asReadonly();
     readonly localAwards = this._localAwards.asReadonly();
     readonly winners = this._winners.asReadonly();
     readonly runResult = this._runResult.asReadonly();
+    readonly lastErrorMessage = this._lastErrorMessage.asReadonly();
     readonly isLoading = this._isLoading.asReadonly();
     readonly isSaving = this._isSaving.asReadonly();
     readonly isRunning = this._isRunning.asReadonly();
@@ -51,17 +53,16 @@ export class GiveawayDetailStateService {
             const giveaway = await firstValueFrom(this.http.getById(id));
             this._giveaway.set(giveaway);
             this._localAwards.set([...giveaway.awards]);
-            await this.loadWinners(giveaway.giveawayDate);
+            await this.loadWinners(giveaway.id);
         } finally {
             this._isLoading.set(false);
         }
     }
 
-    async loadWinners(giveawayDate: string): Promise<void> {
+    async loadWinners(giveawayId: number): Promise<void> {
         this._isLoadingWinners.set(true);
         try {
-            const date = giveawayDate.split('T')[0]; // yyyy-MM-dd
-            const winners = await firstValueFrom(this.http.getWinners(date));
+            const winners = await firstValueFrom(this.http.getWinners(giveawayId));
             this._winners.set(winners ?? []);
         } catch {
             this._winners.set([]);
@@ -73,12 +74,14 @@ export class GiveawayDetailStateService {
     async updateInfo(request: UpdateGiveawayRequest): Promise<boolean> {
         const id = this._giveaway()?.id;
         if (!id) return false;
+        this._lastErrorMessage.set(null);
         this._isSaving.set(true);
         try {
             await firstValueFrom(this.http.update(id, request));
             await this.load(id);
             return true;
-        } catch {
+        } catch (e: any) {
+            this._lastErrorMessage.set(e?.error?.Message ?? e?.error?.message ?? null);
             return false;
         } finally {
             this._isSaving.set(false);
@@ -88,14 +91,16 @@ export class GiveawayDetailStateService {
     async run(): Promise<RunGiveawayResponse | null> {
         const id = this._giveaway()?.id;
         if (!id) return null;
+        this._lastErrorMessage.set(null);
         this._isRunning.set(true);
         try {
             const result = await firstValueFrom(this.http.run(id));
             this._runResult.set(result);
             // Recargar ganadores desde el reporte
-            await this.loadWinners(this._giveaway()!.giveawayDate);
+            await this.loadWinners(this._giveaway()!.id);
             return result;
-        } catch {
+        } catch (e: any) {
+            this._lastErrorMessage.set(e?.error?.Message ?? e?.error?.message ?? null);
             return null;
         } finally {
             this._isRunning.set(false);
@@ -106,6 +111,7 @@ export class GiveawayDetailStateService {
     async reconfigureAwards(baseInfo: { description: string; giveawayDate: string; trStartDate: string; trEndDate: string }): Promise<number | null> {
         const id = this._giveaway()?.id;
         if (!id) return null;
+        this._lastErrorMessage.set(null);
         this._isReconfiguring.set(true);
         try {
             await firstValueFrom(this.http.delete(id));
@@ -121,7 +127,8 @@ export class GiveawayDetailStateService {
             };
             const created = await firstValueFrom(this.http.create(request));
             return created.giveawayId;
-        } catch {
+        } catch (e: any) {
+            this._lastErrorMessage.set(e?.error?.Message ?? e?.error?.message ?? null);
             return null;
         } finally {
             this._isReconfiguring.set(false);

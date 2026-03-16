@@ -55,9 +55,9 @@ export class GiveawaysHttpService {
             .pipe(map(res => res.data));
     }
 
-    /** Obtener los ganadores de un sorteo por su fecha (yyyy-MM-dd) */
-    getWinners(date: string): Observable<WinnerRecord[]> {
-        const params = new HttpParams().set('date', date);
+    /** Obtener los ganadores de un sorteo por su ID */
+    getWinners(giveawayId: number): Observable<WinnerRecord[]> {
+        const params = new HttpParams().set('giveawayId', giveawayId);
         return this.http
             .get<Response<WinnerRecord[]>>(`${this.reportsUrl}/giveaway-winners`, {
                 params,

@@ -1,11 +1,7 @@
-<app-modal [isOpen]="isOpen()"
-    [title]="isEditing ? 'Editar Sorteo' : 'Nuevo Sorteo'"
+<app-modal [isOpen]="isOpen()" [title]="isEditing ? 'Editar Sorteo' : 'Nuevo Sorteo'"
     [subtitle]="isEditing ? 'Modifica las fechas o descripción del sorteo.' : 'Completa los datos para registrar un nuevo sorteo.'"
-    [showFooter]="true" [showConfirmButton]="true"
-    [confirmText]="isEditing ? 'Guardar cambios' : 'Crear sorteo'"
-    cancelText="Cancelar"
-    [loading]="state.isSaving()" loadingText="Guardando"
-    [disableClose]="state.isSaving()"
+    [showFooter]="true" [showConfirmButton]="true" [confirmText]="isEditing ? 'Guardar cambios' : 'Crear sorteo'"
+    cancelText="Cancelar" [loading]="state.isSaving()" loadingText="Guardando" [disableClose]="state.isSaving()"
     (onClose)="close()" (onConfirm)="giveawayForm.ngSubmit.emit()">
 
     <form #giveawayForm="ngForm" (ngSubmit)="handleSubmit(giveawayForm)" class="flex flex-col gap-4 pt-1">
@@ -13,33 +9,22 @@
         <!-- Descripción -->
         <app-input-wrapper>
             <app-label for="description" label="Descripción del sorteo" [required]="true"></app-label>
-            <app-input
-                id="description" name="description" type="text"
-                [(ngModel)]="description"
+            <app-input id="description" name="description" type="text" [(ngModel)]="description"
                 [state]="descCtrl.invalid && descCtrl.touched ? 'error' : 'default'"
-                placeholder="Ej. Sorteo Navideño Nov-Dic 2025"
-                [fullWidth]="true"
-                [required]="true" #descCtrl="ngModel">
+                placeholder="Ej. Sorteo Navideño Nov-Dic 2025" [fullWidth]="true" [required]="true" #descCtrl="ngModel">
             </app-input>
-            <app-input-error
-                error="La descripción es obligatoria."
-                [show]="!!(descCtrl.invalid && descCtrl.touched)">
+            <app-input-error error="La descripción es obligatoria." [show]="!!(descCtrl.invalid && descCtrl.touched)">
             </app-input-error>
         </app-input-wrapper>
 
         <!-- Fecha del sorteo -->
         <app-input-wrapper>
             <app-label for="giveawayDate" label="Fecha del sorteo" [required]="true"></app-label>
-            <app-date-picker
-                id="giveawayDate" name="giveawayDate"
-                [(ngModel)]="giveawayDate"
-                [required]="true"
-                [invalid]="!!(dateCtrl.invalid && dateCtrl.touched)"
-                placeholder="Selecciona la fecha del sorteo"
+            <app-date-picker id="giveawayDate" name="giveawayDate" [(ngModel)]="giveawayDate" [required]="true"
+                [invalid]="!!(dateCtrl.invalid && dateCtrl.touched)" placeholder="Selecciona la fecha del sorteo"
                 #dateCtrl="ngModel">
             </app-date-picker>
-            <app-input-error
-                error="La fecha del sorteo es obligatoria."
+            <app-input-error error="La fecha del sorteo es obligatoria."
                 [show]="!!(dateCtrl.invalid && dateCtrl.touched)">
             </app-input-error>
         </app-input-wrapper>
@@ -48,33 +33,21 @@
         <div class="grid grid-cols-2 gap-3">
             <app-input-wrapper>
                 <app-label for="trStartDate" label="Inicio período" [required]="true"></app-label>
-                <app-date-picker
-                    id="trStartDate" name="trStartDate"
-                    [(ngModel)]="trStartDate"
-                    [required]="true"
-                    [invalid]="!!(startCtrl.invalid && startCtrl.touched)"
-                    placeholder="Fecha de inicio"
+                <app-date-picker id="trStartDate" name="trStartDate" [(ngModel)]="trStartDate" [required]="true"
+                    [invalid]="!!(startCtrl.invalid && startCtrl.touched)" placeholder="Fecha de inicio"
                     #startCtrl="ngModel">
                 </app-date-picker>
-                <app-input-error
-                    error="Fecha de inicio obligatoria."
+                <app-input-error error="Fecha de inicio obligatoria."
                     [show]="!!(startCtrl.invalid && startCtrl.touched)">
                 </app-input-error>
             </app-input-wrapper>
 
             <app-input-wrapper>
                 <app-label for="trEndDate" label="Fin período" [required]="true"></app-label>
-                <app-date-picker
-                    id="trEndDate" name="trEndDate"
-                    [(ngModel)]="trEndDate"
-                    [required]="true"
-                    [invalid]="!!(endCtrl.invalid && endCtrl.touched)"
-                    placeholder="Fecha de fin"
-                    #endCtrl="ngModel">
+                <app-date-picker id="trEndDate" name="trEndDate" [(ngModel)]="trEndDate" [required]="true"
+                    [invalid]="!!(endCtrl.invalid && endCtrl.touched)" placeholder="Fecha de fin" #endCtrl="ngModel">
                 </app-date-picker>
-                <app-input-error
-                    error="Fecha de fin obligatoria."
-                    [show]="!!(endCtrl.invalid && endCtrl.touched)">
+                <app-input-error error="Fecha de fin obligatoria." [show]="!!(endCtrl.invalid && endCtrl.touched)">
                 </app-input-error>
             </app-input-wrapper>
         </div>
@@ -90,48 +63,40 @@
                 </app-button>
             </div>
 
-            <div class="flex flex-col gap-2 max-h-52 overflow-y-auto pr-1">
-            @for (entry of awardEntries; track $index) {
-            <div class="flex items-end gap-2 p-3 rounded-lg border border-gray-200 dark:border-neutral-700 bg-gray-50 dark:bg-neutral-800">
-                <!-- Seleccionar premio -->
-                <div class="flex-1 flex flex-col gap-1">
-                    <label class="text-xs font-medium text-gray-600 dark:text-neutral-400">Premio</label>
-                    <app-custom-select
-                        [name]="'awardId_' + $index"
-                        [(ngModel)]="entry.awardId"
-                        [options]="availableOptionsFor($index)"
-                        placeholder="Seleccionar premio..."
-                        size="small">
-                    </app-custom-select>
-                </div>
+            <div class="flex flex-col gap-2 pr-1">
+                @for (entry of awardEntries; track $index) {
+                <div
+                    class="flex items-end gap-2 p-3 rounded-lg border border-gray-200 dark:border-neutral-700 bg-gray-50 dark:bg-neutral-800">
+                    <!-- Seleccionar premio -->
+                    <div class="flex-1 flex flex-col gap-1">
+                        <label class="text-xs font-medium text-gray-600 dark:text-neutral-400">Premio</label>
+                        <app-custom-select [name]="'awardId_' + $index" [(ngModel)]="entry.awardId"
+                            [options]="availableOptionsFor($index)" placeholder="Seleccionar premio..." size="small">
+                        </app-custom-select>
+                    </div>
 
-                <!-- Cantidad de ganadores -->
-                <div class="w-28 flex flex-col gap-1">
-                    <label class="text-xs font-medium text-gray-600 dark:text-neutral-400">Ganadores</label>
-                    <app-input
-                        [name]="'winners_' + $index"
-                        type="number"
-                        [(ngModel)]="entry.winnersQuant"
-                        [min]="1"
-                        [fullWidth]="true"
-                        [required]="true">
-                    </app-input>
-                </div>
+                    <!-- Cantidad de ganadores -->
+                    <div class="w-28 flex flex-col gap-1">
+                        <label class="text-xs font-medium text-gray-600 dark:text-neutral-400">Ganadores</label>
+                        <app-input [name]="'winners_' + $index" type="number" [(ngModel)]="entry.winnersQuant" [min]="1"
+                            [fullWidth]="true" [required]="true">
+                        </app-input>
+                    </div>
 
-                <!-- Eliminar entrada -->
-                <app-button type="button" appearance="text" size="small" [icon]="icons.Trash2" variant="danger"
-                    tooltip="Quitar" (onClick)="removeAwardEntry($index)"
-                    [disabled]="awardEntries.length === 1">
-                </app-button>
-            </div>
-            }
+                    <!-- Eliminar entrada -->
+                    <app-button type="button" appearance="text" size="small" [icon]="icons.Trash2" variant="danger"
+                        tooltip="Quitar" (onClick)="removeAwardEntry($index)" [disabled]="awardEntries.length === 1">
+                    </app-button>
+                </div>
+                }
             </div>
         </div>
         }
 
         @if (isEditing) {
         <p class="text-xs text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 rounded-md p-3">
-            <strong>Nota:</strong> Para modificar los premios del sorteo, accede al detalle del sorteo y usa la sección "Premios configurados".
+            <strong>Nota:</strong> Para modificar los premios del sorteo, accede al detalle del sorteo y usa la sección
+            "Premios configurados".
         </p>
         }
 

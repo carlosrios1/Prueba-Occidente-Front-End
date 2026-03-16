@@ -4,7 +4,7 @@
     <div header class="flex flex-col gap-5">
         <app-page-header
             title="Reporte de Ganadores"
-            description="Consulta los ganadores de un sorteo por fecha y exporta el resultado">
+            description="Consulta los ganadores de un sorteo por ID y exporta el resultado">
             <div actions class="flex items-center gap-2">
                 <app-button
                     appearance="outline" variant="secondary"
@@ -33,16 +33,20 @@
                 <div class="flex flex-col sm:flex-row items-end gap-3">
                     <div class="flex-1 max-w-xs">
                         <app-input-wrapper>
-                            <app-label label="Fecha del sorteo" [required]="true"></app-label>
-                            <app-date-picker
-                                [(ngModel)]="giveawayDate"
-                                placeholder="Selecciona la fecha del sorteo">
-                            </app-date-picker>
+                            <app-label label="ID del sorteo" [required]="true"></app-label>
+                            <app-input
+                                id="giveawayId"
+                                name="giveawayId"
+                                type="number"
+                                [(ngModel)]="giveawayId"
+                                placeholder="Ej. 1"
+                                [fullWidth]="true">
+                            </app-input>
                         </app-input-wrapper>
                     </div>
                     <app-button
                         [icon]="icons.Search"
-                        [disabled]="!giveawayDate || isLoading()"
+                        [disabled]="!giveawayId || isLoading()"
                         (onClick)="search()">
                         @if (isLoading()) { Buscando... } @else { Buscar }
                     </app-button>
@@ -105,8 +109,8 @@
                                     </path>
                                 </svg>
                             </div>
-                            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">Sin ganadores para esta fecha</h3>
-                            <p class="text-sm text-gray-500">El sorteo aún no ha sido ejecutado o no existe para esta fecha</p>
+                            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">Sin ganadores para este sorteo</h3>
+                            <p class="text-sm text-gray-500">El sorteo aún no ha sido ejecutado o el ID no existe</p>
                         </div>
                         }
                     </div>

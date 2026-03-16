@@ -11,14 +11,18 @@
             [description]="'Sorteo programado para el ' + (g.giveawayDate | date:'dd/MM/yyyy HH:mm')">
             <div actions class="flex items-center gap-2">
                 <app-button appearance="outline" [icon]="icons.Pencil" variant="secondary"
+                    [disabled]="detailState.hasWinners()"
                     (onClick)="openEditGiveaway()">
                     Editar
                 </app-button>
                 <app-button appearance="outline" [icon]="icons.Trash2" variant="danger"
+                    [disabled]="detailState.hasWinners()"
                     (onClick)="openDeleteGiveaway()">
                     Eliminar
                 </app-button>
-                <app-button [icon]="icons.Play" (onClick)="openRunModal()">
+                <app-button [icon]="icons.Play"
+                    [disabled]="detailState.hasWinners()"
+                    (onClick)="openRunModal()">
                     Realizar Sorteo
                 </app-button>
             </div>

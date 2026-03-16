@@ -4,7 +4,7 @@
  * Componente de textarea reutilizable con estados de validación y ajuste automático de altura.
  * Incluye soporte para todos los atributos nativos de textarea HTML.
  * 
- * @author Hector Varela
+ * 
  */
 
 import { Component, EventEmitter, Input, Output, forwardRef } from '@angular/core';

@@ -126,8 +126,7 @@ export class ReportMainPageComponent implements OnInit {
         this.isLoading.set(true);
         try {
             if (this.reportType === 'winners') {
-                const dateStr = this.toDateStr(new Date(this.selectedGiveaway!.giveawayDate));
-                const data = await firstValueFrom(this.reportsHttp.getWinners(dateStr));
+                const data = await firstValueFrom(this.reportsHttp.getWinners(this.selectedGiveaway!.id));
                 this.winners.set(data ?? []);
             } else {
                 const data = await firstValueFrom(
@@ -167,9 +166,7 @@ export class ReportMainPageComponent implements OnInit {
         try {
             if (this.reportType === 'winners' && this.selectedGiveaway) {
                 await firstValueFrom(
-                    this.reportsHttp.downloadWinnersExcel(
-                        this.toDateStr(new Date(this.selectedGiveaway.giveawayDate)),
-                    ),
+                    this.reportsHttp.downloadWinnersExcel(this.selectedGiveaway.id),
                 );
             } else if (this.reportType === 'transactions' && this.startDate && this.endDate) {
                 await firstValueFrom(
@@ -189,9 +186,7 @@ export class ReportMainPageComponent implements OnInit {
         try {
             if (this.reportType === 'winners' && this.selectedGiveaway) {
                 await firstValueFrom(
-                    this.reportsHttp.downloadWinnersPdf(
-                        this.toDateStr(new Date(this.selectedGiveaway.giveawayDate)),
-                    ),
+                    this.reportsHttp.downloadWinnersPdf(this.selectedGiveaway.id),
                 );
             } else if (this.reportType === 'transactions' && this.startDate && this.endDate) {
                 await firstValueFrom(

@@ -3,7 +3,7 @@
  * 
  * Componente de etiqueta para inputs con soporte para estado requerido.
  * 
- * @author Hector Varela
+ * 
  */
 
 import { Component, Input } from '@angular/core';

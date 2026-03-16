@@ -1,5 +1,5 @@
 import { Component, inject, Input, signal } from '@angular/core';
-import { LucideAngularModule, Play, Trophy, Users, Star } from 'lucide-angular';
+import { LucideAngularModule, Play, Trophy, Users, Star, AlertCircle } from 'lucide-angular';
 
 import { ModalComponent } from '@shared/components/modal/modal.component';
 import { GiveawayDetailStateService } from '../../services/giveaway-detail-state.service';
@@ -24,19 +24,22 @@ export class RunGiveawayModalComponent {
 
     isShowingSuspense = signal(false);
     showConfetti = signal(false);
+    errorMessage = signal<string | null>(null);
 
-    readonly icons = { Play, Trophy, Users, Star };
+    readonly icons = { Play, Trophy, Users, Star, AlertCircle };
 
     get hasResult(): boolean {
         return this.result !== null;
     }
 
     close(): void {
+        this.errorMessage.set(null);
         this.isOpen.set(false);
         this.showConfetti.set(false);
     }
 
     async run(): Promise<void> {
+        this.errorMessage.set(null);
         this.isShowingSuspense.set(true);
         try {
             const minDelay = new Promise<void>(resolve => setTimeout(resolve, MIN_SUSPENSE_MS));
@@ -45,6 +48,8 @@ export class RunGiveawayModalComponent {
                 this.result = res;
                 this.showConfetti.set(true);
                 setTimeout(() => this.showConfetti.set(false), CONFETTI_DURATION_MS);
+            } else {
+                this.errorMessage.set(this.state.lastErrorMessage() ?? 'No se pudo ejecutar el sorteo.');
             }
         } finally {
             this.isShowingSuspense.set(false);

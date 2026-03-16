@@ -1,0 +1,185 @@
+﻿<app-page-body-layout>
+
+    <!-- Header -->
+    <div header class="flex flex-col gap-5">
+        <app-page-header title="Nuevo Sorteo" description="Completa los datos para registrar un nuevo sorteo.">
+            <div actions>
+                <app-button [icon]="icons.ArrowLeft" appearance="outline" variant="neutral" (onClick)="goBack()">
+                    Volver
+                </app-button>
+            </div>
+        </app-page-header>
+    </div>
+
+    <!-- Body -->
+    <div body class="motion-preset-slide-left">
+        <form #giveawayForm="ngForm" (ngSubmit)="handleSubmit(giveawayForm)">
+            <div class="flex flex-col gap-5">
+
+                <!-- Fila superior: Info general + Período -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+
+                    <!-- Card 1: Información general -->
+                    <app-card [overflow]="'visible'">
+                        <app-card-header title="Información general" [icon]="icons.Info"
+                            description="Describe el sorteo y establece su fecha de ejecución.">
+                        </app-card-header>
+                        <app-card-body>
+                            <div class="flex flex-col gap-4">
+
+                                <!-- Descripción -->
+                                <app-input-wrapper>
+                                    <app-label for="description" label="Descripción del sorteo"
+                                        [required]="true"></app-label>
+                                    <app-input id="description" name="description" type="text"
+                                        [(ngModel)]="description"
+                                        [state]="descCtrl.invalid && descCtrl.touched ? 'error' : 'default'"
+                                        placeholder="Ej. Sorteo Navideño Nov-Dic 2025" [fullWidth]="true"
+                                        [required]="true" #descCtrl="ngModel">
+                                    </app-input>
+                                    <app-input-error error="La descripción es obligatoria."
+                                        [show]="!!(descCtrl.invalid && descCtrl.touched)">
+                                    </app-input-error>
+                                </app-input-wrapper>
+
+                                <!-- Fecha del sorteo -->
+                                <app-input-wrapper>
+                                    <app-label for="giveawayDate" label="Fecha del sorteo"
+                                        [required]="true"></app-label>
+                                    <app-date-picker id="giveawayDate" name="giveawayDate"
+                                        [(ngModel)]="giveawayDate" [required]="true"
+                                        [invalid]="!!(dateCtrl.invalid && dateCtrl.touched)"
+                                        placeholder="Selecciona la fecha de ejecución del sorteo"
+                                        #dateCtrl="ngModel">
+                                    </app-date-picker>
+                                    <app-input-error error="La fecha del sorteo es obligatoria."
+                                        [show]="!!(dateCtrl.invalid && dateCtrl.touched)">
+                                    </app-input-error>
+                                </app-input-wrapper>
+
+                            </div>
+                        </app-card-body>
+                    </app-card>
+
+                    <!-- Card 2: Período de transacciones -->
+                    <app-card [overflow]="'visible'">
+                        <app-card-header title="Período de transacciones"
+                            description="Define el rango de fechas de las transacciones elegibles para el sorteo.">
+                        </app-card-header>
+                        <app-card-body>
+                            <div class="flex flex-col gap-4">
+
+                                <app-input-wrapper>
+                                    <app-label for="trStartDate" label="Fecha de inicio"
+                                        [required]="true"></app-label>
+                                    <app-date-picker id="trStartDate" name="trStartDate"
+                                        [(ngModel)]="trStartDate" [required]="true"
+                                        [invalid]="!!(startCtrl.invalid && startCtrl.touched)"
+                                        placeholder="Fecha de inicio" #startCtrl="ngModel">
+                                    </app-date-picker>
+                                    <app-input-error error="Fecha de inicio obligatoria."
+                                        [show]="!!(startCtrl.invalid && startCtrl.touched)">
+                                    </app-input-error>
+                                </app-input-wrapper>
+
+                                <app-input-wrapper>
+                                    <app-label for="trEndDate" label="Fecha de fin"
+                                        [required]="true"></app-label>
+                                    <app-date-picker id="trEndDate" name="trEndDate"
+                                        [(ngModel)]="trEndDate" [required]="true"
+                                        [invalid]="!!(endCtrl.invalid && endCtrl.touched)"
+                                        placeholder="Fecha de fin" #endCtrl="ngModel">
+                                    </app-date-picker>
+                                    <app-input-error error="Fecha de fin obligatoria."
+                                        [show]="!!(endCtrl.invalid && endCtrl.touched)">
+                                    </app-input-error>
+                                </app-input-wrapper>
+
+                            </div>
+                        </app-card-body>
+                    </app-card>
+
+                </div>
+
+                <!-- Card 3: Premios — ancho completo -->
+                <app-card [overflow]="'visible'">
+                    <app-card-header title="Premios del sorteo" [icon]="icons.Trophy"
+                        description="Agrega uno o más premios e indica cuántos ganadores habrá por cada uno.">
+                    </app-card-header>
+                    <app-card-body>
+                        <div class="flex flex-col gap-3">
+
+                            <!-- Botón agregar -->
+                            <div class="flex justify-end">
+                                <app-button type="button" size="small" appearance="outline"
+                                    [icon]="icons.Plus" (onClick)="addAwardEntry()">
+                                    Agregar premio
+                                </app-button>
+                            </div>
+
+                            <!-- Grid de premios -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+                                @for (entry of awardEntries; track $index) {
+                                <div class="flex items-end gap-3 p-4 rounded-lg border border-gray-200
+                                            dark:border-neutral-700 bg-gray-50 dark:bg-neutral-800
+                                            shadow-sm motion-preset-slide-down motion-duration-200">
+
+                                    <!-- Número de orden -->
+                                    <div class="flex-shrink-0 w-7 h-7 rounded-full bg-green-100
+                                                dark:bg-green-900/40 flex items-center justify-center mb-1">
+                                        <span class="text-xs font-bold text-green-700 dark:text-green-400">
+                                            {{ $index + 1 }}
+                                        </span>
+                                    </div>
+
+                                    <!-- Select de premio -->
+                                    <div class="flex-1 flex flex-col gap-1 min-w-0">
+                                        <label
+                                            class="text-xs font-medium text-gray-600 dark:text-neutral-400">Premio</label>
+                                        <app-custom-select [name]="'awardId_' + $index"
+                                            [(ngModel)]="entry.awardId"
+                                            [options]="availableOptionsFor($index)"
+                                            placeholder="Seleccionar premio..." size="small">
+                                        </app-custom-select>
+                                    </div>
+
+                                    <!-- Cantidad de ganadores -->
+                                    <div class="w-24 flex flex-col gap-1 flex-shrink-0">
+                                        <label
+                                            class="text-xs font-medium text-gray-600 dark:text-neutral-400">Ganadores</label>
+                                        <app-input [name]="'winners_' + $index" type="number"
+                                            [(ngModel)]="entry.winnersQuant" [min]="1"
+                                            [fullWidth]="true" [required]="true">
+                                        </app-input>
+                                    </div>
+
+                                    <!-- Eliminar -->
+                                    <app-button type="button" appearance="text" size="small"
+                                        [icon]="icons.Trash2" variant="danger" tooltip="Quitar"
+                                        (onClick)="removeAwardEntry($index)"
+                                        [disabled]="awardEntries.length === 1">
+                                    </app-button>
+                                </div>
+                                }
+                            </div>
+
+                        </div>
+                    </app-card-body>
+                </app-card>
+
+                <!-- Acciones -->
+                <div class="flex justify-end gap-3">
+                    <app-button type="button" appearance="outline" variant="neutral" (onClick)="goBack()">
+                        Cancelar
+                    </app-button>
+                    <app-button type="submit" variant="success" [loading]="state.isSaving()"
+                        loadingText="Guardando...">
+                        Crear sorteo
+                    </app-button>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+</app-page-body-layout>

@@ -4,7 +4,7 @@
  * Componente wrapper que agrupa label, input y mensaje de error.
  * Facilita la creación de campos de formulario completos.
  * 
- * @author Hector Varela
+ * 
  */
 
 import { Component, Input } from '@angular/core';

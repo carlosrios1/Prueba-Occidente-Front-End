@@ -294,9 +294,9 @@ interface Giveaway {
 
 | Método | Endpoint | Formato |
 |---|---|---|
-| GET | `/api/reports/winners?giveawayDate=` | JSON (filtra por `giveawayDate` del sorteo) |
-| GET | `/api/reports/winners/excel?giveawayDate=` | Descarga `.xlsx` |
-| GET | `/api/reports/winners/pdf?giveawayDate=` | Descarga `.pdf` |
+| GET | `/api/reports/giveaway-winners?giveawayId=` | JSON (filtra por ID del sorteo) |
+| GET | `/api/reports/giveaway-winners/excel?giveawayId=` | Descarga `.xlsx` |
+| GET | `/api/reports/giveaway-winners/pdf?giveawayId=` | Descarga `.pdf` |
 
 **Respuesta JSON items:**
 ```ts

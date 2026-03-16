@@ -11,7 +11,7 @@ import { CardBodyComponent } from '@shared/components/cards/card/components/card
 import { ButtonComponent } from '@shared/components/buttons/button/button.component';
 import { TableCellDirective } from '@shared/directives/table-cell.directive';
 import { BadgeComponent } from '@shared/components/badge/badge.component';
-import { DatePickerComponent } from '@shared/components/date-picker/date-picker.component';
+import { InputComponent } from '@shared/components/form-components/input/input/input.component';
 import { InputWrapperComponent } from '@shared/components/form-components/input/input-wrapper/input-wrapper.component';
 import { LabelComponent } from '@shared/components/form-components/input/label/label.component';
 
@@ -32,7 +32,7 @@ import { WinnerReport } from '../../models/winner-report.model';
         ButtonComponent,
         TableCellDirective,
         BadgeComponent,
-        DatePickerComponent,
+        InputComponent,
         InputWrapperComponent,
         LabelComponent,
     ],
@@ -44,7 +44,7 @@ export class ReportWinnersPageComponent {
     readonly icons = { Search, FileDown, FileSpreadsheet, Trophy };
     readonly headers = ['Código', 'Cliente', 'Premio', 'Fecha Sorteo', ''];
 
-    giveawayDate: Date | null = null;
+    giveawayId: number | null = null;
 
     winners = signal<WinnerReport[]>([]);
     isLoading = signal(false);
@@ -52,11 +52,10 @@ export class ReportWinnersPageComponent {
     hasSearched = signal(false);
 
     async search(): Promise<void> {
-        if (!this.giveawayDate) return;
+        if (!this.giveawayId) return;
         this.isLoading.set(true);
         try {
-            const date = this.toDateStr(this.giveawayDate);
-            const data = await firstValueFrom(this.http.getWinners(date));
+            const data = await firstValueFrom(this.http.getWinners(this.giveawayId));
             this.winners.set(data ?? []);
             this.hasSearched.set(true);
         } finally {
@@ -65,33 +64,22 @@ export class ReportWinnersPageComponent {
     }
 
     async downloadExcel(): Promise<void> {
-        if (!this.giveawayDate) return;
+        if (!this.giveawayId) return;
         this.isDownloading.set(true);
         try {
-            await firstValueFrom(
-                this.http.downloadWinnersExcel(this.toDateStr(this.giveawayDate)),
-            );
+            await firstValueFrom(this.http.downloadWinnersExcel(this.giveawayId));
         } finally {
             this.isDownloading.set(false);
         }
     }
 
     async downloadPdf(): Promise<void> {
-        if (!this.giveawayDate) return;
+        if (!this.giveawayId) return;
         this.isDownloading.set(true);
         try {
-            await firstValueFrom(
-                this.http.downloadWinnersPdf(this.toDateStr(this.giveawayDate)),
-            );
+            await firstValueFrom(this.http.downloadWinnersPdf(this.giveawayId));
         } finally {
             this.isDownloading.set(false);
         }
-    }
-
-    private toDateStr(date: Date): string {
-        const y = date.getFullYear();
-        const m = (date.getMonth() + 1).toString().padStart(2, '0');
-        const d = date.getDate().toString().padStart(2, '0');
-        return `${y}-${m}-${d}`;
     }
 }

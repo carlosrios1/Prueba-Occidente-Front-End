@@ -3,7 +3,7 @@
  * 
  * Componente para mostrar mensajes de error debajo de inputs.
  * 
- * @author Hector Varela
+ * 
  */
 
 import { Component, Input } from '@angular/core';

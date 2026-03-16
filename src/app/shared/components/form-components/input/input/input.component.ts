@@ -4,7 +4,7 @@
  * Componente de input reutilizable con estados de validación, iconos y prefijos/sufijos de texto.
  * Incluye soporte para todos los atributos nativos de input HTML.
  * 
- * @author Hector Varela
+ * 
  */
 
 import { Component, EventEmitter, Input, Output, forwardRef } from '@angular/core';

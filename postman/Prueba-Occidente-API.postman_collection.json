@@ -1,6 +1,6 @@
-{
+﻿{
   "info": {
-    "name": "Prueba Occidente API — Full",
+    "name": "Prueba Occidente API â€” Full",
     "_postman_id": "prueba-occidente-api-full-v2",
     "description": "Backend Prueba Occidente. .NET 8 - Clean Architecture - Dapper - SQL Server.\n\nFlujo: 1) Login -> token en {{token}}. 2) Resto usa ese token.\n\nRespuesta estandar: { success, status, message, data }\n\nErrores middleware:\n400 ArgumentException | 401 UnauthorizedAccessException | 404 KeyNotFoundException\n409 InvalidOperationException | 408 TimeoutException | 503 HttpRequestException | 500 resto",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -454,7 +454,7 @@
                   "key": "file",
                   "type": "file",
                   "src": "",
-                  "description": "Archivo .xlsx — usar Transacciones_Sorteo_Prueba.xlsx"
+                  "description": "Archivo .xlsx â€” usar Transacciones_Sorteo_Prueba.xlsx"
                 }
               ]
             },
@@ -686,7 +686,7 @@
                 "run"
               ]
             },
-            "description": "Ejecuta el sorteo seleccionando ganadores aleatoriamente y los persiste en BD.\n\nValidaciones aplicadas en orden:\n1. Sorteo debe existir\n2. DateTime.Today >= giveaway.GiveawayDate — no ejecutar antes de la fecha programada\n3. No haber sido ejecutado antes\n4. Tener premios configurados\n5. Haber clientes elegibles (amount > 300 en el periodo)\n6. Clientes elegibles >= total ganadores necesarios\n\nClientes elegibles con seed Nov-Dic 2025 (amount > 300):\nC001 C002 C004 C005 C006 C007 C008 C009 C011 C012 C013 C014 C015 (13 clientes)\nNo elegibles: C003 (solo 250 nov) | C010 (150 y 200)\n\nResponse data:\n{ giveawayId, giveAwayDate, totalWinners,\n  winnersByAward: [{awardId, awardName, winnersQuant,\n    winners: [{clientId, clientCode, clientName}]}] }\n\nErrores:\n  400  sorteo no encontrado\n  409  fecha futura\n  409  ya ejecutado\n  409  sin premios configurados\n  409  sin clientes elegibles\n  409  clientes insuficientes"
+            "description": "Ejecuta el sorteo seleccionando ganadores aleatoriamente y los persiste en BD.\n\nValidaciones aplicadas en orden:\n1. Sorteo debe existir\n2. DateTime.Today >= giveaway.GiveawayDate â€” no ejecutar antes de la fecha programada\n3. No haber sido ejecutado antes\n4. Tener premios configurados\n5. Haber clientes elegibles (amount > 300 en el periodo)\n6. Clientes elegibles >= total ganadores necesarios\n\nClientes elegibles con seed Nov-Dic 2025 (amount > 300):\nC001 C002 C004 C005 C006 C007 C008 C009 C011 C012 C013 C014 C015 (13 clientes)\nNo elegibles: C003 (solo 250 nov) | C010 (150 y 200)\n\nResponse data:\n{ giveawayId, giveAwayDate, totalWinners,\n  winnersByAward: [{awardId, awardName, winnersQuant,\n    winners: [{clientId, clientCode, clientName}]}] }\n\nErrores:\n  400  sorteo no encontrado\n  409  fecha futura\n  409  ya ejecutado\n  409  sin premios configurados\n  409  sin clientes elegibles\n  409  clientes insuficientes"
           },
           "response": [
             {
@@ -719,10 +719,10 @@
     },
     {
       "name": "Reports (Reportes)",
-      "description": "Reportes de transacciones y ganadores. Requiere JWT.\n\nCada reporte tiene 3 formatos de salida:\n  (sin sufijo)  application/json  — consumo frontend (transacciones: paginado)\n  /excel        .xlsx             — descarga completa sin paginacion\n  /pdf          .pdf              — descarga completa sin paginacion\n\nPara descargar desde Postman: Send -> Save Response -> Save to a file",
+      "description": "Reportes de transacciones y ganadores. Requiere JWT.\n\nCada reporte tiene 3 formatos de salida:\n  (sin sufijo)  application/json  â€” consumo frontend (transacciones: paginado)\n  /excel        .xlsx             â€” descarga completa sin paginacion\n  /pdf          .pdf              â€” descarga completa sin paginacion\n\nPara descargar desde Postman: Send -> Save Response -> Save to a file",
       "item": [
         {
-          "name": "Transacciones por fecha — JSON",
+          "name": "Transacciones por fecha â€” JSON",
           "request": {
             "method": "GET",
             "header": [],
@@ -744,7 +744,7 @@
                 },
                 {
                   "key": "endDate",
-                  "value": "2025-12-31",
+                  "value": "1",
                   "description": "Formato yyyy-MM-dd"
                 },
                 {
@@ -771,7 +771,7 @@
           ]
         },
         {
-          "name": "Transacciones por fecha — Excel",
+          "name": "Transacciones por fecha â€” Excel",
           "request": {
             "method": "GET",
             "header": [],
@@ -793,7 +793,7 @@
                 },
                 {
                   "key": "endDate",
-                  "value": "2025-12-31"
+                  "value": "1"
                 }
               ]
             },
@@ -802,7 +802,7 @@
           "response": []
         },
         {
-          "name": "Transacciones por fecha — PDF",
+          "name": "Transacciones por fecha â€” PDF",
           "request": {
             "method": "GET",
             "header": [],
@@ -824,7 +824,7 @@
                 },
                 {
                   "key": "endDate",
-                  "value": "2025-12-31"
+                  "value": "1"
                 }
               ]
             },
@@ -833,12 +833,12 @@
           "response": []
         },
         {
-          "name": "Ganadores por sorteo — JSON",
+          "name": "Ganadores por sorteo â€” JSON",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/reports/giveaway-winners?date=2025-12-31",
+              "raw": "{{baseUrl}}/api/reports/giveaway-winners?giveawayId=1",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -849,30 +849,30 @@
               ],
               "query": [
                 {
-                  "key": "date",
-                  "value": "2025-12-31",
-                  "description": "Fecha del sorteo (giveawayDate). Formato yyyy-MM-dd"
+                  "key": "giveawayId",
+                  "value": "1",
+                  "description": "ID del sorteo"
                 }
               ]
             },
-            "description": "Ganadores del sorteo de esa fecha en JSON.\n\nResponse data[]: { clientCode, clientName, awardName, giveawayDate }\n\nNOTA: filtra por giveawayDate del sorteo, no por fecha de ejecucion."
+            "description": "Ganadores del sorteo por ID en JSON.\n\nResponse data[]: { clientCode, clientName, awardName, giveawayDate }"
           },
           "response": [
             {
               "name": "200 Ganadores JSON",
               "status": "OK",
               "code": 200,
-              "body": "{\n  \"success\": true,\n  \"status\": 200,\n  \"message\": \"Reporte de ganadores del sorteo 2025-12-31\",\n  \"data\": [\n    {\n      \"clientCode\": \"C007\",\n      \"clientName\": \"Carlos Humberto Reyes\",\n      \"awardName\": \"Premio Mayor\",\n      \"giveawayDate\": \"2025-12-31T18:00:00\"\n    },\n    {\n      \"clientCode\": \"C001\",\n      \"clientName\": \"Juan Carlos Mejia\",\n      \"awardName\": \"Segundo Premio\",\n      \"giveawayDate\": \"2025-12-31T18:00:00\"\n    },\n    {\n      \"clientCode\": \"C013\",\n      \"clientName\": \"Edwin Josue Paz\",\n      \"awardName\": \"Tercer Premio\",\n      \"giveawayDate\": \"2025-12-31T18:00:00\"\n    },\n    {\n      \"clientCode\": \"C004\",\n      \"clientName\": \"Ana Patricia Soto\",\n      \"awardName\": \"Tercer Premio\",\n      \"giveawayDate\": \"2025-12-31T18:00:00\"\n    }\n  ]\n}"
+              "body": "{\n  \"success\": true,\n  \"status\": 200,\n  \"message\": \"Reporte de ganadores del sorteo 1\",\n  \"data\": [\n    {\n      \"clientCode\": \"C007\",\n      \"clientName\": \"Carlos Humberto Reyes\",\n      \"awardName\": \"Premio Mayor\",\n      \"giveawayDate\": \"2025-12-31T18:00:00\"\n    },\n    {\n      \"clientCode\": \"C001\",\n      \"clientName\": \"Juan Carlos Mejia\",\n      \"awardName\": \"Segundo Premio\",\n      \"giveawayDate\": \"2025-12-31T18:00:00\"\n    },\n    {\n      \"clientCode\": \"C013\",\n      \"clientName\": \"Edwin Josue Paz\",\n      \"awardName\": \"Tercer Premio\",\n      \"giveawayDate\": \"2025-12-31T18:00:00\"\n    },\n    {\n      \"clientCode\": \"C004\",\n      \"clientName\": \"Ana Patricia Soto\",\n      \"awardName\": \"Tercer Premio\",\n      \"giveawayDate\": \"2025-12-31T18:00:00\"\n    }\n  ]\n}"
             }
           ]
         },
         {
-          "name": "Ganadores por sorteo — Excel",
+          "name": "Ganadores por sorteo â€” Excel",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/reports/giveaway-winners/excel?date=2025-12-31",
+              "raw": "{{baseUrl}}/api/reports/giveaway-winners/excel?giveawayId=1",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -884,8 +884,8 @@
               ],
               "query": [
                 {
-                  "key": "date",
-                  "value": "2025-12-31"
+                  "key": "giveawayId",
+                  "value": "1"
                 }
               ]
             },
@@ -894,12 +894,12 @@
           "response": []
         },
         {
-          "name": "Ganadores por sorteo — PDF",
+          "name": "Ganadores por sorteo â€” PDF",
           "request": {
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/reports/giveaway-winners/pdf?date=2025-12-31",
+              "raw": "{{baseUrl}}/api/reports/giveaway-winners/pdf?giveawayId=1",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -911,8 +911,8 @@
               ],
               "query": [
                 {
-                  "key": "date",
-                  "value": "2025-12-31"
+                  "key": "giveawayId",
+                  "value": "1"
                 }
               ]
             },
