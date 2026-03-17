@@ -11,9 +11,9 @@
             <app-label for="awardSelect" label="Premio" [required]="true"></app-label>
             <select id="awardSelect" name="selectedAwardId" [(ngModel)]="selectedAwardId" required
                 class="select select-sm w-full border border-gray-200 dark:border-neutral-700 rounded-md bg-white dark:bg-neutral-900 text-sm text-gray-900 dark:text-neutral-100 py-2 px-3">
-                <option [value]="0" disabled>Seleccionar premio...</option>
+                <option [ngValue]="0" disabled>Seleccionar premio...</option>
                 @for (a of filteredAvailableAwards; track a.id) {
-                <option [value]="a.id">{{ a.awardName }}</option>
+                <option [ngValue]="a.id">{{ a.awardName }}</option>
                 }
             </select>
         </app-input-wrapper>

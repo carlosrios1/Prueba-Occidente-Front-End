@@ -18,6 +18,5 @@ export class GiveawayAwardTableComponent {
     @Output() editAward = new EventEmitter<GiveawayAward>();
     @Output() deleteAward = new EventEmitter<GiveawayAward>();
 
-    readonly headers = ['Premio', 'Ganadores', 'Acciones'];
     readonly icons = { Trophy, Pencil, Trash2, Users };
 }

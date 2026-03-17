@@ -87,6 +87,7 @@
                             }
                         </div>
                         <div class="flex items-center gap-2">
+                            @if (!detailState.hasWinners()) {
                             @if (detailState.hasAwardsChanged()) {
                             <app-button appearance="outline" size="small" [icon]="icons.RotateCcw" variant="secondary"
                                 (onClick)="resetAwards()">
@@ -100,6 +101,10 @@
                                 (onClick)="openAddAwardModal()">
                                 Agregar Premio
                             </app-button>
+                            }
+                            @if (detailState.hasWinners()) {
+                            <app-badge variant="secondary" appearance="soft" size="small">Sorteo ejecutado</app-badge>
+                            }
                         </div>
                     </div>
 

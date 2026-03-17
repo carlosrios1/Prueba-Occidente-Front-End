@@ -2,11 +2,10 @@
     <table class="w-full">
         <thead>
             <tr class="border-b border-gray-200/60 dark:border-neutral-800">
-                @for (header of headers; track $index) {
-                <th class="py-3 px-2 text-left text-sm font-medium text-black dark:text-neutral-100 tracking-tight"
-                    [class.pl-4]="$index === 0">
-                    {{ header }}
-                </th>
+                <th class="py-3 px-2 pl-4 text-left text-sm font-medium text-black dark:text-neutral-100 tracking-tight">Premio</th>
+                <th class="py-3 px-2 text-left text-sm font-medium text-black dark:text-neutral-100 tracking-tight">Ganadores</th>
+                @if (!state.hasWinners()) {
+                <th class="py-3 px-2 text-left text-sm font-medium text-black dark:text-neutral-100 tracking-tight">Acciones</th>
                 }
             </tr>
         </thead>
@@ -32,6 +31,7 @@
                     </span>
                 </td>
 
+                @if (!state.hasWinners()) {
                 <td appTableCell>
                     <div class="flex items-center gap-1">
                         <app-button appearance="text" size="small" [icon]="icons.Pencil" variant="secondary"
@@ -42,6 +42,7 @@
                         </app-button>
                     </div>
                 </td>
+                }
             </tr>
             }
         </tbody>
